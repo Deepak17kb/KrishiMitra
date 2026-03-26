@@ -1,0 +1,340 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>KrishiMitra — Kisan ka Sachcha Mitra</title>
+  <link rel="stylesheet" href="style.css" />
+  <link href="https://fonts.googleapis.com/css2?family=Tiro+Devanagari+Hindi&family=Syne:wght@500;700;800&family=Instrument+Sans:wght@300;400;500&display=swap" rel="stylesheet" />
+</head>
+<body>
+
+  <!-- ═══════════════════════════════════════
+       HEADER
+  ═══════════════════════════════════════ -->
+  <header class="site-header">
+    <div class="header-left">
+      <div class="logo-mark">🌾</div>
+      <div class="logo-text-group">
+        <span class="logo-name">KrishiMitra</span>
+        <span class="logo-tagline">Kisan ka Sachcha Mitra</span>
+      </div>
+    </div>
+    <nav class="header-nav">
+      <a href="#dashboard">Dashboard</a>
+      <a href="#news">News</a>
+      <a href="#mandi">Mandi Rates</a>
+      <a href="#calendar">Season</a>
+    </nav>
+    <div class="header-right">
+      <div class="live-clock" id="liveClock">--:-- --</div>
+      <div class="location-pill" id="locationPill">📍 Detecting...</div>
+    </div>
+  </header>
+
+  <!-- ═══════════════════════════════════════
+       HERO BANNER
+  ═══════════════════════════════════════ -->
+  <section class="hero">
+    <div class="hero-bg-pattern"></div>
+    <div class="hero-content">
+      <div class="hero-badge">🇮🇳 India's Farmer Digital Platform</div>
+      <h1 class="hero-title">Apni Zameen,<br/><em>Apna Data.</em></h1>
+      <p class="hero-subtitle">Weather · Mandi Prices · Crop Calendar · AI Help — everything your farm needs, in one place.</p>
+      <div class="hero-stats">
+        <div class="hero-stat"><span id="heroTemp">--°C</span><small>Temperature</small></div>
+        <div class="hero-stat-divider"></div>
+        <div class="hero-stat"><span id="heroDate">--</span><small>Today</small></div>
+        <div class="hero-stat-divider"></div>
+        <div class="hero-stat"><span id="heroSeason">--</span><small>Season</small></div>
+      </div>
+    </div>
+    <div class="hero-illustration">
+      <div class="field-layers">
+        <div class="sun-circle"></div>
+        <div class="cloud-1">☁️</div>
+        <div class="cloud-2">⛅</div>
+        <div class="crop-row crop-row-1">🌾🌾🌾🌾🌾🌾🌾🌾</div>
+        <div class="crop-row crop-row-2">🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱</div>
+        <div class="soil-strip"></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══════════════════════════════════════
+       DASHBOARD GRID
+  ═══════════════════════════════════════ -->
+  <main class="dashboard" id="dashboard">
+
+    <!-- ── WEATHER CARD ── -->
+    <div class="card card-weather animate-card" style="--delay:0.1s">
+      <div class="card-header">
+        <span class="card-icon">🌤️</span>
+        <span class="card-label">Live Weather</span>
+        <span class="refresh-btn" onclick="fetchWeather()" title="Refresh">↻</span>
+      </div>
+      <div class="weather-main">
+        <div class="weather-temp" id="weatherTemp">--°</div>
+        <div class="weather-info">
+          <div class="weather-desc" id="weatherDesc">Loading...</div>
+          <div class="weather-loc" id="weatherLoc">Detecting location...</div>
+        </div>
+      </div>
+      <div class="weather-stats-grid">
+        <div class="w-stat">
+          <div class="w-stat-icon">💧</div>
+          <div class="w-stat-val" id="wHumidity">--%</div>
+          <div class="w-stat-label">Humidity</div>
+        </div>
+        <div class="w-stat">
+          <div class="w-stat-icon">🌬️</div>
+          <div class="w-stat-val" id="wWind">-- km/h</div>
+          <div class="w-stat-label">Wind</div>
+        </div>
+        <div class="w-stat">
+          <div class="w-stat-icon">🌡️</div>
+          <div class="w-stat-val" id="wFeels">--°</div>
+          <div class="w-stat-label">Feels Like</div>
+        </div>
+        <div class="w-stat">
+          <div class="w-stat-icon">☔</div>
+          <div class="w-stat-val" id="wRain">--%</div>
+          <div class="w-stat-label">Rain Chance</div>
+        </div>
+      </div>
+      <div class="farm-advice" id="farmAdvice">
+        <span class="advice-icon">💡</span>
+        <span id="adviceText">Fetching farm advice...</span>
+      </div>
+    </div>
+
+    <!-- ── DATE & SEASON CARD ── -->
+    <div class="card card-date animate-card" style="--delay:0.2s">
+      <div class="card-header">
+        <span class="card-icon">📅</span>
+        <span class="card-label">Date & Season</span>
+      </div>
+      <div class="date-display">
+        <div class="date-day" id="dateDay">--</div>
+        <div class="date-rest">
+          <div class="date-month-year" id="dateMonthYear">-- ----</div>
+          <div class="date-weekday" id="dateWeekday">--------</div>
+        </div>
+      </div>
+      <div class="season-block" id="seasonBlock">
+        <div class="season-name" id="seasonName">--</div>
+        <div class="season-crops" id="seasonCrops">Loading seasonal crops...</div>
+      </div>
+      <div class="sowing-calendar">
+        <div class="sowing-title">📆 Sowing Calendar</div>
+        <div class="sowing-list" id="sowingList">Loading...</div>
+      </div>
+    </div>
+
+    <!-- ── MANDI RATES CARD ── -->
+    <div class="card card-mandi animate-card" style="--delay:0.3s" id="mandi">
+      <div class="card-header">
+        <span class="card-icon">💰</span>
+        <span class="card-label">Today's Mandi Rates</span>
+        <span class="live-dot"></span><span class="live-text">LIVE</span>
+      </div>
+      <div class="mandi-table">
+        <div class="mandi-row mandi-head">
+          <span>Crop</span><span>Min ₹</span><span>Max ₹</span><span>Modal ₹</span>
+        </div>
+        <div id="mandiRates">
+          <!-- Populated by script.js -->
+          <div class="mandi-row"><span>🌾 Wheat</span><span>2,015</span><span>2,275</span><span>2,150</span></div>
+          <div class="mandi-row"><span>🌽 Maize</span><span>1,780</span><span>1,980</span><span>1,870</span></div>
+          <div class="mandi-row"><span>🍚 Rice</span><span>2,100</span><span>2,450</span><span>2,300</span></div>
+          <div class="mandi-row"><span>🫘 Soybean</span><span>3,800</span><span>4,200</span><span>4,000</span></div>
+          <div class="mandi-row"><span>🧅 Onion</span><span>800</span><span>1,400</span><span>1,100</span></div>
+          <div class="mandi-row"><span>🍅 Tomato</span><span>600</span><span>1,200</span><span>900</span></div>
+        </div>
+      </div>
+      <div class="mandi-note">* Rates in ₹/quintal · Source: Agmarknet India</div>
+    </div>
+
+    <!-- ── CROP SEASON CARD ── -->
+    <div class="card card-season animate-card" style="--delay:0.4s" id="calendar">
+      <div class="card-header">
+        <span class="card-icon">🌱</span>
+        <span class="card-label">Crop Season Guide</span>
+      </div>
+      <div class="season-tabs">
+        <button class="s-tab active" onclick="showSeason('kharif', this)">Kharif</button>
+        <button class="s-tab" onclick="showSeason('rabi', this)">Rabi</button>
+        <button class="s-tab" onclick="showSeason('zaid', this)">Zaid</button>
+      </div>
+      <div class="season-content" id="seasonContent">
+        <!-- Populated by script.js -->
+      </div>
+    </div>
+
+    <!-- ── AGRICULTURE NEWS ── -->
+    <div class="card card-news animate-card" style="--delay:0.5s" id="news">
+      <div class="card-header">
+        <span class="card-icon">📰</span>
+        <span class="card-label">Agriculture News — India</span>
+        <span class="refresh-btn" onclick="fetchNews()" title="Refresh">↻</span>
+      </div>
+      <div class="news-list" id="newsList">
+        <div class="news-loading">
+          <div class="news-skeleton"></div>
+          <div class="news-skeleton"></div>
+          <div class="news-skeleton"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ── GOVERNMENT SCHEMES CARD ── -->
+    <div class="card card-schemes animate-card" style="--delay:0.6s">
+      <div class="card-header">
+        <span class="card-icon">🏛️</span>
+        <span class="card-label">Govt. Schemes for Farmers</span>
+      </div>
+      <div class="schemes-list">
+        <div class="scheme-item">
+          <div class="scheme-icon">💵</div>
+          <div class="scheme-info">
+            <div class="scheme-name">PM-KISAN</div>
+            <div class="scheme-desc">₹6,000/year direct income support</div>
+          </div>
+          <a href="https://pmkisan.gov.in" target="_blank" class="scheme-link">→</a>
+        </div>
+        <div class="scheme-item">
+          <div class="scheme-icon">🛡️</div>
+          <div class="scheme-info">
+            <div class="scheme-name">PM Fasal Bima</div>
+            <div class="scheme-desc">Crop insurance at low premium</div>
+          </div>
+          <a href="https://pmfby.gov.in" target="_blank" class="scheme-link">→</a>
+        </div>
+        <div class="scheme-item">
+          <div class="scheme-icon">💧</div>
+          <div class="scheme-info">
+            <div class="scheme-name">PM Krishi Sinchai</div>
+            <div class="scheme-desc">Water for every field — Har Khet</div>
+          </div>
+          <a href="https://pmksy.gov.in" target="_blank" class="scheme-link">→</a>
+        </div>
+        <div class="scheme-item">
+          <div class="scheme-icon">🌿</div>
+          <div class="scheme-info">
+            <div class="scheme-name">Soil Health Card</div>
+            <div class="scheme-desc">Free soil testing & crop advice</div>
+          </div>
+          <a href="https://soilhealth.dac.gov.in" target="_blank" class="scheme-link">→</a>
+        </div>
+        <div class="scheme-item">
+          <div class="scheme-icon">🚜</div>
+          <div class="scheme-info">
+            <div class="scheme-name">SMAM Yojana</div>
+            <div class="scheme-desc">Subsidy on farm machinery</div>
+          </div>
+          <a href="https://agrimachinery.nic.in" target="_blank" class="scheme-link">→</a>
+        </div>
+      </div>
+    </div>
+
+  </main>
+
+  <!-- ═══════════════════════════════════════
+       CHATBOT WIDGET
+  ═══════════════════════════════════════ -->
+
+  <!-- Toggle Button -->
+  <button class="chat-toggle" id="chatToggle" onclick="toggleChat()" aria-label="Open KrishiMitra Assistant">
+    <span class="chat-toggle-icon" id="chatToggleIcon">🌾</span>
+    <span class="chat-toggle-label">Ask Mitra</span>
+    <span class="chat-notif" id="chatNotif">1</span>
+  </button>
+
+  <!-- Chat Panel -->
+  <div class="chat-panel" id="chatPanel">
+    <div class="chat-header">
+      <div class="chat-header-left">
+        <div class="chat-avatar">🌾</div>
+        <div>
+          <div class="chat-name">KrishiMitra</div>
+          <div class="chat-status"><span class="status-dot"></span> Online — Ready to help</div>
+        </div>
+      </div>
+      <div class="chat-header-right">
+        <button class="chat-clear" onclick="clearChat()" title="Clear chat">🗑️</button>
+        <button class="chat-close" onclick="toggleChat()" title="Close">✕</button>
+      </div>
+    </div>
+
+    <div class="chat-messages" id="chatMessages">
+      <!-- Welcome message -->
+      <div class="msg msg-bot">
+        <div class="msg-avatar">🌾</div>
+        <div class="msg-bubble">
+          <strong>Jai Kisan! 🙏</strong><br/>
+          Main <b>KrishiMitra</b> hoon — aapka digital kisan saathi.<br/><br/>
+          Main aapki help kar sakta hoon:
+          <ul>
+            <li>🌱 Crop selection & care</li>
+            <li>🌦️ Weather-based farm advice</li>
+            <li>🐛 Pest & disease solutions</li>
+            <li>💰 Mandi prices & selling tips</li>
+            <li>🏛️ Government schemes guidance</li>
+            <li>💧 Irrigation & soil health</li>
+          </ul>
+          <br/>Kya poochna hai aapko? (Hindi or English — dono chalega!)
+        </div>
+      </div>
+    </div>
+
+    <div class="chat-suggestions" id="chatSuggestions">
+      <button class="suggestion-chip" onclick="sendSuggestion(this)">🌾 Best crop for this season?</button>
+      <button class="suggestion-chip" onclick="sendSuggestion(this)">🐛 Pest control tips</button>
+      <button class="suggestion-chip" onclick="sendSuggestion(this)">💧 Irrigation advice</button>
+      <button class="suggestion-chip" onclick="sendSuggestion(this)">💰 PM-KISAN eligibility</button>
+    </div>
+
+    <div class="chat-input-area">
+      <textarea
+        class="chat-input"
+        id="chatInput"
+        placeholder="Apna sawal likhein... (Hindi/English)"
+        rows="1"
+        onkeydown="handleKey(event)"
+        oninput="autoResize(this)"
+      ></textarea>
+      <button class="chat-send" id="chatSend" onclick="sendMessage()">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
+          <path d="M22 2L11 13" stroke="white" stroke-width="2.5" stroke-linecap="round"/>
+          <path d="M22 2L15 22L11 13L2 9L22 2Z" stroke="white" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+      </button>
+    </div>
+    <div class="chat-footer">Powered by AI · KrishiMitra v1.0 · India 🇮🇳</div>
+  </div>
+
+  <!-- Overlay for mobile -->
+  <div class="chat-overlay" id="chatOverlay" onclick="toggleChat()"></div>
+
+  <!-- ═══════════════════════════════════════
+       FOOTER
+  ═══════════════════════════════════════ -->
+  <footer class="site-footer">
+    <div class="footer-inner">
+      <div class="footer-brand">
+        <span>🌾 KrishiMitra</span>
+        <small>Kisan ka Sachcha Mitra · Made for Indian Farmers</small>
+      </div>
+      <div class="footer-links">
+        <a href="https://pmkisan.gov.in" target="_blank">PM-KISAN</a>
+        <a href="https://mkisan.gov.in" target="_blank">mKisan Portal</a>
+        <a href="https://agmarknet.gov.in" target="_blank">Agmarknet</a>
+        <a href="https://imd.gov.in" target="_blank">IMD Weather</a>
+      </div>
+      <div class="footer-note">Data: Open-Meteo · NewsData.io · Agmarknet</div>
+    </div>
+  </footer>
+
+  <script src="script.js"></script>
+</body>
+</html>
