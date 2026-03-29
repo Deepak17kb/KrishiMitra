@@ -4,7 +4,7 @@
    - Live Clock & Date
    - Weather API (Open-Meteo — FREE, no key needed)
    - Agriculture News (NewsData.io)
-   - Season & Sowing Calendar
+   - Season & Sowing Calendar 
    - Mandi Rates
    - Chatbot (connects to backend/server.js)
 ═══════════════════════════════════════════════════ */
