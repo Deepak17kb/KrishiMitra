@@ -14,7 +14,7 @@
 ══════════════════════════════ */
 const CONFIG = {
   // Your backend server URL (change when deployed)
-  BACKEND_URL: "http://localhost:3000",
+  BACKEND_URL: "https://krishimitra-backend-6spu.onrender.com",
 
   // NewsData.io free API key — get from https://newsdata.io (free signup)
   NEWS_API_KEY: "YOUR_NEWSDATA_API_KEY",
