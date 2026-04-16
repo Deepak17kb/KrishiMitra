@@ -237,6 +237,125 @@
       </div>
     </div>
 
+
+    <!-- ── FERTILIZER DOSE CALCULATOR ── -->
+    <div class="card card-fertilizer animate-card" style="--delay:0.7s">
+      <div class="card-header">
+        <span class="card-icon">🧪</span>
+        <span class="card-label">Fertilizer Dose Calculator</span>
+      </div>
+      <div class="fert-form">
+        <div class="fert-row">
+          <label class="fert-label">Crop</label>
+          <select class="fert-select" id="fertCrop" onchange="calcFertilizer()">
+            <option value="wheat">🌾 Wheat (Gehun)</option>
+            <option value="rice">🍚 Rice (Dhan)</option>
+            <option value="maize">🌽 Maize (Makka)</option>
+            <option value="cotton">🌿 Cotton (Kapas)</option>
+            <option value="soybean">🫘 Soybean</option>
+            <option value="mustard">🟡 Mustard (Sarson)</option>
+            <option value="sugarcane">🎋 Sugarcane (Ganna)</option>
+            <option value="potato">🥔 Potato (Aloo)</option>
+          </select>
+        </div>
+        <div class="fert-row">
+          <label class="fert-label">Land Area</label>
+          <div class="fert-input-group">
+            <input type="number" class="fert-input" id="fertArea" value="1" min="0.1" step="0.1" oninput="calcFertilizer()" />
+            <select class="fert-unit" id="fertUnit" onchange="calcFertilizer()">
+              <option value="acre">Acre</option>
+              <option value="bigha">Bigha</option>
+              <option value="hectare">Hectare</option>
+            </select>
+          </div>
+        </div>
+      </div>
+      <div class="fert-results" id="fertResults">
+        <!-- Populated by JS -->
+      </div>
+      <div class="fert-note">💡 Based on ICAR recommended doses · Always do soil test first</div>
+    </div>
+
+    <!-- ── PEST & DISEASE ALERT ── -->
+    <div class="card card-pest animate-card" style="--delay:0.8s">
+      <div class="card-header">
+        <span class="card-icon">🐛</span>
+        <span class="card-label">Seasonal Pest & Disease Alerts</span>
+        <span class="live-dot" style="background:#e8a820"></span><span class="live-text" style="color:#e8a820">SEASON</span>
+      </div>
+      <div class="pest-season-info" id="pestSeasonInfo">
+        <!-- Populated by JS -->
+      </div>
+      <div class="pest-list" id="pestList">
+        <!-- Populated by JS -->
+      </div>
+      <div class="pest-tip" id="pestTip">
+        <!-- Populated by JS -->
+      </div>
+    </div>
+
+    <!-- ── SUN & FIELD WORK PLANNER ── -->
+    <div class="card card-sun animate-card" style="--delay:0.9s">
+      <div class="card-header">
+        <span class="card-icon">☀️</span>
+        <span class="card-label">Sun & Field Work Planner</span>
+      </div>
+      <div class="sun-times" id="sunTimes">
+        <div class="sun-item">
+          <div class="sun-icon">🌅</div>
+          <div class="sun-info">
+            <div class="sun-val" id="sunriseTime">--:--</div>
+            <div class="sun-label">Sunrise</div>
+          </div>
+        </div>
+        <div class="sun-arc-container">
+          <svg class="sun-arc-svg" viewBox="0 0 160 90" xmlns="http://www.w3.org/2000/svg">
+            <path d="M10,85 A70,70 0 0,1 150,85" fill="none" stroke="rgba(232,168,32,0.2)" stroke-width="4" stroke-linecap="round"/>
+            <path class="sun-arc-progress" id="sunArcProgress" d="M10,85 A70,70 0 0,1 150,85" fill="none" stroke="#e8a820" stroke-width="4" stroke-linecap="round" stroke-dasharray="220" stroke-dashoffset="220"/>
+            <circle class="sun-dot" id="sunDot" cx="10" cy="85" r="8" fill="#e8a820"/>
+          </svg>
+        </div>
+        <div class="sun-item">
+          <div class="sun-icon">🌇</div>
+          <div class="sun-info">
+            <div class="sun-val" id="sunsetTime">--:--</div>
+            <div class="sun-label">Sunset</div>
+          </div>
+        </div>
+      </div>
+      <div class="fieldwork-slots" id="fieldworkSlots">
+        <!-- Populated by JS -->
+      </div>
+      <div class="uv-bar-block">
+        <div class="uv-bar-label">
+          <span>☀️ UV Index</span>
+          <span class="uv-badge" id="uvBadge">--</span>
+        </div>
+        <div class="uv-bar-track">
+          <div class="uv-bar-fill" id="uvBarFill" style="width:0%"></div>
+        </div>
+        <div class="uv-advice" id="uvAdvice">Loading UV data...</div>
+      </div>
+    </div>
+
+    <!-- ── CROP PRICE TREND ── -->
+    <div class="card card-trend animate-card" style="--delay:1.0s">
+      <div class="card-header">
+        <span class="card-icon">📈</span>
+        <span class="card-label">Crop Price Trend (7-Day)</span>
+      </div>
+      <div class="trend-tabs">
+        <button class="trend-tab active" onclick="showTrend('wheat', this)">Wheat</button>
+        <button class="trend-tab" onclick="showTrend('rice', this)">Rice</button>
+        <button class="trend-tab" onclick="showTrend('onion', this)">Onion</button>
+        <button class="trend-tab" onclick="showTrend('tomato', this)">Tomato</button>
+      </div>
+      <div class="trend-chart-wrap">
+        <canvas id="trendChart" height="130"></canvas>
+      </div>
+      <div class="trend-summary" id="trendSummary"></div>
+    </div>
+
   </main>
 
   <!-- ═══════════════════════════════════════
@@ -288,10 +407,40 @@
     </div>
 
     <div class="chat-suggestions" id="chatSuggestions">
-      <button class="suggestion-chip" onclick="sendSuggestion(this)">🌾 Best crop for this season?</button>
-      <button class="suggestion-chip" onclick="sendSuggestion(this)">🐛 Pest control tips</button>
-      <button class="suggestion-chip" onclick="sendSuggestion(this)">💧 Irrigation advice</button>
-      <button class="suggestion-chip" onclick="sendSuggestion(this)">💰 PM-KISAN eligibility</button>
+      <div class="suggestion-row" id="suggestionRow0">
+        <button class="suggestion-chip" onclick="sendSuggestion(this)">🌾 Best crop for this season?</button>
+        <button class="suggestion-chip" onclick="sendSuggestion(this)">🐛 Pest control tips</button>
+        <button class="suggestion-chip" onclick="sendSuggestion(this)">💧 Irrigation advice</button>
+        <button class="suggestion-chip" onclick="sendSuggestion(this)">💰 PM-KISAN eligibility</button>
+      </div>
+      <div class="suggestion-row" id="suggestionRow1" style="display:none">
+        <button class="suggestion-chip" onclick="sendSuggestion(this)">🌿 Organic farming kaise karein?</button>
+        <button class="suggestion-chip" onclick="sendSuggestion(this)">🧪 Urea vs DAP difference?</button>
+        <button class="suggestion-chip" onclick="sendSuggestion(this)">🌱 Seedling kab lagayein?</button>
+        <button class="suggestion-chip" onclick="sendSuggestion(this)">🚜 SMAM yojana kya hai?</button>
+      </div>
+      <div class="suggestion-row" id="suggestionRow2" style="display:none">
+        <button class="suggestion-chip" onclick="sendSuggestion(this)">🍅 Tomato mein yellowing kyu?</button>
+        <button class="suggestion-chip" onclick="sendSuggestion(this)">💧 Drip irrigation setup</button>
+        <button class="suggestion-chip" onclick="sendSuggestion(this)">🌾 Wheat variety selection</button>
+        <button class="suggestion-chip" onclick="sendSuggestion(this)">🏦 Kisan Credit Card kaise milega?</button>
+      </div>
+      <div class="suggestion-row" id="suggestionRow3" style="display:none">
+        <button class="suggestion-chip" onclick="sendSuggestion(this)">☀️ Heat stress se crop kaise bachayein?</button>
+        <button class="suggestion-chip" onclick="sendSuggestion(this)">🌧️ Waterlogging problem solution</button>
+        <button class="suggestion-chip" onclick="sendSuggestion(this)">🐄 Dairy farming tips</button>
+        <button class="suggestion-chip" onclick="sendSuggestion(this)">📱 eNAM portal kaise use karein?</button>
+      </div>
+      <div class="suggestion-nav">
+        <button class="sugg-nav-btn" id="suggPrev" onclick="changeSuggPage(-1)">‹</button>
+        <span class="sugg-dots">
+          <span class="sugg-dot active" data-page="0"></span>
+          <span class="sugg-dot" data-page="1"></span>
+          <span class="sugg-dot" data-page="2"></span>
+          <span class="sugg-dot" data-page="3"></span>
+        </span>
+        <button class="sugg-nav-btn" id="suggNext" onclick="changeSuggPage(1)">›</button>
+      </div>
     </div>
 
     <div class="chat-input-area">
@@ -335,6 +484,7 @@
     </div>
   </footer>
 
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
   <script src="script.js"></script>
 </body>
 </html>
