@@ -1444,3 +1444,475 @@ button {
   .hero-stat { padding: 12px 16px; }
   .hero-stat span { font-size: 18px; }
 }
+
+/* ══════════════════════════════════════════════
+   NEW WIDGETS — KrishiMitra v2.0
+══════════════════════════════════════════════ */
+
+/* ── FERTILIZER CALCULATOR ── */
+.card-fertilizer { grid-column: span 1; }
+
+.fert-form {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  margin-bottom: 14px;
+}
+
+.fert-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.fert-label {
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--text-muted);
+  width: 70px;
+  flex-shrink: 0;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.fert-select, .fert-input, .fert-unit {
+  flex: 1;
+  padding: 9px 12px;
+  border: 1.5px solid var(--border-mid);
+  border-radius: var(--radius-sm);
+  background: var(--green-bg);
+  color: var(--text-dark);
+  font-family: var(--font-body);
+  font-size: 13px;
+  outline: none;
+  transition: var(--transition);
+}
+
+.fert-select:focus, .fert-input:focus {
+  border-color: var(--green-main);
+  box-shadow: 0 0 0 3px rgba(46,107,44,0.1);
+}
+
+.fert-input-group {
+  flex: 1;
+  display: flex;
+  gap: 6px;
+}
+
+.fert-unit {
+  flex: 0 0 90px;
+}
+
+.fert-results {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 8px;
+  margin-bottom: 10px;
+}
+
+.fert-item {
+  background: var(--green-bg);
+  border: 1.5px solid var(--border);
+  border-radius: var(--radius-sm);
+  padding: 10px 8px;
+  text-align: center;
+}
+
+.fert-item-name {
+  font-size: 10px;
+  font-weight: 700;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  margin-bottom: 4px;
+}
+
+.fert-item-val {
+  font-size: 16px;
+  font-weight: 800;
+  color: var(--green-main);
+  font-family: var(--font-display);
+  line-height: 1.1;
+}
+
+.fert-item-unit {
+  font-size: 10px;
+  color: var(--text-muted);
+  margin-top: 2px;
+}
+
+.fert-note {
+  font-size: 11px;
+  color: var(--text-light);
+  background: var(--gold-pale);
+  border-radius: 8px;
+  padding: 7px 10px;
+}
+
+/* ── PEST ALERT CARD ── */
+.card-pest { grid-column: span 1; }
+
+.pest-season-info {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 12px;
+  background: linear-gradient(135deg, var(--green-bg), var(--gold-pale));
+  border-radius: var(--radius-sm);
+  margin-bottom: 12px;
+  border: 1.5px solid var(--border);
+}
+
+.pest-season-badge {
+  font-size: 22px;
+}
+
+.pest-season-text {
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--text-mid);
+  line-height: 1.4;
+}
+
+.pest-season-text span {
+  display: block;
+  font-size: 10px;
+  font-weight: 400;
+  color: var(--text-muted);
+}
+
+.pest-list {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin-bottom: 12px;
+}
+
+.pest-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  padding: 10px 12px;
+  border-radius: var(--radius-sm);
+  border: 1.5px solid var(--border);
+  background: var(--white);
+  transition: var(--transition);
+}
+
+.pest-item:hover {
+  border-color: var(--green-light);
+  transform: translateX(3px);
+}
+
+.pest-item-icon { font-size: 20px; flex-shrink: 0; }
+
+.pest-item-body { flex: 1; min-width: 0; }
+
+.pest-item-name {
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--text-dark);
+  margin-bottom: 2px;
+}
+
+.pest-item-desc {
+  font-size: 11px;
+  color: var(--text-muted);
+  line-height: 1.4;
+}
+
+.pest-alert-badge {
+  font-size: 10px;
+  font-weight: 700;
+  padding: 3px 8px;
+  border-radius: 20px;
+  flex-shrink: 0;
+  text-transform: uppercase;
+  letter-spacing: 0.3px;
+}
+
+.alert-high   { background: #fde8e8; color: #c0392b; }
+.alert-medium { background: #fef3d0; color: #b8860b; }
+.alert-low    { background: #e8f5e9; color: #2e7d32; }
+
+.pest-tip {
+  font-size: 12px;
+  color: var(--text-mid);
+  background: var(--green-bg);
+  border-left: 3px solid var(--green-main);
+  border-radius: 0 var(--radius-sm) var(--radius-sm) 0;
+  padding: 8px 12px;
+  line-height: 1.5;
+}
+
+/* ── SUN & FIELD WORK PLANNER ── */
+.card-sun { grid-column: span 1; }
+
+.sun-times {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 14px;
+  gap: 8px;
+}
+
+.sun-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+}
+
+.sun-icon { font-size: 22px; }
+
+.sun-val {
+  font-size: 15px;
+  font-weight: 800;
+  color: var(--text-dark);
+  font-family: var(--font-display);
+}
+
+.sun-label {
+  font-size: 10px;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.sun-arc-container {
+  flex: 1;
+  display: flex;
+  justify-content: center;
+}
+
+.sun-arc-svg {
+  width: 100%;
+  max-width: 140px;
+  overflow: visible;
+}
+
+.sun-dot {
+  filter: drop-shadow(0 0 5px rgba(232,168,32,0.8));
+  transition: cx 0.5s ease, cy 0.5s ease;
+}
+
+.fieldwork-slots {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  margin-bottom: 12px;
+}
+
+.fw-slot {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 8px 12px;
+  border-radius: var(--radius-sm);
+  font-size: 12px;
+}
+
+.fw-slot-ideal  { background: #e8f5e9; border: 1.5px solid #a5d6a7; }
+.fw-slot-avoid  { background: #fde8e8; border: 1.5px solid #ef9a9a; }
+.fw-slot-okay   { background: #fff3e0; border: 1.5px solid #ffcc80; }
+
+.fw-slot-time {
+  font-weight: 700;
+  color: var(--text-dark);
+  width: 110px;
+  flex-shrink: 0;
+  font-size: 11px;
+}
+
+.fw-slot-icon { font-size: 16px; }
+
+.fw-slot-task {
+  flex: 1;
+  color: var(--text-mid);
+  line-height: 1.3;
+}
+
+.uv-bar-block { margin-top: 4px; }
+
+.uv-bar-label {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--text-mid);
+  margin-bottom: 6px;
+}
+
+.uv-badge {
+  font-size: 11px;
+  font-weight: 800;
+  padding: 2px 10px;
+  border-radius: 20px;
+  background: var(--gold-pale);
+  color: var(--soil);
+}
+
+.uv-bar-track {
+  height: 8px;
+  background: var(--green-pale);
+  border-radius: 20px;
+  overflow: hidden;
+  margin-bottom: 6px;
+}
+
+.uv-bar-fill {
+  height: 100%;
+  border-radius: 20px;
+  background: linear-gradient(90deg, #72b86e 0%, #e8a820 50%, #c0392b 100%);
+  transition: width 1s ease;
+}
+
+.uv-advice {
+  font-size: 11px;
+  color: var(--text-muted);
+}
+
+/* ── CROP PRICE TREND CARD ── */
+.card-trend { grid-column: span 2; }
+
+.trend-tabs {
+  display: flex;
+  gap: 6px;
+  margin-bottom: 14px;
+  flex-wrap: wrap;
+}
+
+.trend-tab {
+  padding: 6px 14px;
+  border: 1.5px solid var(--border-mid);
+  border-radius: 20px;
+  background: transparent;
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--text-muted);
+  cursor: pointer;
+  transition: var(--transition);
+  font-family: var(--font-body);
+}
+
+.trend-tab:hover, .trend-tab.active {
+  background: var(--green-main);
+  color: var(--white);
+  border-color: var(--green-main);
+}
+
+.trend-chart-wrap {
+  position: relative;
+  height: 140px;
+  margin-bottom: 10px;
+}
+
+.trend-summary {
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.trend-stat {
+  flex: 1;
+  min-width: 90px;
+  padding: 8px 12px;
+  background: var(--green-bg);
+  border-radius: var(--radius-sm);
+  border: 1.5px solid var(--border);
+  text-align: center;
+}
+
+.trend-stat-val {
+  font-size: 15px;
+  font-weight: 800;
+  color: var(--green-main);
+  font-family: var(--font-display);
+}
+
+.trend-stat-val.up   { color: #2e7d32; }
+.trend-stat-val.down { color: #c0392b; }
+
+.trend-stat-lbl {
+  font-size: 10px;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  margin-top: 2px;
+}
+
+/* ── CHAT SUGGESTION PAGINATION ── */
+.suggestion-row {
+  display: flex;
+  gap: 6px;
+  flex-wrap: wrap;
+  padding: 6px 8px 2px;
+}
+
+.suggestion-nav {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 4px 8px 8px;
+}
+
+.sugg-nav-btn {
+  background: none;
+  border: 1.5px solid var(--border-mid);
+  color: var(--text-muted);
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  cursor: pointer;
+  font-size: 14px;
+  line-height: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: var(--transition);
+}
+
+.sugg-nav-btn:hover {
+  background: var(--green-pale);
+  border-color: var(--green-light);
+  color: var(--green-main);
+}
+
+.sugg-dots { display: flex; gap: 5px; align-items: center; }
+
+.sugg-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--green-pale);
+  transition: var(--transition);
+  cursor: pointer;
+}
+
+.sugg-dot.active {
+  background: var(--green-main);
+  width: 16px;
+  border-radius: 3px;
+}
+
+/* ── GRID LAYOUT FOR NEW CARDS ── */
+@media (min-width: 1100px) {
+  .card-fertilizer { grid-column: span 1; }
+  .card-pest       { grid-column: span 1; }
+  .card-sun        { grid-column: span 1; }
+  .card-trend      { grid-column: span 2; }
+}
+
+@media (max-width: 1100px) {
+  .card-trend   { grid-column: span 2; }
+  .card-pest    { grid-column: span 1; }
+  .card-sun     { grid-column: span 1; }
+}
+
+@media (max-width: 768px) {
+  .card-trend { grid-column: span 1; }
+  .fert-results { grid-template-columns: repeat(3, 1fr); }
+  .trend-chart-wrap { height: 120px; }
+}
