@@ -14,7 +14,28 @@
   ═══════════════════════════════════════ -->
   <header class="site-header">
     <div class="header-left">
-      <div class="logo-mark">🌾</div>
+      <div class="logo-mark">
+        <svg class="logo-svg" width="42" height="42" viewBox="0 0 42 42" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <!-- Hexagon base -->
+          <polygon points="21,2 38,11.5 38,30.5 21,40 4,30.5 4,11.5" fill="rgba(255,255,255,0.10)" stroke="rgba(255,255,255,0.28)" stroke-width="1.2"/>
+          <!-- Wheat stalk center -->
+          <line x1="21" y1="34" x2="21" y2="13" stroke="#f4c842" stroke-width="2" stroke-linecap="round"/>
+          <!-- Wheat grains left -->
+          <ellipse cx="17.5" cy="20" rx="3.2" ry="1.8" fill="#f4c842" transform="rotate(-30 17.5 20)"/>
+          <ellipse cx="16.5" cy="24.5" rx="3.2" ry="1.8" fill="#f4c842" transform="rotate(-25 16.5 24.5)"/>
+          <ellipse cx="17" cy="29" rx="2.8" ry="1.6" fill="rgba(244,200,66,0.75)" transform="rotate(-20 17 29)"/>
+          <!-- Wheat grains right -->
+          <ellipse cx="24.5" cy="20" rx="3.2" ry="1.8" fill="#f4c842" transform="rotate(30 24.5 20)"/>
+          <ellipse cx="25.5" cy="24.5" rx="3.2" ry="1.8" fill="#f4c842" transform="rotate(25 25.5 24.5)"/>
+          <ellipse cx="25" cy="29" rx="2.8" ry="1.6" fill="rgba(244,200,66,0.75)" transform="rotate(20 25 29)"/>
+          <!-- Top grain -->
+          <ellipse cx="21" cy="13.5" rx="2.2" ry="3.2" fill="#f4c842"/>
+          <!-- Leaf left -->
+          <path d="M21 30 Q13 26 14 20" stroke="rgba(114,184,110,0.9)" stroke-width="1.5" fill="none" stroke-linecap="round"/>
+          <!-- Leaf right -->
+          <path d="M21 30 Q29 26 28 20" stroke="rgba(114,184,110,0.9)" stroke-width="1.5" fill="none" stroke-linecap="round"/>
+        </svg>
+      </div>
       <div class="logo-text-group">
         <span class="logo-name">KrishiMitra</span>
         <span class="logo-tagline">Kisan ka Sachcha Mitra</span>
@@ -37,8 +58,13 @@
   ═══════════════════════════════════════ -->
   <section class="hero">
     <div class="hero-bg-pattern"></div>
+    <!-- Decorative grid lines -->
+    <div class="hero-grid-overlay"></div>
     <div class="hero-content">
-      <div class="hero-badge">🇮🇳 India's Farmer Digital Platform</div>
+      <div class="hero-badge">
+        <span class="hero-badge-dot"></span>
+        🇮🇳 India's Farmer Digital Platform
+      </div>
       <h1 class="hero-title">Apni Zameen,<br/><em>Apna Data.</em></h1>
       <p class="hero-subtitle">Weather · Mandi Prices · Crop Calendar · AI Help — everything your farm needs, in one place.</p>
       <div class="hero-stats">
@@ -50,16 +76,159 @@
       </div>
     </div>
     <div class="hero-illustration">
-      <div class="field-layers">
-        <div class="sun-circle"></div>
-        <div class="cloud-1">☁️</div>
-        <div class="cloud-2">⛅</div>
-        <div class="crop-row crop-row-1">🌾🌾🌾🌾🌾🌾🌾🌾</div>
-        <div class="crop-row crop-row-2">🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱</div>
-        <div class="soil-strip"></div>
-      </div>
+      <svg class="field-svg" width="340" height="220" viewBox="0 0 340 220" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <!-- Sky gradient -->
+        <defs>
+          <linearGradient id="skyGrad" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0%" stop-color="rgba(255,255,255,0.04)"/>
+            <stop offset="100%" stop-color="rgba(255,255,255,0)"/>
+          </linearGradient>
+          <linearGradient id="soilGrad" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0%" stop-color="#7a4f2d"/>
+            <stop offset="100%" stop-color="#4a2e18"/>
+          </linearGradient>
+        </defs>
+        <!-- Sun -->
+        <circle cx="290" cy="38" r="28" fill="rgba(244,200,66,0.18)" />
+        <circle cx="290" cy="38" r="20" fill="rgba(244,200,66,0.28)" />
+        <circle cx="290" cy="38" r="13" fill="#f4c842" opacity="0.9"/>
+        <!-- Sun rays -->
+        <line x1="290" y1="8" x2="290" y2="15" stroke="#f4c842" stroke-width="2" stroke-linecap="round" opacity="0.6"/>
+        <line x1="310" y1="18" x2="305" y2="23" stroke="#f4c842" stroke-width="2" stroke-linecap="round" opacity="0.6"/>
+        <line x1="320" y1="38" x2="313" y2="38" stroke="#f4c842" stroke-width="2" stroke-linecap="round" opacity="0.6"/>
+        <line x1="270" y1="18" x2="275" y2="23" stroke="#f4c842" stroke-width="2" stroke-linecap="round" opacity="0.6"/>
+        <line x1="260" y1="38" x2="267" y2="38" stroke="#f4c842" stroke-width="2" stroke-linecap="round" opacity="0.6"/>
+        <!-- Cloud 1 -->
+        <ellipse cx="80" cy="30" rx="36" ry="14" fill="rgba(255,255,255,0.10)"/>
+        <ellipse cx="60" cy="34" rx="22" ry="11" fill="rgba(255,255,255,0.08)"/>
+        <ellipse cx="100" cy="36" rx="20" ry="10" fill="rgba(255,255,255,0.08)"/>
+        <!-- Cloud 2 -->
+        <ellipse cx="190" cy="22" rx="28" ry="10" fill="rgba(255,255,255,0.07)"/>
+        <ellipse cx="175" cy="26" rx="16" ry="8" fill="rgba(255,255,255,0.05)"/>
+        <!-- Soil strip -->
+        <rect x="0" y="190" width="340" height="30" rx="0" fill="url(#soilGrad)" opacity="0.7"/>
+        <!-- Field rows - wheat stalks repeated -->
+        <!-- Row back (small) -->
+        <g opacity="0.55" transform="translate(0,10)">
+          <line x1="20" y1="175" x2="20" y2="148" stroke="#72b86e" stroke-width="1.2" stroke-linecap="round"/>
+          <ellipse cx="20" cy="148" rx="1.5" ry="4" fill="#a0c878"/>
+          <ellipse cx="17.5" cy="154" rx="2.5" ry="1.2" fill="#72b86e" transform="rotate(-25 17.5 154)"/>
+          <ellipse cx="22.5" cy="154" rx="2.5" ry="1.2" fill="#72b86e" transform="rotate(25 22.5 154)"/>
+
+          <line x1="48" y1="175" x2="48" y2="148" stroke="#72b86e" stroke-width="1.2" stroke-linecap="round"/>
+          <ellipse cx="48" cy="148" rx="1.5" ry="4" fill="#a0c878"/>
+          <ellipse cx="45.5" cy="154" rx="2.5" ry="1.2" fill="#72b86e" transform="rotate(-25 45.5 154)"/>
+          <ellipse cx="50.5" cy="154" rx="2.5" ry="1.2" fill="#72b86e" transform="rotate(25 50.5 154)"/>
+
+          <line x1="76" y1="175" x2="76" y2="148" stroke="#72b86e" stroke-width="1.2" stroke-linecap="round"/>
+          <ellipse cx="76" cy="148" rx="1.5" ry="4" fill="#a0c878"/>
+          <ellipse cx="73.5" cy="154" rx="2.5" ry="1.2" fill="#72b86e" transform="rotate(-25 73.5 154)"/>
+          <ellipse cx="78.5" cy="154" rx="2.5" ry="1.2" fill="#72b86e" transform="rotate(25 78.5 154)"/>
+
+          <line x1="104" y1="175" x2="104" y2="148" stroke="#72b86e" stroke-width="1.2" stroke-linecap="round"/>
+          <ellipse cx="104" cy="148" rx="1.5" ry="4" fill="#a0c878"/>
+          <line x1="132" y1="175" x2="132" y2="148" stroke="#72b86e" stroke-width="1.2" stroke-linecap="round"/>
+          <ellipse cx="132" cy="148" rx="1.5" ry="4" fill="#a0c878"/>
+          <line x1="160" y1="175" x2="160" y2="148" stroke="#72b86e" stroke-width="1.2" stroke-linecap="round"/>
+          <ellipse cx="160" cy="148" rx="1.5" ry="4" fill="#a0c878"/>
+          <line x1="188" y1="175" x2="188" y2="148" stroke="#72b86e" stroke-width="1.2" stroke-linecap="round"/>
+          <ellipse cx="188" cy="148" rx="1.5" ry="4" fill="#a0c878"/>
+          <line x1="216" y1="175" x2="216" y2="148" stroke="#72b86e" stroke-width="1.2" stroke-linecap="round"/>
+          <ellipse cx="216" cy="148" rx="1.5" ry="4" fill="#a0c878"/>
+          <line x1="244" y1="175" x2="244" y2="148" stroke="#72b86e" stroke-width="1.2" stroke-linecap="round"/>
+          <ellipse cx="244" cy="148" rx="1.5" ry="4" fill="#a0c878"/>
+        </g>
+        <!-- Row front (larger) -->
+        <g opacity="0.85">
+          <line x1="12" y1="192" x2="12" y2="152" stroke="#4a8c47" stroke-width="1.8" stroke-linecap="round"/>
+          <ellipse cx="12" cy="152" rx="2" ry="5.5" fill="#72b86e"/>
+          <ellipse cx="8.5" cy="160" rx="3.5" ry="1.6" fill="#4a8c47" transform="rotate(-28 8.5 160)"/>
+          <ellipse cx="15.5" cy="160" rx="3.5" ry="1.6" fill="#4a8c47" transform="rotate(28 15.5 160)"/>
+          <ellipse cx="8" cy="168" rx="3" ry="1.4" fill="rgba(74,140,71,0.7)" transform="rotate(-20 8 168)"/>
+          <ellipse cx="16" cy="168" rx="3" ry="1.4" fill="rgba(74,140,71,0.7)" transform="rotate(20 16 168)"/>
+
+          <line x1="46" y1="192" x2="46" y2="152" stroke="#4a8c47" stroke-width="1.8" stroke-linecap="round"/>
+          <ellipse cx="46" cy="152" rx="2" ry="5.5" fill="#72b86e"/>
+          <ellipse cx="42.5" cy="160" rx="3.5" ry="1.6" fill="#4a8c47" transform="rotate(-28 42.5 160)"/>
+          <ellipse cx="49.5" cy="160" rx="3.5" ry="1.6" fill="#4a8c47" transform="rotate(28 49.5 160)"/>
+
+          <line x1="80" y1="192" x2="80" y2="152" stroke="#4a8c47" stroke-width="1.8" stroke-linecap="round"/>
+          <ellipse cx="80" cy="152" rx="2" ry="5.5" fill="#72b86e"/>
+          <ellipse cx="76.5" cy="160" rx="3.5" ry="1.6" fill="#4a8c47" transform="rotate(-28 76.5 160)"/>
+          <ellipse cx="83.5" cy="160" rx="3.5" ry="1.6" fill="#4a8c47" transform="rotate(28 83.5 160)"/>
+
+          <line x1="114" y1="192" x2="114" y2="152" stroke="#4a8c47" stroke-width="1.8" stroke-linecap="round"/>
+          <ellipse cx="114" cy="152" rx="2" ry="5.5" fill="#72b86e"/>
+          <ellipse cx="110.5" cy="160" rx="3.5" ry="1.6" fill="#4a8c47" transform="rotate(-28 110.5 160)"/>
+          <ellipse cx="117.5" cy="160" rx="3.5" ry="1.6" fill="#4a8c47" transform="rotate(28 117.5 160)"/>
+
+          <line x1="148" y1="192" x2="148" y2="152" stroke="#4a8c47" stroke-width="1.8" stroke-linecap="round"/>
+          <ellipse cx="148" cy="152" rx="2" ry="5.5" fill="#72b86e"/>
+          <ellipse cx="144.5" cy="160" rx="3.5" ry="1.6" fill="#4a8c47" transform="rotate(-28 144.5 160)"/>
+          <ellipse cx="151.5" cy="160" rx="3.5" ry="1.6" fill="#4a8c47" transform="rotate(28 151.5 160)"/>
+
+          <line x1="182" y1="192" x2="182" y2="152" stroke="#4a8c47" stroke-width="1.8" stroke-linecap="round"/>
+          <ellipse cx="182" cy="152" rx="2" ry="5.5" fill="#72b86e"/>
+          <ellipse cx="178.5" cy="160" rx="3.5" ry="1.6" fill="#4a8c47" transform="rotate(-28 178.5 160)"/>
+          <ellipse cx="185.5" cy="160" rx="3.5" ry="1.6" fill="#4a8c47" transform="rotate(28 185.5 160)"/>
+
+          <line x1="216" y1="192" x2="216" y2="152" stroke="#4a8c47" stroke-width="1.8" stroke-linecap="round"/>
+          <ellipse cx="216" cy="152" rx="2" ry="5.5" fill="#72b86e"/>
+          <ellipse cx="212.5" cy="160" rx="3.5" ry="1.6" fill="#4a8c47" transform="rotate(-28 212.5 160)"/>
+          <ellipse cx="219.5" cy="160" rx="3.5" ry="1.6" fill="#4a8c47" transform="rotate(28 219.5 160)"/>
+
+          <line x1="250" y1="192" x2="250" y2="152" stroke="#4a8c47" stroke-width="1.8" stroke-linecap="round"/>
+          <ellipse cx="250" cy="152" rx="2" ry="5.5" fill="#72b86e"/>
+
+          <line x1="284" y1="192" x2="284" y2="152" stroke="#4a8c47" stroke-width="1.8" stroke-linecap="round"/>
+          <ellipse cx="284" cy="152" rx="2" ry="5.5" fill="#72b86e"/>
+
+          <line x1="318" y1="192" x2="318" y2="152" stroke="#4a8c47" stroke-width="1.8" stroke-linecap="round"/>
+          <ellipse cx="318" cy="152" rx="2" ry="5.5" fill="#72b86e"/>
+        </g>
+        <!-- Ground line -->
+        <line x1="0" y1="192" x2="340" y2="192" stroke="rgba(122,79,45,0.5)" stroke-width="1"/>
+      </svg>
     </div>
   </section>
+
+  <!-- ═══════════════════════════════════════
+       TICKER BAR
+  ═══════════════════════════════════════ -->
+  <div class="ticker-bar">
+    <div class="ticker-label">🔴 LIVE</div>
+    <div class="ticker-track">
+      <div class="ticker-content">
+        <span>🌾 Wheat MSP 2024-25: ₹2,275/quintal</span>
+        <span class="ticker-sep">·</span>
+        <span>🍚 Paddy MSP: ₹2,300/quintal</span>
+        <span class="ticker-sep">·</span>
+        <span>🌽 Maize MSP: ₹2,090/quintal</span>
+        <span class="ticker-sep">·</span>
+        <span>🫘 Soybean MSP: ₹4,892/quintal</span>
+        <span class="ticker-sep">·</span>
+        <span>🥜 Groundnut MSP: ₹6,783/quintal</span>
+        <span class="ticker-sep">·</span>
+        <span>🟡 Mustard MSP: ₹5,950/quintal</span>
+        <span class="ticker-sep">·</span>
+        <span>☁️ PM-KISAN Next Installment: December 2024</span>
+        <span class="ticker-sep">·</span>
+        <span>💧 Drip irrigation subsidy: Up to 55% for small farmers</span>
+        <span class="ticker-sep">·</span>
+        <span>🌾 Wheat MSP 2024-25: ₹2,275/quintal</span>
+        <span class="ticker-sep">·</span>
+        <span>🍚 Paddy MSP: ₹2,300/quintal</span>
+        <span class="ticker-sep">·</span>
+        <span>🌽 Maize MSP: ₹2,090/quintal</span>
+        <span class="ticker-sep">·</span>
+        <span>🫘 Soybean MSP: ₹4,892/quintal</span>
+        <span class="ticker-sep">·</span>
+        <span>🥜 Groundnut MSP: ₹6,783/quintal</span>
+        <span class="ticker-sep">·</span>
+        <span>🟡 Mustard MSP: ₹5,950/quintal</span>
+      </div>
+    </div>
+  </div>
 
   <!-- ═══════════════════════════════════════
        DASHBOARD GRID
@@ -237,6 +406,284 @@
       </div>
     </div>
 
+
+    <!-- ── FERTILIZER DOSE CALCULATOR ── -->
+    <div class="card card-fertilizer animate-card" style="--delay:0.7s">
+      <div class="card-header">
+        <span class="card-icon">🧪</span>
+        <span class="card-label">Fertilizer Dose Calculator</span>
+      </div>
+      <div class="fert-form">
+        <div class="fert-row">
+          <label class="fert-label">Crop</label>
+          <select class="fert-select" id="fertCrop" onchange="calcFertilizer()">
+            <option value="wheat">🌾 Wheat (Gehun)</option>
+            <option value="rice">🍚 Rice (Dhan)</option>
+            <option value="maize">🌽 Maize (Makka)</option>
+            <option value="cotton">🌿 Cotton (Kapas)</option>
+            <option value="soybean">🫘 Soybean</option>
+            <option value="mustard">🟡 Mustard (Sarson)</option>
+            <option value="sugarcane">🎋 Sugarcane (Ganna)</option>
+            <option value="potato">🥔 Potato (Aloo)</option>
+          </select>
+        </div>
+        <div class="fert-row">
+          <label class="fert-label">Land Area</label>
+          <div class="fert-input-group">
+            <input type="number" class="fert-input" id="fertArea" value="1" min="0.1" step="0.1" oninput="calcFertilizer()" />
+            <select class="fert-unit" id="fertUnit" onchange="calcFertilizer()">
+              <option value="acre">Acre</option>
+              <option value="bigha">Bigha</option>
+              <option value="hectare">Hectare</option>
+            </select>
+          </div>
+        </div>
+      </div>
+      <div class="fert-results" id="fertResults">
+        <!-- Populated by JS -->
+      </div>
+      <div class="fert-note">💡 Based on ICAR recommended doses · Always do soil test first</div>
+    </div>
+
+    <!-- ── PEST & DISEASE ALERT ── -->
+    <div class="card card-pest animate-card" style="--delay:0.8s">
+      <div class="card-header">
+        <span class="card-icon">🐛</span>
+        <span class="card-label">Seasonal Pest & Disease Alerts</span>
+        <span class="live-dot" style="background:#e8a820"></span><span class="live-text" style="color:#e8a820">SEASON</span>
+      </div>
+      <div class="pest-season-info" id="pestSeasonInfo">
+        <!-- Populated by JS -->
+      </div>
+      <div class="pest-list" id="pestList">
+        <!-- Populated by JS -->
+      </div>
+      <div class="pest-tip" id="pestTip">
+        <!-- Populated by JS -->
+      </div>
+    </div>
+
+    <!-- ── SUN & FIELD WORK PLANNER ── -->
+    <div class="card card-sun animate-card" style="--delay:0.9s">
+      <div class="card-header">
+        <span class="card-icon">☀️</span>
+        <span class="card-label">Sun & Field Work Planner</span>
+      </div>
+      <div class="sun-times" id="sunTimes">
+        <div class="sun-item">
+          <div class="sun-icon">🌅</div>
+          <div class="sun-info">
+            <div class="sun-val" id="sunriseTime">--:--</div>
+            <div class="sun-label">Sunrise</div>
+          </div>
+        </div>
+        <div class="sun-arc-container">
+          <svg class="sun-arc-svg" viewBox="0 0 160 90" xmlns="http://www.w3.org/2000/svg">
+            <path d="M10,85 A70,70 0 0,1 150,85" fill="none" stroke="rgba(232,168,32,0.2)" stroke-width="4" stroke-linecap="round"/>
+            <path class="sun-arc-progress" id="sunArcProgress" d="M10,85 A70,70 0 0,1 150,85" fill="none" stroke="#e8a820" stroke-width="4" stroke-linecap="round" stroke-dasharray="220" stroke-dashoffset="220"/>
+            <circle class="sun-dot" id="sunDot" cx="10" cy="85" r="8" fill="#e8a820"/>
+          </svg>
+        </div>
+        <div class="sun-item">
+          <div class="sun-icon">🌇</div>
+          <div class="sun-info">
+            <div class="sun-val" id="sunsetTime">--:--</div>
+            <div class="sun-label">Sunset</div>
+          </div>
+        </div>
+      </div>
+      <div class="fieldwork-slots" id="fieldworkSlots">
+        <!-- Populated by JS -->
+      </div>
+      <div class="uv-bar-block">
+        <div class="uv-bar-label">
+          <span>☀️ UV Index</span>
+          <span class="uv-badge" id="uvBadge">--</span>
+        </div>
+        <div class="uv-bar-track">
+          <div class="uv-bar-fill" id="uvBarFill" style="width:0%"></div>
+        </div>
+        <div class="uv-advice" id="uvAdvice">Loading UV data...</div>
+      </div>
+    </div>
+
+    <!-- ── CROP PRICE TREND ── -->
+    <div class="card card-trend animate-card" style="--delay:1.0s">
+      <div class="card-header">
+        <span class="card-icon">📈</span>
+        <span class="card-label">Crop Price Trend (7-Day)</span>
+      </div>
+      <div class="trend-tabs">
+        <button class="trend-tab active" onclick="showTrend('wheat', this)">Wheat</button>
+        <button class="trend-tab" onclick="showTrend('rice', this)">Rice</button>
+        <button class="trend-tab" onclick="showTrend('onion', this)">Onion</button>
+        <button class="trend-tab" onclick="showTrend('tomato', this)">Tomato</button>
+      </div>
+      <div class="trend-chart-wrap">
+        <canvas id="trendChart" height="130"></canvas>
+      </div>
+      <div class="trend-summary" id="trendSummary"></div>
+    </div>
+
+    <!-- ── CROP PROFIT CALCULATOR ── -->
+    <div class="card card-profit animate-card" style="--delay:1.1s">
+      <div class="card-header">
+        <span class="card-icon">🧮</span>
+        <span class="card-label">Crop Profit Calculator</span>
+      </div>
+      <div class="profit-form">
+        <div class="profit-row">
+          <label>Crop</label>
+          <select id="profitCrop" onchange="calcProfit()">
+            <option value="wheat">🌾 Wheat</option>
+            <option value="rice">🍚 Rice</option>
+            <option value="maize">🌽 Maize</option>
+            <option value="cotton">🌿 Cotton</option>
+            <option value="soybean">🫘 Soybean</option>
+            <option value="mustard">🟡 Mustard</option>
+            <option value="onion">🧅 Onion</option>
+            <option value="potato">🥔 Potato</option>
+          </select>
+        </div>
+        <div class="profit-row">
+          <label>Land Area</label>
+          <div class="profit-input-group">
+            <input type="number" id="profitArea" value="1" min="0.1" step="0.1" oninput="calcProfit()" placeholder="1"/>
+            <select id="profitAreaUnit" onchange="calcProfit()">
+              <option value="acre">Acre</option>
+              <option value="bigha">Bigha</option>
+              <option value="hectare">Hectare</option>
+            </select>
+          </div>
+        </div>
+        <div class="profit-row">
+          <label>Expected Yield (qtl)</label>
+          <input type="number" id="profitYield" value="20" min="1" oninput="calcProfit()" placeholder="20 qtl"/>
+        </div>
+        <div class="profit-row">
+          <label>Selling Price (₹/qtl)</label>
+          <input type="number" id="profitPrice" value="2150" min="1" oninput="calcProfit()" placeholder="₹2150"/>
+        </div>
+        <div class="profit-row">
+          <label>Total Input Cost (₹)</label>
+          <input type="number" id="profitCost" value="18000" min="0" oninput="calcProfit()" placeholder="₹18000"/>
+        </div>
+      </div>
+      <div class="profit-result" id="profitResult">
+        <!-- Populated by JS -->
+      </div>
+      <div class="profit-note">* Includes seeds, fertilizer, labor, irrigation estimates</div>
+    </div>
+
+    <!-- ── SOIL pH QUICK CHECKER ── -->
+    <div class="card card-soil animate-card" style="--delay:1.2s">
+      <div class="card-header">
+        <span class="card-icon">🧪</span>
+        <span class="card-label">Soil Health Quick Guide</span>
+      </div>
+      <div class="soil-ph-section">
+        <div class="soil-ph-label">Enter Your Soil pH</div>
+        <div class="soil-ph-input-row">
+          <input type="range" id="soilPhSlider" min="4" max="9" step="0.1" value="6.5" oninput="updateSoilPh(this.value)" class="ph-slider"/>
+          <span class="ph-display" id="phDisplay">6.5</span>
+        </div>
+        <div class="ph-bar-wrap">
+          <div class="ph-bar">
+            <div class="ph-zones">
+              <span style="left:0%">4</span>
+              <span style="left:20%">5</span>
+              <span style="left:40%">6</span>
+              <span style="left:60%">7</span>
+              <span style="left:80%">8</span>
+              <span style="left:100%">9</span>
+            </div>
+          </div>
+          <div class="ph-marker" id="phMarker" style="left:50%"></div>
+        </div>
+        <div class="soil-ph-result" id="soilPhResult">
+          <!-- Populated by JS -->
+        </div>
+      </div>
+      <div class="soil-type-section">
+        <div class="soil-type-label">Soil Type Guide</div>
+        <div class="soil-type-tabs">
+          <button class="soil-tab active" onclick="showSoilType('loamy', this)">Loamy</button>
+          <button class="soil-tab" onclick="showSoilType('clay', this)">Clay</button>
+          <button class="soil-tab" onclick="showSoilType('sandy', this)">Sandy</button>
+          <button class="soil-tab" onclick="showSoilType('black', this)">Black</button>
+        </div>
+        <div class="soil-type-result" id="soilTypeResult">
+          <!-- Populated by JS -->
+        </div>
+      </div>
+    </div>
+
+    <!-- ── IRRIGATION TRACKER ── -->
+    <div class="card card-irrigation animate-card" style="--delay:1.3s">
+      <div class="card-header">
+        <span class="card-icon">💧</span>
+        <span class="card-label">Irrigation Planner</span>
+        <span class="refresh-btn" onclick="resetIrrigation()" title="Reset">↺</span>
+      </div>
+      <div class="irr-weather-strip" id="irrWeatherStrip">
+        <span id="irrWeatherIcon">🌤️</span>
+        <span id="irrWeatherMsg">Loading weather context...</span>
+      </div>
+      <div class="irr-crops-section">
+        <div class="irr-section-title">Today's Irrigation Checklist</div>
+        <div class="irr-crop-list" id="irrCropList">
+          <!-- Populated by JS -->
+        </div>
+        <button class="irr-add-btn" onclick="addIrrCrop()">+ Add Crop</button>
+      </div>
+      <div class="irr-tips" id="irrTips">
+        <!-- Populated by JS -->
+      </div>
+    </div>
+
+    <!-- ── GOVERNMENT SCHEME QUICK CHECK ── -->
+    <div class="card card-scheme-check animate-card" style="--delay:1.4s">
+      <div class="card-header">
+        <span class="card-icon">🏛️</span>
+        <span class="card-label">Scheme Eligibility Check</span>
+      </div>
+      <div class="scheme-form">
+        <div class="scheme-row">
+          <label>Land Holding</label>
+          <select id="schemeLand">
+            <option value="small">Small (< 2 Hectare)</option>
+            <option value="marginal">Marginal (< 1 Hectare)</option>
+            <option value="medium">Medium (2–10 Ha)</option>
+            <option value="large">Large (> 10 Ha)</option>
+          </select>
+        </div>
+        <div class="scheme-row">
+          <label>State</label>
+          <select id="schemeState">
+            <option value="all">All India</option>
+            <option value="punjab">Punjab</option>
+            <option value="haryana">Haryana</option>
+            <option value="up">Uttar Pradesh</option>
+            <option value="mp">Madhya Pradesh</option>
+            <option value="rajasthan">Rajasthan</option>
+            <option value="maharashtra">Maharashtra</option>
+            <option value="other">Other State</option>
+          </select>
+        </div>
+        <div class="scheme-row">
+          <label>Do you have Aadhar-linked bank account?</label>
+          <div class="scheme-toggle-row">
+            <button class="scheme-toggle active" id="schemeAadharYes" onclick="setSchemeToggle('aadhar','yes')">✓ Yes</button>
+            <button class="scheme-toggle" id="schemeAadharNo" onclick="setSchemeToggle('aadhar','no')">✗ No</button>
+          </div>
+        </div>
+        <button class="scheme-check-btn" onclick="checkSchemes()">🔍 Check Eligible Schemes</button>
+      </div>
+      <div class="scheme-results" id="schemeResults">
+        <!-- Populated by JS -->
+      </div>
+    </div>
+
   </main>
 
   <!-- ═══════════════════════════════════════
@@ -245,7 +692,17 @@
 
   <!-- Toggle Button -->
   <button class="chat-toggle" id="chatToggle" onclick="toggleChat()" aria-label="Open KrishiMitra Assistant">
-    <span class="chat-toggle-icon" id="chatToggleIcon">🌾</span>
+    <span class="chat-toggle-icon" id="chatToggleIcon">
+      <svg width="22" height="22" viewBox="0 0 42 42" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <polygon points="21,2 38,11.5 38,30.5 21,40 4,30.5 4,11.5" fill="rgba(255,255,255,0.12)" stroke="rgba(255,255,255,0.35)" stroke-width="1.2"/>
+        <line x1="21" y1="34" x2="21" y2="13" stroke="#f4c842" stroke-width="2.2" stroke-linecap="round"/>
+        <ellipse cx="17.5" cy="20" rx="3.2" ry="1.8" fill="#f4c842" transform="rotate(-30 17.5 20)"/>
+        <ellipse cx="16.5" cy="24.5" rx="3.2" ry="1.8" fill="#f4c842" transform="rotate(-25 16.5 24.5)"/>
+        <ellipse cx="24.5" cy="20" rx="3.2" ry="1.8" fill="#f4c842" transform="rotate(30 24.5 20)"/>
+        <ellipse cx="25.5" cy="24.5" rx="3.2" ry="1.8" fill="#f4c842" transform="rotate(25 25.5 24.5)"/>
+        <ellipse cx="21" cy="13.5" rx="2.2" ry="3.2" fill="#f4c842"/>
+      </svg>
+    </span>
     <span class="chat-toggle-label">Ask Mitra</span>
     <span class="chat-notif" id="chatNotif">1</span>
   </button>
@@ -254,7 +711,17 @@
   <div class="chat-panel" id="chatPanel">
     <div class="chat-header">
       <div class="chat-header-left">
-        <div class="chat-avatar">🌾</div>
+        <div class="chat-avatar">
+          <svg width="24" height="24" viewBox="0 0 42 42" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <polygon points="21,2 38,11.5 38,30.5 21,40 4,30.5 4,11.5" fill="rgba(255,255,255,0.10)" stroke="rgba(255,255,255,0.30)" stroke-width="1.2"/>
+            <line x1="21" y1="34" x2="21" y2="13" stroke="#f4c842" stroke-width="2.2" stroke-linecap="round"/>
+            <ellipse cx="17.5" cy="20" rx="3.2" ry="1.8" fill="#f4c842" transform="rotate(-30 17.5 20)"/>
+            <ellipse cx="16.5" cy="24.5" rx="3.2" ry="1.8" fill="#f4c842" transform="rotate(-25 16.5 24.5)"/>
+            <ellipse cx="24.5" cy="20" rx="3.2" ry="1.8" fill="#f4c842" transform="rotate(30 24.5 20)"/>
+            <ellipse cx="25.5" cy="24.5" rx="3.2" ry="1.8" fill="#f4c842" transform="rotate(25 25.5 24.5)"/>
+            <ellipse cx="21" cy="13.5" rx="2.2" ry="3.2" fill="#f4c842"/>
+          </svg>
+        </div>
         <div>
           <div class="chat-name">KrishiMitra</div>
           <div class="chat-status"><span class="status-dot"></span> Online — Ready to help</div>
@@ -269,7 +736,17 @@
     <div class="chat-messages" id="chatMessages">
       <!-- Welcome message -->
       <div class="msg msg-bot">
-        <div class="msg-avatar">🌾</div>
+        <div class="msg-avatar">
+          <svg width="16" height="16" viewBox="0 0 42 42" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <polygon points="21,2 38,11.5 38,30.5 21,40 4,30.5 4,11.5" fill="var(--green-pale)" stroke="var(--green-light)" stroke-width="1.5"/>
+            <line x1="21" y1="33" x2="21" y2="14" stroke="#c8960a" stroke-width="2" stroke-linecap="round"/>
+            <ellipse cx="17.5" cy="20" rx="3" ry="1.7" fill="#d4a012" transform="rotate(-30 17.5 20)"/>
+            <ellipse cx="16.5" cy="24.5" rx="3" ry="1.7" fill="#d4a012" transform="rotate(-25 16.5 24.5)"/>
+            <ellipse cx="24.5" cy="20" rx="3" ry="1.7" fill="#d4a012" transform="rotate(30 24.5 20)"/>
+            <ellipse cx="25.5" cy="24.5" rx="3" ry="1.7" fill="#d4a012" transform="rotate(25 25.5 24.5)"/>
+            <ellipse cx="21" cy="14" rx="2" ry="3" fill="#d4a012"/>
+          </svg>
+        </div>
         <div class="msg-bubble">
           <strong>Jai Kisan! 🙏</strong><br/>
           Main <b>KrishiMitra</b> hoon — aapka digital kisan saathi.<br/><br/>
@@ -292,6 +769,18 @@
       <button class="suggestion-chip" onclick="sendSuggestion(this)">🐛 Pest control tips</button>
       <button class="suggestion-chip" onclick="sendSuggestion(this)">💧 Irrigation advice</button>
       <button class="suggestion-chip" onclick="sendSuggestion(this)">💰 PM-KISAN eligibility</button>
+      <button class="suggestion-chip" onclick="sendSuggestion(this)">🌿 Organic farming kaise karein?</button>
+      <button class="suggestion-chip" onclick="sendSuggestion(this)">🧪 Urea vs DAP difference?</button>
+      <button class="suggestion-chip" onclick="sendSuggestion(this)">🌱 Seedling kab lagayein?</button>
+      <button class="suggestion-chip" onclick="sendSuggestion(this)">🚜 SMAM yojana kya hai?</button>
+      <button class="suggestion-chip" onclick="sendSuggestion(this)">🍅 Tomato mein yellowing kyu?</button>
+      <button class="suggestion-chip" onclick="sendSuggestion(this)">💧 Drip irrigation setup</button>
+      <button class="suggestion-chip" onclick="sendSuggestion(this)">🌾 Wheat variety selection</button>
+      <button class="suggestion-chip" onclick="sendSuggestion(this)">🏦 Kisan Credit Card kaise milega?</button>
+      <button class="suggestion-chip" onclick="sendSuggestion(this)">☀️ Heat stress se crop bachayein?</button>
+      <button class="suggestion-chip" onclick="sendSuggestion(this)">🌧️ Waterlogging solution</button>
+      <button class="suggestion-chip" onclick="sendSuggestion(this)">🐄 Dairy farming tips</button>
+      <button class="suggestion-chip" onclick="sendSuggestion(this)">📱 eNAM portal kaise use karein?</button>
     </div>
 
     <div class="chat-input-area">
@@ -310,7 +799,7 @@
         </svg>
       </button>
     </div>
-    <div class="chat-footer">Powered by AI · KrishiMitra v1.0 · India 🇮🇳</div>
+    <div class="chat-footer">Powered by AI · KrishiMitra v2.0 · India 🇮🇳</div>
   </div>
 
   <!-- Overlay for mobile -->
@@ -322,7 +811,18 @@
   <footer class="site-footer">
     <div class="footer-inner">
       <div class="footer-brand">
-        <span>🌾 KrishiMitra</span>
+        <div class="footer-logo-wrap">
+          <svg width="28" height="28" viewBox="0 0 42 42" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <polygon points="21,2 38,11.5 38,30.5 21,40 4,30.5 4,11.5" fill="rgba(255,255,255,0.07)" stroke="rgba(255,255,255,0.22)" stroke-width="1.2"/>
+            <line x1="21" y1="34" x2="21" y2="13" stroke="#f4c842" stroke-width="2" stroke-linecap="round"/>
+            <ellipse cx="17.5" cy="20" rx="3.2" ry="1.8" fill="#f4c842" transform="rotate(-30 17.5 20)"/>
+            <ellipse cx="16.5" cy="24.5" rx="3.2" ry="1.8" fill="#f4c842" transform="rotate(-25 16.5 24.5)"/>
+            <ellipse cx="24.5" cy="20" rx="3.2" ry="1.8" fill="#f4c842" transform="rotate(30 24.5 20)"/>
+            <ellipse cx="25.5" cy="24.5" rx="3.2" ry="1.8" fill="#f4c842" transform="rotate(25 25.5 24.5)"/>
+            <ellipse cx="21" cy="13.5" rx="2.2" ry="3.2" fill="#f4c842"/>
+          </svg>
+          <span>KrishiMitra</span>
+        </div>
         <small>Kisan ka Sachcha Mitra · Made for Indian Farmers</small>
       </div>
       <div class="footer-links">
@@ -335,6 +835,7 @@
     </div>
   </footer>
 
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
   <script src="script.js"></script>
 </body>
 </html>
