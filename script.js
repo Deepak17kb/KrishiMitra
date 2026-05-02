@@ -13,7 +13,7 @@
    CONFIG
 ══════════════════════════════ */
 const CONFIG = {
-  // Your backend server URL (change when deployed)
+  // ✅ Render backend URL — already deployed
   BACKEND_URL: "https://krishimitra-backend-6spu.onrender.com",
 
   // NewsData.io free API key — get from https://newsdata.io (free signup)
@@ -718,61 +718,9 @@ function openLink(url) {
    8. MANDI RATES (Static Demo)
    Replace with Agmarknet API
    when you get API access
+   NOTE: Enhanced updateMandiRates() with trend arrows is defined
+   in the v2.0 section below — do not duplicate here.
 ══════════════════════════════ */
-function getMandiTrend(cropKey) {
-  const seed = new Date().getDate() + cropKey.charCodeAt(0);
-  const pseudo = ((seed * 9301 + 49297) % 233280) / 233280;
-  if (pseudo > 0.6) return { arrow: "▲", cls: "mandi-up",   pct: (pseudo * 3).toFixed(1) };
-  if (pseudo < 0.4) return { arrow: "▼", cls: "mandi-down", pct: (pseudo * 3).toFixed(1) };
-  return { arrow: "─", cls: "mandi-flat", pct: "0.0" };
-}
-
-function updateMandiRates() {
-  const base = {
-    wheat:   { min: 2015, max: 2275, modal: 2150 },
-    maize:   { min: 1780, max: 1980, modal: 1870 },
-    rice:    { min: 2100, max: 2450, modal: 2300 },
-    soybean: { min: 3800, max: 4200, modal: 4000 },
-    onion:   { min: 800,  max: 1400, modal: 1100 },
-    tomato:  { min: 600,  max: 1200, modal: 900  },
-    potato:  { min: 700,  max: 1100, modal: 900  },
-    cotton:  { min: 5800, max: 6500, modal: 6100 },
-  };
-
-  function vary(val) {
-    // ±3% random variation
-    return Math.round(val * (0.97 + Math.random() * 0.06));
-  }
-
-  const crops = [
-    { emoji:"🌾", name:"Wheat",   key:"wheat",   ...base.wheat   },
-    { emoji:"🌽", name:"Maize",   key:"maize",   ...base.maize   },
-    { emoji:"🍚", name:"Rice",    key:"rice",    ...base.rice    },
-    { emoji:"🫘", name:"Soybean", key:"soybean", ...base.soybean },
-    { emoji:"🧅", name:"Onion",   key:"onion",   ...base.onion   },
-    { emoji:"🍅", name:"Tomato",  key:"tomato",  ...base.tomato  },
-    { emoji:"🥔", name:"Potato",  key:"potato",  ...base.potato  },
-    { emoji:"🌿", name:"Cotton",  key:"cotton",  ...base.cotton  },
-  ];
-
-  const mandiRates = document.getElementById("mandiRates");
-  if (!mandiRates) return;
-
-  mandiRates.innerHTML = crops.map(c => {
-    const trend = getMandiTrend(c.key);
-    return `
-      <div class="mandi-row">
-        <span>${c.emoji} ${c.name}</span>
-        <span>₹${vary(c.min).toLocaleString("en-IN")}</span>
-        <span>₹${vary(c.max).toLocaleString("en-IN")}</span>
-        <span class="mandi-modal-cell">
-          ₹${vary(c.modal).toLocaleString("en-IN")}
-          <span class="${trend.cls} mandi-trend-arrow">${trend.arrow}${trend.pct}%</span>
-        </span>
-      </div>
-    `;
-  }).join("");
-}
 
 /* ══════════════════════════════
    9. KEYBOARD SHORTCUTS
@@ -819,7 +767,9 @@ document.addEventListener("DOMContentLoaded", () => {
   setInterval(updateDateDisplay, 60 * 1000);
 
   console.log("🌾 KrishiMitra loaded — Jai Kisan!");
-});/* ══════════════════════════════════════════════
+});
+
+/* ══════════════════════════════════════════════
    NEW WIDGETS — KrishiMitra v2.0
 ══════════════════════════════════════════════ */
 
@@ -1649,4 +1599,60 @@ function checkSchemes() {
     `).join("")}
     <div class="scheme-disclaimer">* Eligibility may vary. Visit official websites or your state agriculture portal for final confirmation.</div>
   `;
+}
+
+/* ── MANDI RATES: With trend arrows ── */
+function getMandiTrend(cropKey) {
+  const seed = new Date().getDate() + cropKey.charCodeAt(0);
+  const pseudo = ((seed * 9301 + 49297) % 233280) / 233280;
+  if (pseudo > 0.6) return { arrow: "▲", cls: "mandi-up",   pct: (pseudo * 3).toFixed(1) };
+  if (pseudo < 0.4) return { arrow: "▼", cls: "mandi-down", pct: (pseudo * 3).toFixed(1) };
+  return { arrow: "─", cls: "mandi-flat", pct: "0.0" };
+}
+
+// updateMandiRates — enhanced with trend arrows
+function updateMandiRates() {
+  const base = {
+    wheat:   { min: 2015, max: 2275, modal: 2150 },
+    maize:   { min: 1780, max: 1980, modal: 1870 },
+    rice:    { min: 2100, max: 2450, modal: 2300 },
+    soybean: { min: 3800, max: 4200, modal: 4000 },
+    onion:   { min: 800,  max: 1400, modal: 1100 },
+    tomato:  { min: 600,  max: 1200, modal: 900  },
+    potato:  { min: 700,  max: 1100, modal: 900  },
+    cotton:  { min: 5800, max: 6500, modal: 6100 },
+  };
+
+  function vary(val) {
+    return Math.round(val * (0.97 + Math.random() * 0.06));
+  }
+
+  const crops = [
+    { emoji:"🌾", name:"Wheat",   key:"wheat",   ...base.wheat   },
+    { emoji:"🌽", name:"Maize",   key:"maize",   ...base.maize   },
+    { emoji:"🍚", name:"Rice",    key:"rice",    ...base.rice    },
+    { emoji:"🫘", name:"Soybean", key:"soybean", ...base.soybean },
+    { emoji:"🧅", name:"Onion",   key:"onion",   ...base.onion   },
+    { emoji:"🍅", name:"Tomato",  key:"tomato",  ...base.tomato  },
+    { emoji:"🥔", name:"Potato",  key:"potato",  ...base.potato  },
+    { emoji:"🌿", name:"Cotton",  key:"cotton",  ...base.cotton  },
+  ];
+
+  const mandiRates = document.getElementById("mandiRates");
+  if (!mandiRates) return;
+
+  mandiRates.innerHTML = crops.map(c => {
+    const trend = getMandiTrend(c.key);
+    return `
+      <div class="mandi-row">
+        <span>${c.emoji} ${c.name}</span>
+        <span>₹${vary(c.min).toLocaleString("en-IN")}</span>
+        <span>₹${vary(c.max).toLocaleString("en-IN")}</span>
+        <span class="mandi-modal-cell">
+          ₹${vary(c.modal).toLocaleString("en-IN")}
+          <span class="${trend.cls} mandi-trend-arrow">${trend.arrow}${trend.pct}%</span>
+        </span>
+      </div>
+    `;
+  }).join("");
 }
