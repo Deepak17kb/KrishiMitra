@@ -2,7 +2,7 @@
    KRISHIMITRA — backend/server.js
    Kisan ka Sachcha Mitra | AI Backend Server
    - Express.js REST API
-   - Google Gemini AI Integration
+   - Google Gemini AI Integration (with model fallback)
    - Agriculture Expert System Prompt
    - CORS, Rate Limiting, Error Handling
 ═══════════════════════════════════════════════════ */
@@ -11,6 +11,7 @@ const express    = require("express");
 const cors       = require("cors");
 const dotenv     = require("dotenv");
 const rateLimit  = require("express-rate-limit");
+const { version } = require("./package.json");
 
 // Load environment variables from .env file
 dotenv.config();
@@ -21,10 +22,14 @@ dotenv.config();
 const app  = express();
 const PORT = process.env.PORT || 3000;
 
+// Render runs the app behind one proxy — needed so rate limiting
+// counts each visitor separately instead of everyone as one IP
+app.set("trust proxy", 1);
+
 /* ══════════════════════════════
    MIDDLEWARE
 ══════════════════════════════ */
-app.use(express.json());
+app.use(express.json({ limit: "100kb" }));
 
 // CORS — allow your frontend to connect
 app.use(cors({
@@ -34,7 +39,8 @@ app.use(cors({
     "http://localhost:3000",
     "http://127.0.0.1:3000",
     "http://localhost:8080",
-    "https://krishi-mitra-silk-nine.vercel.app",  
+    "https://krishi-mitra-silk-nine.vercel.app",
+    "https://deepak17kb.github.io",
   ],
   methods: ["GET", "POST"],
   allowedHeaders: ["Content-Type"],
@@ -84,8 +90,8 @@ You are KrishiMitra (कृषि मित्र) — "The Farmer's True Friend
 - When weather context is provided, tailor advice to that weather
 
 ## RESPONSE FORMAT:
-- Keep responses focused and clear
-- Use bullet points (•) for lists
+- Keep responses focused and clear — about 150–200 words unless the farmer asks for more detail
+- Use bullet points (•) for lists — never tables
 - Use **bold** for important crop names or terms
 - End with an encouraging note or follow-up question
 - For complex problems, use Step 1, Step 2 format
@@ -102,6 +108,21 @@ Remember: You are talking to hardworking Indian farmers whose livelihood depends
 `;
 
 /* ══════════════════════════════
+   GEMINI MODELS
+   Tried in order — if a model is overloaded, rate-limited,
+   too slow or not available for the API key, the next is used.
+══════════════════════════════ */
+const GEMINI_MODELS = [
+  "gemini-3.8-flash",
+  "gemini-3.6-flash",
+  "gemini-3.5-flash-lite",
+  "gemini-2.5-flash",       // older model — only still works on older API keys
+];
+
+// Give up on a model after this long and move to the next one
+const MODEL_TIMEOUT_MS = 20 * 1000;
+
+/* ══════════════════════════════
    GEMINI API CALL FUNCTION
 ══════════════════════════════ */
 async function callGemini(history, userMessage, context) {
@@ -110,9 +131,6 @@ async function callGemini(history, userMessage, context) {
   if (!GEMINI_API_KEY) {
     throw new Error("GEMINI_API_KEY not found in .env file");
   }
-
-  // Gemini API endpoint — using free gemini-1.5-flash model
-  const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=${GEMINI_API_KEY}`;
 
   // Build conversation history in Gemini format
   const contents = [];
@@ -146,7 +164,9 @@ async function callGemini(history, userMessage, context) {
       temperature: 0.7,
       topK: 40,
       topP: 0.95,
-      maxOutputTokens: 800,
+      // Newer models spend part of this on reasoning before they answer,
+      // so it has to be well above the length of the reply itself
+      maxOutputTokens: 4096,
     },
     safetySettings: [
       { category: "HARM_CATEGORY_HARASSMENT",       threshold: "BLOCK_MEDIUM_AND_ABOVE" },
@@ -156,28 +176,56 @@ async function callGemini(history, userMessage, context) {
     ],
   };
 
-  const response = await fetch(url, {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify(requestBody),
-  });
+  let lastError = new Error("No Gemini model available");
 
-  if (!response.ok) {
-    const errData = await response.json();
-    const errMsg  = errData?.error?.message || "Gemini API error";
-    const errCode = response.status;
+  for (const model of GEMINI_MODELS) {
+    const url = `https://generativelanguage.googleapis.com/v1beta/models/${model}:generateContent?key=${GEMINI_API_KEY}`;
 
-    if (errCode === 400) throw new Error("Bad request / Invalid key: " + errMsg);
-    if (errCode === 403) throw new Error("API key permission denied: " + errMsg);
-    if (errCode === 429) throw new Error("RATE_LIMIT: " + errMsg);
-    throw new Error(`Gemini error ${errCode}: ${errMsg}`);
+    let response;
+    try {
+      response = await fetch(url, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(requestBody),
+        signal: AbortSignal.timeout(MODEL_TIMEOUT_MS),
+      });
+    } catch (err) {
+      // Timed out or network problem — try the next model
+      console.warn(`⚠️  ${model}: ${err.name} — trying next model`);
+      lastError = new Error(`Gemini error (${model}): ${err.name}`);
+      continue;
+    }
+
+    if (!response.ok) {
+      const errData = await response.json().catch(() => ({}));
+      const errMsg  = errData?.error?.message || "Gemini API error";
+      const errCode = response.status;
+
+      // A bad request or a bad key fails the same way on every model
+      if (errCode === 400) throw new Error("Bad request / Invalid key: " + errMsg);
+      if (errCode === 403) throw new Error("API key permission denied: " + errMsg);
+
+      // Overloaded (503), rate-limited (429) or not available for this key (404)
+      console.warn(`⚠️  ${model}: HTTP ${errCode} — trying next model`);
+      lastError = errCode === 429
+        ? new Error("RATE_LIMIT: " + errMsg)
+        : new Error(`Gemini error ${errCode}: ${errMsg}`);
+      continue;
+    }
+
+    const data = await response.json();
+    const text = (data?.candidates?.[0]?.content?.parts || [])
+      .filter(part => !part.thought && part.text)
+      .map(part => part.text)
+      .join("");
+
+    if (text) return text;
+
+    console.warn(`⚠️  ${model}: empty response — trying next model`);
+    lastError = new Error("Empty response from Gemini");
   }
 
-  const data = await response.json();
-  const text  = data?.candidates?.[0]?.content?.parts?.[0]?.text;
-  if (!text) throw new Error("Empty response from Gemini");
-
-  return text;
+  throw lastError;
 }
 
 /* ══════════════════════════════
@@ -189,8 +237,8 @@ app.get("/", (req, res) => {
   res.json({
     status:    "running",
     app:       "KrishiMitra Backend",
-    ai:        "Google Gemini 1.5 Flash",
-    version:   "1.0.0",
+    ai:        "Google Gemini — " + GEMINI_MODELS.join(" → "),
+    version,
     message:   "Jai Kisan! Server is healthy. 🌾",
     timestamp: new Date().toISOString(),
   });
@@ -226,11 +274,14 @@ app.post("/chat", async (req, res) => {
           m => m.role && m.content &&
           (m.role === "user" || m.role === "assistant") &&
           typeof m.content === "string"
-        )
+        ).map(m => ({ role: m.role, content: m.content.slice(0, 4000) }))
       : [];
 
+    // Sanitize context (weather + date line sent by the frontend)
+    const safeContext = typeof context === "string" ? context.slice(0, 600) : "";
+
     // Call Gemini
-    const reply = await callGemini(validHistory, message.trim(), context);
+    const reply = await callGemini(validHistory, message.trim(), safeContext);
 
     res.json({ reply });
 
@@ -290,6 +341,6 @@ app.listen(PORT, () => {
     console.warn("   Add your Gemini key to backend/.env to enable AI chat.\n");
   } else {
     console.log("🔑 Gemini API key : Loaded ✓");
-    console.log("🤖 AI Model       : gemini-1.5-flash (Free tier)\n");
+    console.log("🤖 AI Models      : " + GEMINI_MODELS.join(" → ") + "\n");
   }
 });
