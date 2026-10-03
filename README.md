@@ -1,80 +1,90 @@
 <div align="center">
 
-<img src="https://capsule-render.vercel.app/api?type=waving&color=gradient&customColorList=0,2,8,14&height=220&section=header&text=KrishiMitra&fontSize=72&fontColor=ffffff&animation=fadeIn&fontAlignY=40&desc=Kisan%20ka%20Sachcha%20Mitra&descAlignY=62&descSize=20&descColor=f2d98a" width="100%"/>
+<img src="https://capsule-render.vercel.app/api?type=waving&color=0:10301e,55:2a6a3f,100:e3bd6a&height=230&section=header&text=KrishiMitra&fontSize=70&fontColor=f4efe1&fontAlignY=38&desc=Kisan%20ka%20Sachcha%20Mitra&descAlignY=58&descSize=22&descColor=f5dc9a&animation=fadeIn" width="100%" alt="KrishiMitra" />
 
-</div>
+<img src="favicon.svg" width="84" alt="KrishiMitra logo: a young sprout" />
 
-<div align="center">
+### 🌾 अपनी ज़मीन, अपनी जानकारी 🌾
 
-![Typing SVG](https://readme-typing-svg.demolab.com?font=Georgia&size=20&pause=1200&color=5a7a3a&center=true&vCenter=true&width=620&lines=AI-powered+farming+companion+for+India;Live+weather%2C+spray+timing+and+soil+outlook;Built+for+every+Indian+farmer;Hindi+and+English+support)
+**The farm helper that speaks the farmer's language.**
+
+![Typing SVG](https://readme-typing-svg.demolab.com?font=Georgia&size=21&pause=1400&color=2A6A3F&center=true&vCenter=true&width=640&lines=Free+farm+helper+for+Indian+farmers;Weather%2C+spray+time%2C+water%2C+crops;Ask+Mitra+in+Hindi+or+English;Simple+words.+Real+data.)
+
+<br/>
+
+[![Open the site](https://img.shields.io/badge/🌱_Open_the_live_site-2a6a3f?style=for-the-badge)](https://krishi-mitra-silk-nine.vercel.app)
+&nbsp;
+[![GitHub Pages](https://img.shields.io/badge/Mirror_on_GitHub_Pages-7d5a14?style=for-the-badge)](https://deepak17kb.github.io/KrishiMitra/)
+
+<br/>
+
+![Vanilla JS](https://img.shields.io/badge/Vanilla_JS-e3bd6a?style=flat-square&logo=javascript&logoColor=183a25&labelColor=e3bd6a)
+![Node.js](https://img.shields.io/badge/Node.js-2a6a3f?style=flat-square&logo=nodedotjs&logoColor=white)
+![Express](https://img.shields.io/badge/Express-183a25?style=flat-square&logo=express&logoColor=white)
+![Gemini](https://img.shields.io/badge/Google_Gemini-a84a22?style=flat-square&logo=googlegemini&logoColor=white)
+![Open-Meteo](https://img.shields.io/badge/Open--Meteo-27617f?style=flat-square)
+![Hindi + English](https://img.shields.io/badge/हिंदी_+_English-7d5a14?style=flat-square)
+![Free](https://img.shields.io/badge/100%25_free_to_use-3f8f57?style=flat-square)
 
 </div>
 
 <br/>
 
-<div align="center">
-
-![Node.js](https://img.shields.io/badge/Node.js-4a7c3f?style=for-the-badge&logo=nodedotjs&logoColor=white)
-![Express](https://img.shields.io/badge/Express-3d6b35?style=for-the-badge&logo=express&logoColor=white)
-![Gemini](https://img.shields.io/badge/Gemini%203.8%20Flash-c8902a?style=for-the-badge&logo=google&logoColor=white)
-![JavaScript](https://img.shields.io/badge/Vanilla%20JS-d4a843?style=for-the-badge&logo=javascript&logoColor=white)
-![Free](https://img.shields.io/badge/100%25%20Free%20APIs-6b8f5e?style=for-the-badge)
-
-</div>
-
-<div align="center">
-
-**[Open the live site →](https://krishi-mitra-silk-nine.vercel.app)**
-
-</div>
+<p align="center">
+  <img src="docs/desktop-hero.png" width="92%" alt="KrishiMitra home page" />
+</p>
 
 ---
 
-<div align="center">
-      Connecting farmers to the tools they deserve
+## 🌱 The idea
 
-</div>
+A farmer does not need a dashboard. A farmer needs answers.
+
+> *Should I spray today? Should I water? What do I sow this month? What price will I get?*
+
+KrishiMitra turns live weather and soil data into those plain answers, on one calm page, in Hindi or English. And when the page is not enough, there is **Mitra**, an AI helper that already knows the farmer's place, weather and season.
+
+No login. No app to install. No cost.
 
 ---
 
-## About
-
-> "A farmer who has the right information at the right time can make decisions that change a season."
-
-KrishiMitra started from a simple observation — Indian farmers have access to smartphones but rarely have access to timely, reliable farming guidance in their own language. This project is an attempt to bridge that gap with free, accessible technology.
-
-It is a full-stack web application that brings together an AI assistant, live weather, spray timing, soil and irrigation outlook, a crop calendar, support prices, farm calculators and government schemes — on one calm page, in Hindi and English.
+## 🚜 What a farmer gets
 
 <table>
 <tr>
-<td width="50%">
+<td width="50%" valign="top">
 
-**AI at its core**
-
-Mitra, the built-in assistant, answers questions about crops, pests, soil, irrigation and schemes in the farmer's own language. It already knows the farmer's location, weather and season.
+### 🌤️ Today on the farm
+- **Weather now**, with one line of advice for field work
+- **Next 7 days** of rain and temperature
+- **When to spray?** Every hour of today and tomorrow marked good, okay or do not spray
+- **Should I water?** A straight yes, wait or no hurry
 
 </td>
-<td width="50%">
+<td width="50%" valign="top">
 
-**Real data only**
-
-Weather, hourly forecast and soil estimates come live from Open-Meteo. Nothing on the page is simulated — where live data is not available, the page links to the official source instead.
+### 🌾 This season
+- **What to sow?** Kharif, Rabi and Zaid crops, with "sow now" tags for the current month
+- **Watch out for** the pests and diseases of the season: the sign to look for and the first thing to do
+- **Government price (MSP)** for Kharif 2026-27 and Rabi 2027-28
 
 </td>
 </tr>
 <tr>
-<td width="50%">
+<td width="50%" valign="top">
 
-**Decisions, not just numbers**
-
-The forecast is turned into answers: which hours are safe to spray, whether to irrigate in the next three days, what to sow this month.
+### 🧮 Easy calculators
+- **How much fertilizer?** Answer in bags of urea, DAP and potash
+- **How much profit?** With the price below which you make a loss
+- **Land units**: acre, hectare, guntha, kanal, marla, cent
 
 </td>
-<td width="50%">
+<td width="50%" valign="top">
 
-**Built for Bharat**
-
-Kharif, Rabi and Zaid calendars, MSP as announced by the Government of India, local land units (guntha, kanal, marla, cent) and tap-to-call helplines.
+### 🤝 Help that is one tap away
+- **Schemes**: PM-KISAN, Fasal Bima, Kisan Credit Card and more, each in one simple line
+- **Helplines**: tap a number and the phone calls it
+- **Mitra**: ask anything, in Hindi, Hinglish or English
 
 </td>
 </tr>
@@ -82,155 +92,171 @@ Kharif, Rabi and Zaid calendars, MSP as announced by the Government of India, lo
 
 ---
 
-## Features
+## 📱 Made for the phone in a farmer's hand
 
-<div align="center">
+<p align="center">
+  <img src="docs/phone-hindi.png" width="30%" alt="Home page in Hindi on a phone" />
+  &nbsp;&nbsp;
+  <img src="docs/phone-spray.png" width="30%" alt="Spray timing and watering advice in Hindi" />
+  &nbsp;&nbsp;
+  <img src="docs/phone-chat.png" width="30%" alt="Mitra answering in Hindi" />
+</p>
 
-| Feature | What it does | Source |
-|---------|-------------|--------|
-| **Mitra — AI assistant** | Answers crop, pest, irrigation and scheme questions in Hindi, Hinglish and English | Google Gemini |
-| **Weather now** | Temperature, humidity, wind, rain chance, UV, sunrise and sunset with plain farm advice | Open-Meteo |
-| **7-day forecast** | Daily rain and temperature range for the week ahead | Open-Meteo |
-| **Spray & field-work window** | Rates every daylight hour for the next two days from wind, rain, heat and humidity | Open-Meteo |
-| **Soil & irrigation** | Soil temperature and moisture, crop water use and a 3-day irrigation outlook | Open-Meteo |
-| **Crop calendar** | Sowing and harvest windows for Kharif, Rabi and Zaid, with "sow now" markers | Built-in |
-| **Pest & disease watch** | What to look for this season and the first step to take | Built-in |
-| **Minimum Support Price** | Kharif 2026-27 and Rabi 2027-28 prices | Government of India |
-| **Calculators** | Fertilizer dose, profit estimate, land unit converter, soil pH guide | Built-in |
-| **Schemes & helplines** | PM-KISAN, Fasal Bima, KCC, Soil Health Card and more, with official links | Government of India |
+<p align="center"><sub>Home in Hindi &nbsp;·&nbsp; When to spray and when to water &nbsp;·&nbsp; Mitra answering a question</sub></p>
 
-</div>
-
----
-
-## Tech Stack
-
-<div align="center">
-
-| Layer | Technology | Notes |
-|:-----:|-----------|-------|
-| **Frontend** | HTML · CSS · Vanilla JS | No frameworks, no build step. One page, three files. |
-| **Backend** | Node.js + Express | REST API with CORS, rate limiting, error handling |
-| **AI** | Gemini 3.8 Flash | Falls back automatically to other Gemini models if one is busy |
-| **Weather & soil** | Open-Meteo | Free, no API key required |
-| **Place search** | Open-Meteo Geocoding | Free, no API key required |
-| **Place names** | BigDataCloud | Free reverse geocoding for the browser |
-
-</div>
+- 🗣️ **One tap switches the whole page to Hindi**, including dates, units and crop names
+- 👆 **Big buttons, large text** and simple words. No farming jargon, no English-only terms
+- 🍏 **Works on iPhone and Android**. Can be added to the home screen like an app
+- 🐢 **Light on slow networks**: three small files, one font, no frameworks
+- 🎬 **Calm motion**: soft entrances and hover effects, switched off for people who prefer no animation
 
 ---
 
-## File Structure
+## 🛰️ Real data only
+
+Nothing on the page is made up or simulated.
+
+| What you see | Where it comes from |
+|---|---|
+| Weather, 7 days, hourly wind and rain | [Open-Meteo](https://open-meteo.com) forecast for the farmer's own location |
+| Soil moisture and soil temperature | Open-Meteo soil model |
+| Spray timing | Worked out hour by hour from wind, rain, heat and humidity |
+| Watering advice | Water the crop will lose in 3 days, compared with the rain that is coming |
+| MSP | As announced by the Union Cabinet (Kharif: 13 May 2026, Rabi: 1 October 2026) |
+| Mitra's answers | Google Gemini, guided by an agriculture prompt plus the live weather and season |
+
+<p align="center">
+  <img src="docs/desktop-today.png" width="92%" alt="Today section: weather, 7 days, spray timing and watering advice" />
+</p>
+
+---
+
+## 🧭 How it works
+
+```mermaid
+flowchart LR
+    F["👨‍🌾 Farmer's phone"] --> S["🌾 KrishiMitra page<br/>HTML · CSS · JavaScript"]
+    S -- "place" --> O["🛰️ Open-Meteo<br/>weather and soil"]
+    O -- "forecast" --> S
+    S -- "question + weather + season" --> B["⚙️ Backend on Render<br/>Node · Express"]
+    B -- "prompt" --> G["✨ Google Gemini"]
+    G -- "answer in Hindi or English" --> B
+    B --> S
+```
+
+The backend tries several Gemini models in turn. If one is busy, the next one answers, so the farmer is not left with an error.
+
+---
+
+## 🧰 Tech stack
+
+| Part | Built with | Why |
+|:--|:--|:--|
+| 🌐 Website | HTML, CSS, vanilla JavaScript | No build step. Three files that open anywhere. |
+| ⚙️ Backend | Node.js and Express | A small chat API with CORS, rate limiting and error handling |
+| ✨ AI | Google Gemini | Free tier, with automatic fallback between models |
+| 🌦️ Weather and soil | Open-Meteo | Free, no API key |
+| 📍 Place search | Open-Meteo Geocoding and BigDataCloud | Free, no API key |
+
+---
+
+## 🗂️ What is in the box
+
 ```
 KrishiMitra/
 │
-├── index.html               ← page structure
-├── style.css                ← design
-├── script.js                ← weather, widgets, calculators, chat
+├── index.html               ← the page (English text, Hindi in data-hi)
+├── style.css                ← the look, motion and phone layout
+├── script.js                ← weather, widgets, calculators, chat, language
+├── favicon.svg              ← the sprout logo
+├── manifest.webmanifest     ← lets phones add the site to the home screen
+├── docs/                    ← screenshots for this README
 │
 └── backend/
-    ├── server.js            ← chat API (talks to Gemini)
+    ├── server.js            ← chat API that talks to Gemini
     ├── package.json
-    ├── package-lock.json
     ├── .env.example
-    └── .env                 ← never commit this
+    └── .env                 ← your key lives here. Never commit it.
 ```
 
 ---
 
-## Getting Started
+## 🌿 Run it on your computer
 
-**Clone the repository**
+**1. Get the code**
 ```bash
 git clone https://github.com/Deepak17kb/KrishiMitra.git
 cd KrishiMitra/backend
 ```
 
-**Install dependencies**
+**2. Install and add your key**
 ```bash
 npm install
-```
-
-**Set up environment**
-```bash
 cp .env.example .env
 ```
 
-Open `.env` and add your key:
+Open `.env` and paste a free Gemini key from [aistudio.google.com](https://aistudio.google.com):
 ```env
-# Get your free key at aistudio.google.com
 GEMINI_API_KEY=your_gemini_api_key_here
 PORT=3000
 NODE_ENV=development
 ```
 
-**Start the server**
+**3. Start the backend**
 ```bash
 npm start
 ```
 
-**Open the site**
+**4. Open the site**
 
-Serve the project folder with any static server on port 5500 — for example the *Live Server* extension in VS Code — and open:
+Serve the project folder on port 5500 (the *Live Server* extension in VS Code does this) and open:
 
 ```
 http://localhost:5500/?backend=local
 ```
 
-`?backend=local` makes the page talk to the backend on your computer. Without it, the page uses the live backend on Render.
+`?backend=local` tells the page to use the backend on your computer. Without it, the page talks to the live backend on Render.
 
 ---
 
-## Deployment
+## 🚀 Where it lives
 
-| Part | Where | How it updates |
-|------|-------|----------------|
-| Website | [Vercel](https://krishi-mitra-silk-nine.vercel.app) and [GitHub Pages](https://deepak17kb.github.io/KrishiMitra/) | Automatically on every push to `main` |
-| Backend | [Render](https://krishimitra-backend-6spu.onrender.com/health) web service running the `backend` folder with `npm start` | Deploys from `main` — automatic if auto-deploy is on in Render, otherwise use *Manual Deploy* |
+| Part | Host | How it updates |
+|---|---|---|
+| Website | [Vercel](https://krishi-mitra-silk-nine.vercel.app) and [GitHub Pages](https://deepak17kb.github.io/KrishiMitra/) | By itself, on every push to `main` |
+| Backend | [Render](https://krishimitra-backend-6spu.onrender.com/health), running the `backend` folder | By itself, on every push to `main` |
 
-The backend needs one environment variable on Render: `GEMINI_API_KEY`.
+The backend needs one secret on Render: `GEMINI_API_KEY`.
 
-If the website moves to a new address, add that address to the `cors` list in `backend/server.js`, or the chat will be blocked.
-
----
-
-## Keeping it current
-
-Two things in `script.js` need a look once a year:
-
-- **`MSP`** — support prices. The Union Cabinet announces Kharif prices around June and Rabi prices around October.
-- **`PROFIT_CROPS`** — the example yields and costs in the profit estimate.
-
-The Gemini models the chat uses are listed in `GEMINI_MODELS` at the top of `backend/server.js`.
+If the website ever moves to a new address, add that address to the `cors` list in `backend/server.js`, or the chat will be blocked.
 
 ---
 
-> **Before you push** — make sure `.env` is listed in your `.gitignore`. API keys exposed in public repositories are found and abused within minutes by automated scanners. Keep yours private.
+## 🗓️ Once a year
+
+Two lists in `script.js` need fresh numbers each year:
+
+- **`MSP`**: the government prices. Kharif prices come out around June, Rabi prices around October.
+- **`PROFIT_CROPS`**: the example yield and cost in the profit calculator.
+
+The Gemini models are listed in `GEMINI_MODELS` at the top of `backend/server.js`.
 
 ---
 
-## Resources
-
-<div align="center">
-
-[![Gemini](https://img.shields.io/badge/Get%20Gemini%20Key-c8902a?style=for-the-badge&logo=google&logoColor=white)](https://aistudio.google.com)
-[![Open-Meteo](https://img.shields.io/badge/Open--Meteo-4a7a9b?style=for-the-badge)](https://open-meteo.com)
-[![PM-KISAN](https://img.shields.io/badge/PM--KISAN-b87333?style=for-the-badge)](https://pmkisan.gov.in)
-[![Node.js](https://img.shields.io/badge/Node.js-4a7c3f?style=for-the-badge&logo=nodedotjs&logoColor=white)](https://nodejs.org)
-
-</div>
+> 🔒 **Before you push:** check that `.env` is in `.gitignore`. Keys left in public repositories are found and misused within minutes.
 
 ---
 
 <div align="center">
 
+### 🙏 जय जवान, जय किसान
 
-*Made with* ❤️ *for Indian Farmers*
+*Made with care for the people who feed the country.*
 
-**जय किसान 🌾**
+<br/>
 
-![Profile Views](https://komarev.com/ghpvc/?username=Deepak17kb&color=3a7d44&style=flat-square&label=README+Views)
-<img src="https://capsule-render.vercel.app/api?type=waving&color=gradient&customColorList=0,2,8,14&height=140&section=footer&animation=fadeIn" width="100%"/>
+![Views](https://komarev.com/ghpvc/?username=Deepak17kb&color=2a6a3f&style=flat-square&label=README+views)
 
+<img src="https://capsule-render.vercel.app/api?type=waving&color=0:e3bd6a,45:2a6a3f,100:10301e&height=130&section=footer" width="100%" alt="" />
 
 </div>

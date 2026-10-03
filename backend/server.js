@@ -1,5 +1,5 @@
 /* ═══════════════════════════════════════════════════
-   KRISHIMITRA — backend/server.js
+   KRISHIMITRA | backend/server.js
    Kisan ka Sachcha Mitra | AI Backend Server
    - Express.js REST API
    - Google Gemini AI Integration (with model fallback)
@@ -22,7 +22,7 @@ dotenv.config();
 const app  = express();
 const PORT = process.env.PORT || 3000;
 
-// Render runs the app behind one proxy — needed so rate limiting
+// Render runs the app behind one proxy. This is needed so rate limiting
 // counts each visitor separately instead of everyone as one IP
 app.set("trust proxy", 1);
 
@@ -31,7 +31,7 @@ app.set("trust proxy", 1);
 ══════════════════════════════ */
 app.use(express.json({ limit: "100kb" }));
 
-// CORS — allow your frontend to connect
+// CORS: allow your frontend to connect
 app.use(cors({
   origin: [
     "http://localhost:5500",
@@ -46,7 +46,7 @@ app.use(cors({
   allowedHeaders: ["Content-Type"],
 }));
 
-// Rate limiting — max 30 requests per minute per IP
+// Rate limiting: max 30 requests per minute per IP
 const limiter = rateLimit({
   windowMs: 60 * 1000,
   max: 30,
@@ -60,17 +60,17 @@ app.use("/chat", limiter);
    KRISHIMITRA SYSTEM PROMPT
 ══════════════════════════════ */
 const KRISHIMITRA_SYSTEM_PROMPT = `
-You are KrishiMitra (कृषि मित्र) — "The Farmer's True Friend" — an expert AI assistant built exclusively to help Indian farmers with all aspects of agriculture, farming, and rural life.
+You are KrishiMitra (कृषि मित्र), "The Farmer's True Friend", an expert AI assistant built exclusively to help Indian farmers with all aspects of agriculture, farming, and rural life.
 
 ## YOUR IDENTITY
 - Name: KrishiMitra (कृषि मित्र)
 - Role: Expert agricultural advisor for Indian farmers
-- Tone: Warm, respectful, patient — like a knowledgeable neighbour
+- Tone: Warm, respectful, patient, like a knowledgeable neighbour
 - Language: Respond in the SAME language the farmer writes in. If they write Hindi or Hinglish, reply in Hindi/Hinglish. If English, reply in English. Mix naturally if they mix.
 
 ## YOUR EXPERTISE:
-1. **Crop Science**: All major Indian crops — Wheat (Gehun), Rice (Dhan), Maize (Makka), Bajra, Jowar, Cotton (Kapas), Sugarcane (Ganna), Soybean, Groundnut, Mustard (Sarson), Pulses, all vegetables and fruits
-2. **Indian Seasons**: Kharif (June–Oct), Rabi (Nov–Feb), Zaid (March–May)
+1. **Crop Science**: All major Indian crops: Wheat (Gehun), Rice (Dhan), Maize (Makka), Bajra, Jowar, Cotton (Kapas), Sugarcane (Ganna), Soybean, Groundnut, Mustard (Sarson), Pulses, all vegetables and fruits
+2. **Indian Seasons**: Kharif (June to Oct), Rabi (Nov to Feb), Zaid (March to May)
 3. **Soil Health**: Soil types in India, pH balance, nutrients (N-P-K), composting
 4. **Irrigation**: Drip, sprinkler, flood irrigation, water conservation
 5. **Pest & Disease Management**: Common pests, fungal/bacterial diseases, IPM, organic solutions
@@ -82,7 +82,7 @@ You are KrishiMitra (कृषि मित्र) — "The Farmer's True Friend
 
 ## HOW TO RESPOND:
 - Always greet warmly on first message (Jai Kisan! / Namaskar!)
-- Give PRACTICAL, ACTIONABLE advice — not just theory
+- Give PRACTICAL, ACTIONABLE advice, not just theory
 - Mention specific Indian crop varieties (PB-1121 basmati, HD-2967 wheat, etc.)
 - Always warn about pesticide safety
 - For government schemes, mention helpline numbers when possible
@@ -90,8 +90,9 @@ You are KrishiMitra (कृषि मित्र) — "The Farmer's True Friend
 - When weather context is provided, tailor advice to that weather
 
 ## RESPONSE FORMAT:
-- Keep responses focused and clear — about 150–200 words unless the farmer asks for more detail
-- Use bullet points (•) for lists — never tables
+- Keep responses focused and clear, about 150 to 200 words unless the farmer asks for more detail
+- Use bullet points (•) for lists, never tables
+- Never use em dashes or en dashes (the long dash punctuation). Use a comma, a full stop or the word "to" instead
 - Use **bold** for important crop names or terms
 - End with an encouraging note or follow-up question
 - For complex problems, use Step 1, Step 2 format
@@ -109,14 +110,14 @@ Remember: You are talking to hardworking Indian farmers whose livelihood depends
 
 /* ══════════════════════════════
    GEMINI MODELS
-   Tried in order — if a model is overloaded, rate-limited,
+   Tried in order. If a model is overloaded, rate-limited,
    too slow or not available for the API key, the next is used.
 ══════════════════════════════ */
 const GEMINI_MODELS = [
   "gemini-3.8-flash",
   "gemini-3.6-flash",
   "gemini-3.5-flash-lite",
-  "gemini-2.5-flash",       // older model — only still works on older API keys
+  "gemini-2.5-flash",       // older model, only still works on older API keys
 ];
 
 // Give up on a model after this long and move to the next one
@@ -143,7 +144,7 @@ async function callGemini(history, userMessage, context) {
     });
   }
 
-  // Build current message — inject weather + date context
+  // Build current message: inject weather + date context
   let fullUserMessage = userMessage;
   if (context) {
     fullUserMessage = `[Context: ${context}]\n\nFarmer's question: ${userMessage}`;
@@ -190,8 +191,8 @@ async function callGemini(history, userMessage, context) {
         signal: AbortSignal.timeout(MODEL_TIMEOUT_MS),
       });
     } catch (err) {
-      // Timed out or network problem — try the next model
-      console.warn(`⚠️  ${model}: ${err.name} — trying next model`);
+      // Timed out or network problem: try the next model
+      console.warn(`⚠️  ${model}: ${err.name}, trying next model`);
       lastError = new Error(`Gemini error (${model}): ${err.name}`);
       continue;
     }
@@ -206,7 +207,7 @@ async function callGemini(history, userMessage, context) {
       if (errCode === 403) throw new Error("API key permission denied: " + errMsg);
 
       // Overloaded (503), rate-limited (429) or not available for this key (404)
-      console.warn(`⚠️  ${model}: HTTP ${errCode} — trying next model`);
+      console.warn(`⚠️  ${model}: HTTP ${errCode}, trying next model`);
       lastError = errCode === 429
         ? new Error("RATE_LIMIT: " + errMsg)
         : new Error(`Gemini error ${errCode}: ${errMsg}`);
@@ -221,7 +222,7 @@ async function callGemini(history, userMessage, context) {
 
     if (text) return text;
 
-    console.warn(`⚠️  ${model}: empty response — trying next model`);
+    console.warn(`⚠️  ${model}: empty response, trying next model`);
     lastError = new Error("Empty response from Gemini");
   }
 
@@ -237,7 +238,7 @@ app.get("/", (req, res) => {
   res.json({
     status:    "running",
     app:       "KrishiMitra Backend",
-    ai:        "Google Gemini — " + GEMINI_MODELS.join(" → "),
+    ai:        "Google Gemini: " + GEMINI_MODELS.join(" → "),
     version,
     message:   "Jai Kisan! Server is healthy. 🌾",
     timestamp: new Date().toISOString(),
