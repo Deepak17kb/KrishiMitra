@@ -394,7 +394,7 @@ function weatherUrl({ lat, lon }) {
     "&hourly=temperature_2m,relative_humidity_2m,precipitation_probability,precipitation," +
       "wind_speed_10m,is_day,soil_temperature_6cm,soil_moisture_3_to_9cm,soil_moisture_9_to_27cm" +
     "&daily=weather_code,temperature_2m_max,temperature_2m_min,precipitation_sum," +
-      "precipitation_probability_max,et0_fao_evapotranspiration" +
+      "precipitation_probability_max,wind_gusts_10m_max,et0_fao_evapotranspiration" +
     "&timezone=auto&forecast_days=7";
 }
 
@@ -447,6 +447,8 @@ function renderWeather() {
   renderForecast();
   renderSpray();
   renderWater();
+  renderAlerts();
+  renderDryDays();
 }
 
 function showWeatherError() {
@@ -461,6 +463,8 @@ function showWeatherError() {
   setText("heroAdvice", message);
   setText("sprayBest", missing);
   setText("waterAnswer", missing);
+  setText("alertAnswer", missing);
+  setText("dryAnswer", missing);
   $("forecastList").innerHTML = `<li class="placeholder">${missing}</li>`;
 }
 
@@ -494,8 +498,10 @@ function renderNow() {
     rainChance,
   });
 
-  setText("wxTemp", temp + "°");
-  setText("wxCond", `${info.icon} ${info.label}`);
+  const condition = `<span class="wx-icon" aria-hidden="true">${info.icon}</span> ${info.label}`;
+
+  countTo($("wxTemp"), temp, v => Math.round(v) + "°");
+  $("wxCond").innerHTML = condition;
   setText("wxPlace", placeLabel());
   setText("wxRain", rainChance + "%");
   setText("wxWind", `${windWord(c.wind_speed_10m)} · ${Math.round(c.wind_speed_10m)} ${tr("km/h", "किमी/घंटा")}`);
@@ -504,8 +510,8 @@ function renderNow() {
   setText("wxUpdated", tr(`Updated at ${clock(c.time)}`, `${clock(c.time)} बजे की जानकारी`));
 
   // Hero snapshot
-  setText("heroTemp", temp + "°");
-  setText("heroCond", `${info.icon} ${info.label}`);
+  countTo($("heroTemp"), temp, v => Math.round(v) + "°");
+  $("heroCond").innerHTML = condition;
   setText("heroPlace", placeLabel());
   setText("heroAdvice", advice);
 }
@@ -770,15 +776,132 @@ function renderWater() {
 }
 
 /* ══════════════════════════════
+   ANY DANGER THIS WEEK?
+   Looks through the 7-day forecast for weather that can hurt a crop
+══════════════════════════════ */
+const ALERT_LIMITS = {
+  heavyRain: 50,   // mm in one day
+  rain: 20,
+  heat: 40,        // °C, hottest part of the day
+  frost: 4,        // °C, coldest part of the night
+  gust: 45,        // km/h
+};
+
+function weekAlerts() {
+  const d = weather.daily;
+  const L = ALERT_LIMITS;
+  const alerts = [];
+  const add = (level, icon, text) => alerts.push({ level, icon, text });
+
+  d.time.forEach((date, i) => {
+    const day = i === 0 ? tr("Today", "आज") : i === 1 ? tr("Tomorrow", "कल") : WEEKDAYS[lang][new Date(date + "T12:00").getDay()];
+    const rain = Math.round(d.precipitation_sum[i] ?? 0);
+    const max = Math.round(d.temperature_2m_max[i]);
+    const min = Math.round(d.temperature_2m_min[i]);
+    const gust = Math.round(d.wind_gusts_10m_max[i] ?? 0);
+
+    if (d.weather_code[i] >= 95) add("bad", "⛈️", tr(
+      `${day}: storm likely. Stay out of open fields and keep the harvest covered.`,
+      `${day}: तूफ़ान आ सकता है। खुले खेत में न जाएँ और कटी फ़सल ढककर रखें।`));
+    if (rain >= L.heavyRain) add("bad", "🌧️", tr(
+      `${day}: heavy rain, about ${rain} mm. Open the drains and do not spray.`,
+      `${day}: तेज़ बारिश, लगभग ${rain} मिमी। नालियाँ खोल दें और छिड़काव न करें।`));
+    else if (rain >= L.rain) add("warn", "🌦️", tr(
+      `${day}: rain, about ${rain} mm. Do not spray or put fertilizer that day.`,
+      `${day}: बारिश, लगभग ${rain} मिमी। उस दिन छिड़काव या खाद न डालें।`));
+    if (max >= L.heat) add("warn", "🌡️", tr(
+      `${day}: very hot, ${max}°C. Water in the morning or evening.`,
+      `${day}: बहुत गर्मी, ${max}°C। सुबह या शाम को सिंचाई करें।`));
+    if (min <= L.frost) add("bad", "❄️", tr(
+      `${day}: frost risk, ${min}°C at night. Give light water in the evening.`,
+      `${day}: पाले का ख़तरा, रात में ${min}°C। शाम को हल्की सिंचाई करें।`));
+    if (gust >= L.gust) add("warn", "💨", tr(
+      `${day}: strong wind, up to ${gust} km/h. Do not spray. Tie up tall crops.`,
+      `${day}: तेज़ हवा, ${gust} किमी/घंटा तक। छिड़काव न करें। ऊँची फ़सल को सहारा दें।`));
+  });
+  return alerts;
+}
+
+function renderAlerts() {
+  const alerts = weekAlerts();
+  const answer = $("alertAnswer");
+
+  if (!alerts.length) {
+    answer.className = "answer is-good";
+    answer.textContent = tr("No weather danger in the next 7 days", "अगले 7 दिन मौसम का कोई ख़तरा नहीं");
+  } else {
+    const serious = alerts.some(a => a.level === "bad");
+    answer.className = "answer " + (serious ? "is-bad" : "is-warn");
+    answer.textContent = alerts.length === 1
+      ? tr("1 thing to watch this week", "इस हफ़्ते 1 बात का ध्यान रखें")
+      : tr(`${alerts.length} things to watch this week`, `इस हफ़्ते ${alerts.length} बातों का ध्यान रखें`);
+  }
+
+  $("alertList").innerHTML = alerts.slice(0, 5).map((a, i) => `
+    <li class="alert alert-${a.level}" style="--i:${i}"><span class="alert-icon" aria-hidden="true">${a.icon}</span><span>${a.text}</span></li>
+  `).join("");
+}
+
+/* ══════════════════════════════
+   DAYS TO HARVEST AND DRY
+   A day counts as dry when no rain is expected
+══════════════════════════════ */
+function renderDryDays() {
+  const d = weather.daily;
+  const mm = tr("mm", "मिमी");
+  const days = d.time.map((date, i) => {
+    const rain = d.precipitation_sum[i] ?? 0;
+    const chance = d.precipitation_probability_max[i] ?? 0;
+    return {
+      name: i === 0 ? tr("Today", "आज") : dayName(date),
+      icon: describeWeather(d.weather_code[i]).icon,
+      dry: rain < 0.5 && chance < 30,
+      note: rain >= 0.5 ? `${num(rain, 0)} ${mm}` : chance >= 30 ? tr("May rain", "बारिश संभव") : tr("Dry", "सूखा"),
+    };
+  });
+
+  const dry = days.filter(day => day.dry);
+  const answer = $("dryAnswer");
+  if (dry.length === days.length) {
+    answer.className = "answer is-good";
+    answer.textContent = tr("All 7 days are dry. Good for harvest work.", "सातों दिन सूखे हैं। कटाई के काम के लिए अच्छे।");
+  } else if (dry.length) {
+    answer.className = "answer is-good";
+    answer.textContent = tr(`Dry days: ${dry.map(day => day.name).join(", ")}`, `सूखे दिन: ${dry.map(day => day.name).join(", ")}`);
+  } else {
+    answer.className = "answer is-warn";
+    answer.textContent = tr("No fully dry day this week. Keep the harvest covered.", "इस हफ़्ते कोई पूरा सूखा दिन नहीं। कटी फ़सल ढककर रखें।");
+  }
+
+  $("dryDays").innerHTML = days.map((day, i) => `
+    <li class="daychip ${day.dry ? "is-dry" : "is-wet"}" style="--i:${i}">
+      <span class="daychip-day">${day.name}</span>
+      <span class="daychip-icon" aria-hidden="true">${day.icon}</span>
+      <span class="daychip-note">${day.note}</span>
+    </li>
+  `).join("");
+}
+
+/* ══════════════════════════════
    TABS
 ══════════════════════════════ */
 const tabState = {};
 
+// Slides the white pill under the chosen tab
+function moveTabPill(container) {
+  const active = container.querySelector('.tab[aria-selected="true"]');
+  if (!active) return;
+  container.style.setProperty("--pill-x", active.offsetLeft + "px");
+  container.style.setProperty("--pill-w", active.offsetWidth + "px");
+}
+
 function initTabs(containerId, dataKey, initial, onSelect) {
-  const tabs = [...$(containerId).querySelectorAll(".tab")];
+  const container = $(containerId);
+  const tabs = [...container.querySelectorAll(".tab")];
   const select = value => {
     tabState[containerId] = value;
     tabs.forEach(tab => tab.setAttribute("aria-selected", String(tab.dataset[dataKey] === value)));
+    moveTabPill(container);
     onSelect(value);
   };
   tabs.forEach(tab => tab.addEventListener("click", () => select(tab.dataset[dataKey])));
@@ -879,6 +1002,150 @@ function renderSowSummary() {
   if (now.length)  parts.push(tr(`Sow now: ${now.join(", ")}.`, `अभी बोएँ: ${now.join(", ")}।`));
   if (soon.length) parts.push(tr(`Coming soon: ${soon.join(", ")}.`, `जल्द: ${soon.join(", ")}।`));
   setText("sowSummary", parts.join(" ") || tr("No main sowing this month.", "इस महीने कोई मुख्य बुवाई नहीं।"));
+}
+
+/* ══════════════════════════════
+   MY CROP CALENDAR
+   Pick a crop and the sowing date to see what to do and when.
+   day: days after sowing. harvest: [earliest, latest] day.
+══════════════════════════════ */
+const PLANS = {
+  wheat: {
+    name: ["Wheat (Gehun)", "गेहूँ"],
+    steps: [
+      { day: 21,  text: ["First watering. This one matters most. Give half the urea after it.", "पहली सिंचाई। यह सबसे ज़रूरी है। इसके बाद आधा यूरिया डालें।"] },
+      { day: 33,  text: ["Remove the weeds.", "खरपतवार निकालें।"] },
+      { day: 42,  text: ["Second watering. Give the rest of the urea.", "दूसरी सिंचाई। बचा हुआ यूरिया डालें।"] },
+      { day: 63,  text: ["Third watering, when the stem grows.", "तीसरी सिंचाई, जब तना बढ़ने लगे।"] },
+      { day: 83,  text: ["Fourth watering, at flowering.", "चौथी सिंचाई, फूल आने पर।"] },
+      { day: 103, text: ["Fifth watering, when the grain is milky.", "पाँचवीं सिंचाई, जब दाने में दूध भरे।"] },
+      { day: 118, text: ["Last watering, only if the soil is dry.", "आख़िरी सिंचाई, सिर्फ़ तब जब मिट्टी सूखी हो।"] },
+    ],
+    harvest: [135, 150],
+    harvestText: ["Harvest when the plants turn golden and the grain is hard.", "जब पौधे सुनहरे हो जाएँ और दाना सख़्त हो, तब कटाई करें।"],
+  },
+  mustard: {
+    name: ["Mustard (Sarson)", "सरसों"],
+    steps: [
+      { day: 18, text: ["Thin the plants. Keep them 10 to 15 cm apart.", "घने पौधे निकालें। पौधों के बीच 10 से 15 सेमी जगह रखें।"] },
+      { day: 35, text: ["First watering, before the flowers come. Give the rest of the urea.", "पहली सिंचाई, फूल आने से पहले। बचा हुआ यूरिया डालें।"] },
+      { day: 55, text: ["Check the shoots for aphids (mahu) every few days.", "टहनियों पर माहू हर कुछ दिन में देखते रहें।"] },
+      { day: 70, text: ["Second watering, when the pods are filling.", "दूसरी सिंचाई, जब फलियों में दाना भर रहा हो।"] },
+    ],
+    harvest: [115, 135],
+    harvestText: ["Harvest when most pods turn yellow.", "जब ज़्यादातर फलियाँ पीली हो जाएँ, तब कटाई करें।"],
+  },
+  gram: {
+    name: ["Gram (Chana)", "चना"],
+    steps: [
+      { day: 30, text: ["Remove the weeds.", "खरपतवार निकालें।"] },
+      { day: 38, text: ["Pinch off the top shoots. The plant will grow more branches.", "ऊपर की कोपलें तोड़ दें। पौधे में ज़्यादा शाखाएँ आएँगी।"] },
+      { day: 45, text: ["First watering before the flowers come, only if the soil is dry.", "फूल आने से पहले पहली सिंचाई, सिर्फ़ तब जब मिट्टी सूखी हो।"] },
+      { day: 75, text: ["Second watering when pods form, if needed. Do not water during flowering.", "फलियाँ बनते समय दूसरी सिंचाई, ज़रूरत हो तो। फूल के समय सिंचाई न करें।"] },
+    ],
+    harvest: [110, 130],
+    harvestText: ["Harvest when the leaves turn brown and fall.", "जब पत्तियाँ भूरी होकर गिरने लगें, तब कटाई करें।"],
+  },
+  potato: {
+    name: ["Potato (Aloo)", "आलू"],
+    steps: [
+      { day: 25, text: ["Heap soil around the plants and give the rest of the urea.", "पौधों पर मिट्टी चढ़ाएँ और बचा हुआ यूरिया डालें।"] },
+      { day: 40, text: ["Water lightly every 7 to 10 days. Watch for blight in foggy weather.", "हर 7 से 10 दिन में हल्की सिंचाई करें। कोहरे में झुलसा रोग पर नज़र रखें।"] },
+      { day: 85, text: ["Cut the tops and stop watering.", "ऊपर की बेलें काट दें और सिंचाई बंद करें।"] },
+    ],
+    harvest: [95, 110],
+    harvestText: ["Dig the potatoes 10 to 15 days after cutting the tops.", "बेलें काटने के 10 से 15 दिन बाद आलू खोदें।"],
+  },
+  maize: {
+    name: ["Maize (Makka)", "मक्का"],
+    steps: [
+      { day: 18, text: ["Remove the weeds.", "खरपतवार निकालें।"] },
+      { day: 30, text: ["Plants are knee high. Give urea and heap soil around them.", "पौधे घुटने तक हो गए। यूरिया डालें और मिट्टी चढ़ाएँ।"] },
+      { day: 50, text: ["Tassels are coming. Give urea and water. Do not let the crop go dry now.", "ऊपर झंडे आ रहे हैं। यूरिया और पानी दें। अभी फ़सल सूखने न दें।"] },
+      { day: 62, text: ["Silk is coming on the cobs. Water is needed most now.", "भुट्टों में रेशे आ रहे हैं। अभी पानी सबसे ज़रूरी है।"] },
+    ],
+    harvest: [95, 110],
+    harvestText: ["Harvest when the cob cover is dry and the grain is hard.", "जब भुट्टे का छिलका सूख जाए और दाना सख़्त हो, तब तुड़ाई करें।"],
+  },
+  paddy: {
+    name: ["Rice (Dhan), from nursery sowing", "धान, नर्सरी की बुवाई से"],
+    steps: [
+      { day: 25,  text: ["Move the seedlings to the main field.", "पौध को मुख्य खेत में रोपें।"] },
+      { day: 46,  text: ["Give the first part of the remaining urea.", "बचे हुए यूरिया का पहला हिस्सा डालें।"] },
+      { day: 70,  text: ["Give the last part of the urea, as the ears begin to form.", "बाली बनने के समय यूरिया का आख़िरी हिस्सा डालें।"] },
+      { day: 110, text: ["Stop watering about 2 weeks before harvest.", "कटाई से लगभग 2 हफ़्ते पहले पानी बंद करें।"] },
+    ],
+    harvest: [125, 145],
+    harvestText: ["Harvest when most of the grains turn golden.", "जब ज़्यादातर दाने सुनहरे हो जाएँ, तब कटाई करें।"],
+  },
+};
+
+const shortDate = date => `${date.getDate()} ${MONTHS_SHORT[lang][date.getMonth()]}`;
+
+function addDays(date, days) {
+  const next = new Date(date);
+  next.setDate(next.getDate() + days);
+  return next;
+}
+
+function renderPlan() {
+  const plan = PLANS[$("planCrop").value];
+  const value = $("planDate").value;            // "2026-10-03"
+  if (!plan || !value) return;
+  writeStore("local", "km_plan", { crop: $("planCrop").value, date: value });
+
+  const sown = new Date(value + "T12:00");
+  const today = new Date();
+  today.setHours(12, 0, 0, 0);
+  const daysSince = Math.round((today - sown) / 86400000);
+
+  const steps = plan.steps.map(step => ({ day: step.day, text: pick(step.text) }));
+  steps.push({ day: plan.harvest[0], until: plan.harvest[1], text: pick(plan.harvestText) });
+
+  const next = steps.find(step => (step.until ?? step.day) >= daysSince);
+  const when = step => shortDate(addDays(sown, step.day)) + (step.until ? tr(" to ", " से ") + shortDate(addDays(sown, step.until)) : "");
+
+  const answer = $("planNext");
+  if (daysSince < 0) {
+    answer.className = "answer";
+    answer.textContent = tr(`Sowing is in ${-daysSince} days. Here is the plan after that.`, `बुवाई ${-daysSince} दिन बाद है। उसके बाद की योजना यह है।`);
+  } else if (next) {
+    answer.className = "answer is-good";
+    answer.textContent = tr(`Next job, ${when(next)}: ${next.text}`, `अगला काम, ${when(next)}: ${next.text}`);
+  } else {
+    answer.className = "answer is-warn";
+    answer.textContent = tr("This crop should be ready. Harvest time has come.", "यह फ़सल तैयार होनी चाहिए। कटाई का समय आ गया है।");
+  }
+
+  $("planList").innerHTML = steps.map((step, i) => {
+    const wait = step.day - daysSince;
+    const past = (step.until ?? step.day) < daysSince;
+    const now = !past && wait <= 3;
+    const tag = past ? ""
+      : now ? `<span class="tag tag-now">${tr("Now", "अभी")}</span>`
+      : `<span class="tag">${tr(`In ${wait} days`, `${wait} दिन बाद`)}</span>`;
+    return `
+      <li class="step${past ? " is-past" : ""}${step === next ? " is-next" : ""}" style="--i:${i}">
+        <span class="step-date">${when(step)} ${tag}</span>
+        <span class="step-text">${step.text}</span>
+      </li>
+    `;
+  }).join("");
+}
+
+function initPlan() {
+  const saved = readStore("local", "km_plan");
+  const today = new Date();
+  const iso = `${today.getFullYear()}-${String(today.getMonth() + 1).padStart(2, "0")}-${String(today.getDate()).padStart(2, "0")}`;
+  const season = getSeason(today.getMonth());
+
+  // Start with the main crop of the season that is about to be sown
+  $("planCrop").value = saved?.crop && PLANS[saved.crop] ? saved.crop : season === "kharif" && today.getMonth() < 8 ? "paddy" : "wheat";
+  $("planDate").value = saved?.date || iso;
+
+  $("planForm").addEventListener("input", renderPlan);
+  $("planForm").addEventListener("submit", e => e.preventDefault());
+  renderPlan();
 }
 
 /* ══════════════════════════════
@@ -1165,33 +1432,352 @@ function renderProfit() {
   `;
 }
 
+/* ══════════════════════════════
+   SEED CALCULATOR
+   Usual seed needed, in kg for one acre
+══════════════════════════════ */
+const SEED = {
+  wheat:     { name: ["Wheat (Gehun)", "गेहूँ"],                       kg: 40 },
+  paddy:     { name: ["Rice (Dhan), for the nursery", "धान, नर्सरी के लिए"], kg: 8 },
+  maize:     { name: ["Maize (Makka)", "मक्का"],                       kg: 8 },
+  mustard:   { name: ["Mustard (Sarson)", "सरसों"],                    kg: 1.5 },
+  gram:      { name: ["Gram (Chana)", "चना"],                          kg: 30 },
+  soybean:   { name: ["Soybean", "सोयाबीन"],                           kg: 30 },
+  groundnut: { name: ["Groundnut (Moongfali)", "मूँगफली"],             kg: 40 },
+  potato:    { name: ["Potato (Aloo)", "आलू"],                         kg: 1000 },
+  moong:     { name: ["Moong", "मूँग"],                                kg: 8 },
+  bajra:     { name: ["Bajra", "बाजरा"],                               kg: 1.5 },
+  barley:    { name: ["Barley (Jau)", "जौ"],                           kg: 40 },
+  lentil:    { name: ["Lentil (Masoor)", "मसूर"],                      kg: 14 },
+  peas:      { name: ["Peas (Matar)", "मटर"],                          kg: 35 },
+};
+
+function renderSeed() {
+  const crop = SEED[$("seedCrop").value];
+  const acres = fieldValue("seedArea") * LAND_UNITS[$("seedUnit").value].sqm / LAND_UNITS.acre.sqm;
+  const kg = crop.kg * acres;
+
+  // Large amounts (potato) read better in quintals
+  const big = kg >= 100;
+  const amount = big ? num(kg / 100, 1) : num(kg, 1);
+  const unit = big ? tr("quintal", "क्विंटल") : tr("kg", "किलो");
+
+  $("seedResult").innerHTML = `
+    <div class="profit-main">
+      <div class="profit-main-label">${tr("Seed you need", "इतना बीज चाहिए")}</div>
+      <div class="profit-main-value">${amount} <small>${unit}</small></div>
+    </div>
+    <dl class="kv">
+      <div><dt>${tr("For 1 acre", "1 एकड़ के लिए")}</dt><dd>${num(crop.kg, 1)} ${tr("kg", "किलो")}</dd></div>
+    </dl>
+    <p class="advice">${tr(
+      "Treat the seed before sowing. Ask at the seed shop or your agriculture office.",
+      "बुवाई से पहले बीज का उपचार करें। बीज की दुकान या कृषि कार्यालय से पूछें।"
+    )}</p>
+  `;
+}
+
+/* ══════════════════════════════
+   CROP INSURANCE COST (PM Fasal Bima Yojana)
+   The farmer pays a small share of the insured amount
+══════════════════════════════ */
+const INSURANCE = {
+  kharif:     { name: ["Kharif crop (grains, pulses, oilseeds)", "खरीफ़ फ़सल (अनाज, दालें, तिलहन)"], rate: 2 },
+  rabi:       { name: ["Rabi crop (grains, pulses, oilseeds)", "रबी फ़सल (अनाज, दालें, तिलहन)"],     rate: 1.5 },
+  commercial: { name: ["Fruit, vegetable or cash crop", "फल, सब्ज़ी या नक़दी फ़सल"],                 rate: 5 },
+};
+
+function renderInsurance() {
+  const kind = INSURANCE[$("insSeason").value];
+  const amount = fieldValue("insAmount");
+  const premium = amount * kind.rate / 100;
+
+  $("insResult").innerHTML = `
+    <div class="profit-main">
+      <div class="profit-main-label">${tr("You pay", "आपको देना है")}</div>
+      <div class="profit-main-value">${rupees(premium)}</div>
+    </div>
+    <dl class="kv">
+      <div><dt>${tr("Your share", "आपका हिस्सा")}</dt><dd>${kind.rate}%</dd></div>
+      <div><dt>${tr("Crop is insured for", "फ़सल का बीमा")}</dt><dd>${rupees(amount)}</dd></div>
+    </dl>
+    <p class="advice">${tr(
+      "The government pays the rest of the premium. Tell the insurer within 72 hours if your crop is damaged.",
+      "बाकी प्रीमियम सरकार देती है। फ़सल ख़राब हो तो 72 घंटे के अंदर बीमा कंपनी को बताएँ।"
+    )}</p>
+  `;
+}
+
+/* ══════════════════════════════
+   CROP LOAN INTEREST (Kisan Credit Card)
+   7% a year, or 4% when the loan is repaid on time
+══════════════════════════════ */
+const LOAN_RATES = { onTime: 4, late: 7 };
+
+function renderLoan() {
+  const amount = fieldValue("loanAmount");
+  const months = Math.min(12, fieldValue("loanMonths"));
+  const interest = rate => amount * (rate / 100) * (months / 12);
+  const onTime = interest(LOAN_RATES.onTime);
+  const late = interest(LOAN_RATES.late);
+
+  $("loanResult").innerHTML = `
+    <div class="profit-main">
+      <div class="profit-main-label">${tr("Interest if you repay on time", "समय पर चुकाने पर ब्याज")}</div>
+      <div class="profit-main-value">${rupees(onTime)}</div>
+    </div>
+    <dl class="kv">
+      <div><dt>${tr("Interest if you repay late", "देर से चुकाने पर ब्याज")}</dt><dd>${rupees(late)}</dd></div>
+      <div><dt>${tr("You save by paying on time", "समय पर चुकाने से बचत")}</dt><dd>${rupees(late - onTime)}</dd></div>
+      <div><dt>${tr("Total to pay back on time", "समय पर कुल चुकाना है")}</dt><dd>${rupees(amount + onTime)}</dd></div>
+    </dl>
+  `;
+}
+
 // Dropdown labels depend on the language, so this runs again after a switch
 function fillCalculatorOptions() {
   const areas = AREA_UNITS.map(key => [key, unitLabel(key)]);
-  fillSelect("fertCrop", Object.entries(FERTILIZER).map(([key, crop]) => [key, pick(crop.name)]));
+  const names = list => Object.entries(list).map(([key, item]) => [key, pick(item.name)]);
+
+  fillSelect("fertCrop", names(FERTILIZER));
   fillSelect("fertUnit", areas);
-  fillSelect("profitCrop", Object.entries(PROFIT_CROPS).map(([key, crop]) => [key, pick(crop.name)]));
+  fillSelect("seedCrop", names(SEED));
+  fillSelect("seedUnit", areas);
+  fillSelect("profitCrop", names(PROFIT_CROPS));
   fillSelect("profitUnit", areas);
+  fillSelect("insSeason", Object.entries(INSURANCE).map(([key, kind]) => [key, `${pick(kind.name)}: ${kind.rate}%`]));
   fillSelect("landUnit", Object.keys(LAND_UNITS).map(key => [key, unitLabel(key, true)]));
+  fillSelect("planCrop", names(PLANS));
 }
 
 function renderCalculators() {
   renderFertilizer();
+  renderSeed();
   renderProfit();
+  renderInsurance();
+  renderLoan();
   renderLandConverter();
 }
 
 function initCalculators() {
   fillCalculatorOptions();
 
+  // Offer the insurance rate of the season that is being sown now
+  $("insSeason").value = getSeason(new Date().getMonth()) === "kharif" && new Date().getMonth() < 8 ? "kharif" : "rabi";
+
   $("fertForm").addEventListener("input", renderFertilizer);
+  $("seedForm").addEventListener("input", renderSeed);
+  $("insForm").addEventListener("input", renderInsurance);
+  $("loanForm").addEventListener("input", renderLoan);
   $("landForm").addEventListener("input", renderLandConverter);
   $("profitCrop").addEventListener("change", loadProfitDefaults);
   $("profitForm").addEventListener("input", renderProfit);
-  ["fertForm", "profitForm", "landForm"].forEach(id => $(id).addEventListener("submit", e => e.preventDefault()));
+  ["fertForm", "seedForm", "profitForm", "insForm", "loanForm", "landForm"]
+    .forEach(id => $(id).addEventListener("submit", e => e.preventDefault()));
 
   loadProfitDefaults();
   renderCalculators();
+}
+
+/* ══════════════════════════════
+   GOVERNMENT SCHEMES
+   get: what the farmer gets. who: who can apply. how: how to get it.
+   Check these once a year against the official sites.
+══════════════════════════════ */
+const SCHEME_GROUPS = {
+  all:       ["All", "सभी"],
+  money:     ["Money", "पैसा"],
+  insurance: ["Insurance", "बीमा"],
+  loan:      ["Loan", "ऋण"],
+  water:     ["Water and solar", "पानी और सोलर"],
+  machine:   ["Machines", "मशीन"],
+  soil:      ["Soil and organic", "मिट्टी और जैविक"],
+  sell:      ["Selling", "बिक्री"],
+};
+
+const SCHEMES = [
+  { id: "pmkisan", group: "money", icon: "💵", link: "https://pmkisan.gov.in", phone: "155261",
+    name: ["PM-KISAN", "पीएम-किसान"],
+    get:  ["₹6,000 every year, in 3 parts of ₹2,000, straight to your bank account.", "हर साल ₹6,000, ₹2,000 की 3 किस्तों में, सीधे बैंक खाते में।"],
+    who:  ["Farmer families who own farm land.", "जिन किसान परिवारों के नाम खेती की ज़मीन है।"],
+    how:  ["Apply on the website or at a Common Service Centre (CSC). Keep Aadhaar, bank passbook and land papers ready. e-KYC is a must.", "वेबसाइट पर या जन सेवा केंद्र (CSC) पर आवेदन करें। आधार, बैंक पासबुक और ज़मीन के काग़ज़ साथ रखें। ई-केवाईसी ज़रूरी है।"] },
+  { id: "pension", group: "money", icon: "🧓", link: "https://maandhan.in",
+    name: ["Kisan pension (PM-KMY)", "किसान पेंशन (पीएम-केएमवाई)"],
+    get:  ["₹3,000 pension every month after the age of 60.", "60 साल की उम्र के बाद हर महीने ₹3,000 पेंशन।"],
+    who:  ["Farmers aged 18 to 40 with up to 2 hectares of land.", "18 से 40 साल के किसान, जिनके पास 2 हेक्टेयर तक ज़मीन है।"],
+    how:  ["Pay ₹55 to ₹200 a month, depending on your age. The government adds the same amount. Join at a Common Service Centre (CSC).", "उम्र के हिसाब से हर महीने ₹55 से ₹200 जमा करें। सरकार भी उतना ही जोड़ती है। जन सेवा केंद्र (CSC) पर नाम लिखवाएँ।"] },
+  { id: "pmfby", group: "insurance", icon: "🛡️", link: "https://pmfby.gov.in", phone: "14447",
+    name: ["PM Fasal Bima (crop insurance)", "पीएम फ़सल बीमा"],
+    get:  ["Money if your crop is lost to drought, flood, hail, pests or disease.", "सूखा, बाढ़, ओले, कीट या रोग से फ़सल ख़राब होने पर पैसा।"],
+    who:  ["Any farmer growing a listed crop, on own or rented land.", "सूची में शामिल फ़सल उगाने वाला कोई भी किसान, अपनी या किराए की ज़मीन पर।"],
+    how:  ["You pay only 2% for Kharif and 1.5% for Rabi crops. Enrol at your bank, a CSC or on the app before the last date. Report crop loss within 72 hours.", "खरीफ़ में सिर्फ़ 2% और रबी में 1.5% प्रीमियम। आख़िरी तारीख़ से पहले बैंक, CSC या ऐप से बीमा कराएँ। नुकसान की सूचना 72 घंटे के अंदर दें।"] },
+  { id: "kcc", group: "loan", icon: "💳", link: "https://www.myscheme.gov.in/schemes/kcc",
+    name: ["Kisan Credit Card", "किसान क्रेडिट कार्ड"],
+    get:  ["Crop loan at 7% interest. Only 4% if you repay on time.", "7% ब्याज पर फ़सल ऋण। समय पर चुकाने पर सिर्फ़ 4%।"],
+    who:  ["Farmers, tenant farmers and sharecroppers. Also for dairy and fish farming.", "किसान, किराएदार किसान और बटाईदार। पशुपालन और मछली पालन के लिए भी।"],
+    how:  ["Apply at your bank or cooperative society with Aadhaar and land papers.", "आधार और ज़मीन के काग़ज़ लेकर अपने बैंक या सहकारी समिति में आवेदन करें।"] },
+  { id: "aif", group: "loan", icon: "🏬", link: "https://agriinfra.dac.gov.in",
+    name: ["Loan for godown and cold store", "गोदाम और कोल्ड स्टोर के लिए ऋण"],
+    get:  ["3% less interest on loans up to ₹2 crore for a godown, cold store or sorting unit.", "गोदाम, कोल्ड स्टोर या छँटाई यूनिट के लिए ₹2 करोड़ तक के ऋण पर ब्याज में 3% की छूट।"],
+    who:  ["Farmers, farmer groups (FPO), cooperatives and self-help groups.", "किसान, किसान उत्पादक संगठन (FPO), सहकारी समितियाँ और स्वयं सहायता समूह।"],
+    how:  ["Apply online on the Agriculture Infrastructure Fund site. Your bank then checks the plan.", "एग्रीकल्चर इंफ़्रास्ट्रक्चर फ़ंड की वेबसाइट पर ऑनलाइन आवेदन करें। फिर बैंक आपकी योजना जाँचता है।"] },
+  { id: "drip", group: "water", icon: "💧", link: "https://pmksy.gov.in",
+    name: ["Drip and sprinkler subsidy", "ड्रिप और स्प्रिंकलर पर सब्सिडी"],
+    get:  ["The government pays about half the cost: 55% for small farmers, 45% for others.", "सरकार लगभग आधा ख़र्च देती है: छोटे किसानों को 55%, बाकी को 45%।"],
+    who:  ["Any farmer with a source of water.", "कोई भी किसान जिसके पास पानी का साधन है।"],
+    how:  ["Apply at your district agriculture or horticulture office.", "अपने ज़िले के कृषि या उद्यान कार्यालय में आवेदन करें।"] },
+  { id: "kusum", group: "water", icon: "☀️", link: "https://pmkusum.mnre.gov.in",
+    name: ["Solar pump (PM-KUSUM)", "सोलर पंप (पीएम-कुसुम)"],
+    get:  ["The government pays 60% of the cost of a solar pump.", "सोलर पंप की क़ीमत का 60% सरकार देती है।"],
+    who:  ["Farmers who need a pump, mainly where there is no electricity line.", "जिन किसानों को पंप चाहिए, ख़ासकर जहाँ बिजली की लाइन नहीं है।"],
+    how:  ["You pay 10% yourself. A bank loan can cover the other 30%. Apply only on your state's official portal. Beware of fake websites that ask for money.", "10% आपको देना है। बाकी 30% के लिए बैंक ऋण मिल सकता है। सिर्फ़ अपने राज्य के सरकारी पोर्टल पर आवेदन करें। पैसे माँगने वाली नक़ली वेबसाइटों से बचें।"] },
+  { id: "smam", group: "machine", icon: "🚜", link: "https://agrimachinery.nic.in",
+    name: ["Farm machine subsidy", "कृषि यंत्र पर सब्सिडी"],
+    get:  ["40 to 50% help on tractors, tillers, seed drills and other machines.", "ट्रैक्टर, टिलर, सीड ड्रिल और दूसरी मशीनों पर 40 से 50% मदद।"],
+    who:  ["All farmers. Small farmers, women and SC/ST farmers get the higher share.", "सभी किसान। छोटे किसानों, महिलाओं और अनुसूचित जाति/जनजाति के किसानों को ज़्यादा हिस्सा मिलता है।"],
+    how:  ["Register on the farm machinery portal and choose your machine.", "कृषि यंत्र पोर्टल पर पंजीकरण करें और अपनी मशीन चुनें।"] },
+  { id: "shc", group: "soil", icon: "🧪", link: "https://soilhealth.dac.gov.in",
+    name: ["Soil Health Card", "मृदा स्वास्थ्य कार्ड"],
+    get:  ["A free soil test and a card that tells how much fertilizer your field needs.", "मिट्टी की मुफ़्त जाँच और एक कार्ड जो बताता है कि खेत को कितनी खाद चाहिए।"],
+    who:  ["Every farmer.", "हर किसान।"],
+    how:  ["Give a soil sample at your agriculture office or Krishi Vigyan Kendra.", "अपने कृषि कार्यालय या कृषि विज्ञान केंद्र में मिट्टी का नमूना दें।"] },
+  { id: "pkvy", group: "soil", icon: "🌿", link: "https://pgsindia-ncof.gov.in",
+    name: ["Organic farming help (PKVY)", "जैविक खेती में मदद (PKVY)"],
+    get:  ["₹31,500 for each hectare over 3 years. ₹15,000 of it comes to your bank for organic inputs.", "3 साल में प्रति हेक्टेयर ₹31,500। इसमें से ₹15,000 जैविक खाद-बीज के लिए सीधे खाते में।"],
+    who:  ["Farmers who join a group (cluster) for organic farming.", "जो किसान जैविक खेती के समूह (क्लस्टर) में जुड़ते हैं।"],
+    how:  ["Ask your block agriculture office about a cluster near you.", "अपने ब्लॉक कृषि कार्यालय से पास के क्लस्टर के बारे में पूछें।"] },
+  { id: "natural", group: "soil", icon: "🐄", link: "https://naturalfarming.dac.gov.in",
+    name: ["Natural farming mission", "प्राकृतिक खेती मिशन"],
+    get:  ["₹4,000 for one acre every year, for 2 years, when you shift to natural farming.", "प्राकृतिक खेती अपनाने पर एक एकड़ के लिए हर साल ₹4,000, 2 साल तक।"],
+    who:  ["Farmers ready to farm one acre without chemicals.", "जो किसान एक एकड़ में बिना रसायन खेती करने को तैयार हैं।"],
+    how:  ["Join through the Krishi Sakhi of your village or your agriculture office.", "अपने गाँव की कृषि सखी या कृषि कार्यालय के ज़रिए जुड़ें।"] },
+  { id: "enam", group: "sell", icon: "🏪", link: "https://enam.gov.in", phone: "18002700224",
+    name: ["e-NAM (online mandi)", "ई-नाम (ऑनलाइन मंडी)"],
+    get:  ["Sell your crop online to buyers in many mandis. The money comes to your bank.", "अपनी फ़सल कई मंडियों के ख़रीदारों को ऑनलाइन बेचें। पैसा सीधे बैंक में आता है।"],
+    who:  ["Any farmer near an e-NAM mandi.", "ई-नाम मंडी के पास का कोई भी किसान।"],
+    how:  ["Register on the website, on the app or at the mandi gate.", "वेबसाइट, ऐप या मंडी के गेट पर पंजीकरण करें।"] },
+  { id: "msp", group: "sell", icon: "₹", link: "#msp", internal: true,
+    name: ["Selling at the government price", "सरकारी भाव (MSP) पर बिक्री"],
+    get:  ["The government buys wheat, paddy, pulses and oilseeds at the fixed price (MSP).", "सरकार गेहूँ, धान, दालें और तिलहन तय भाव (MSP) पर ख़रीदती है।"],
+    who:  ["Farmers registered on their state's crop purchase portal.", "जो किसान अपने राज्य के फ़सल ख़रीद पोर्टल पर पंजीकृत हैं।"],
+    how:  ["Register before harvest with Aadhaar, bank account and land papers. Take your crop to the centre on the date you are given.", "कटाई से पहले आधार, बैंक खाते और ज़मीन के काग़ज़ के साथ पंजीकरण कराएँ। दी गई तारीख़ पर फ़सल ख़रीद केंद्र ले जाएँ।"] },
+];
+
+// PM-KISAN pays in three fixed periods of the year
+function pmKisanPeriod() {
+  const month = new Date().getMonth();          // 0-indexed
+  if (month >= 3 && month <= 6)  return tr("April to July", "अप्रैल से जुलाई");
+  if (month >= 7 && month <= 10) return tr("August to November", "अगस्त से नवंबर");
+  return tr("December to March", "दिसंबर से मार्च");
+}
+
+let schemeGroup = "all";
+let schemesExpanded = false;      // "All" shows a first few until the farmer asks for the rest
+const SCHEMES_SHOWN_FIRST = 6;
+
+function renderSchemeFilters() {
+  $("schemeFilters").innerHTML = Object.entries(SCHEME_GROUPS).map(([key, name]) => {
+    const count = key === "all" ? SCHEMES.length : SCHEMES.filter(s => s.group === key).length;
+    return `<button class="filter" type="button" data-group="${key}" aria-pressed="${key === schemeGroup}">${pick(name)} <span class="filter-count">${count}</span></button>`;
+  }).join("");
+}
+
+function renderSchemes() {
+  const matching = SCHEMES.filter(s => schemeGroup === "all" || s.group === schemeGroup);
+  const short = schemeGroup === "all" && !schemesExpanded;
+  const list = short ? matching.slice(0, SCHEMES_SHOWN_FIRST) : matching;
+
+  const more = $("schemeAll");
+  more.hidden = !short;
+  more.textContent = tr(`Show all ${matching.length} schemes`, `सभी ${matching.length} योजनाएँ देखें`);
+
+  const phoneText = number => number.length > 6 ? number.replace(/(\d{4})(\d{3})(\d{4})/, "$1-$2-$3") : number;
+
+  $("schemeList").innerHTML = list.map((s, i) => {
+    const extra = s.id === "pmkisan"
+      ? `<p class="scheme-extra">${tr("This instalment period", "इस किस्त का समय")}: <strong>${pmKisanPeriod()}</strong></p>` : "";
+    const link = s.internal
+      ? `<a class="link" href="${s.link}">${tr("See the prices", "भाव देखें")}</a>`
+      : `<a class="link" href="${s.link}" target="_blank" rel="noopener noreferrer">${tr("Open site", "वेबसाइट खोलें")} <svg class="icon" aria-hidden="true"><use href="#i-external" /></svg></a>`;
+    const call = s.phone
+      ? `<a class="link" href="tel:${s.phone}"><svg class="icon" aria-hidden="true"><use href="#i-phone" /></svg> ${phoneText(s.phone)}</a>` : "";
+
+    return `
+      <article class="scheme" style="--i:${i}">
+        <header class="scheme-head">
+          <span class="card-icon${s.icon === "₹" ? " card-icon-text" : ""}" aria-hidden="true">${s.icon}</span>
+          <div>
+            <h3 class="scheme-name">${pick(s.name)}</h3>
+            <span class="tag">${pick(SCHEME_GROUPS[s.group])}</span>
+          </div>
+        </header>
+        <p class="scheme-get">${pick(s.get)}</p>
+        ${extra}
+        <button class="scheme-more" type="button" aria-expanded="false">
+          <span>${tr("Who can get it and how", "किसे मिलेगा और कैसे")}</span>
+          <svg class="icon chevron" aria-hidden="true" viewBox="0 0 24 24"><path d="m6 9 6 6 6-6" /></svg>
+        </button>
+        <div class="scheme-details">
+          <div>
+            <p><strong>${tr("Who", "किसे")}:</strong> ${pick(s.who)}</p>
+            <p><strong>${tr("How", "कैसे")}:</strong> ${pick(s.how)}</p>
+          </div>
+        </div>
+        <footer class="scheme-foot">${link}${call}</footer>
+      </article>
+    `;
+  }).join("");
+}
+
+function initSchemes() {
+  renderSchemeFilters();
+  renderSchemes();
+
+  $("schemeFilters").addEventListener("click", e => {
+    const btn = e.target.closest(".filter");
+    if (!btn) return;
+    schemeGroup = btn.dataset.group;
+    $("schemeFilters").querySelectorAll(".filter").forEach(f => f.setAttribute("aria-pressed", String(f === btn)));
+    smoothly(renderSchemes);
+  });
+
+  $("schemeAll").addEventListener("click", () => {
+    schemesExpanded = true;
+    renderSchemes();
+  });
+
+  // Open and close "who can get it and how"
+  $("schemeList").addEventListener("click", e => {
+    const btn = e.target.closest(".scheme-more");
+    if (!btn) return;
+    const open = btn.getAttribute("aria-expanded") !== "true";
+    btn.setAttribute("aria-expanded", String(open));
+    btn.closest(".scheme").classList.toggle("is-open", open);
+  });
+}
+
+/* ══════════════════════════════
+   PAPERS YOU NEED
+   A small checklist the phone remembers
+══════════════════════════════ */
+function renderPaperCount() {
+  const boxes = [...document.querySelectorAll("#paperList input")];
+  const ready = boxes.filter(box => box.checked).length;
+  setText("paperCount", ready === boxes.length
+    ? tr("All papers are ready. You can apply.", "सारे काग़ज़ तैयार हैं। आप आवेदन कर सकते हैं।")
+    : tr(`${ready} of ${boxes.length} ready`, `${boxes.length} में से ${ready} तैयार`));
+}
+
+function initPapers() {
+  const saved = readStore("local", "km_papers") || [];
+  const boxes = [...document.querySelectorAll("#paperList input")];
+  boxes.forEach(box => { box.checked = saved.includes(box.dataset.paper); });
+
+  $("paperList").addEventListener("change", () => {
+    writeStore("local", "km_papers", boxes.filter(box => box.checked).map(box => box.dataset.paper));
+    renderPaperCount();
+  });
+  renderPaperCount();
 }
 
 /* ══════════════════════════════
@@ -1477,6 +2063,30 @@ function initChat() {
 /* ══════════════════════════════
    PAGE MOTION
 ══════════════════════════════ */
+const calmMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+// Counts a number up or down to its new value instead of jumping
+function countTo(el, value, format) {
+  const from = Number.isFinite(el._shown) ? el._shown : value - 8;
+  el._shown = value;
+  if (calmMotion || from === value) { el.textContent = format(value); return; }
+
+  const started = performance.now();
+  const step = now => {
+    const t = Math.min(1, (now - started) / 700);
+    const eased = 1 - Math.pow(1 - t, 3);
+    el.textContent = format(from + (value - from) * eased);
+    if (t < 1 && el._shown === value) requestAnimationFrame(step);
+  };
+  requestAnimationFrame(step);
+}
+
+// Cross-fades the page while something big changes (language, scheme filter)
+function smoothly(change) {
+  if (calmMotion || !document.startViewTransition) change();
+  else document.startViewTransition(change);
+}
+
 // Sections fade up as they scroll into view
 function initReveal() {
   const items = document.querySelectorAll(".reveal");
@@ -1484,13 +2094,13 @@ function initReveal() {
   const settle = el => setTimeout(() => el.classList.remove("reveal", "is-visible"), 1200);
 
   if (!("IntersectionObserver" in window)) {
-    items.forEach(el => el.classList.remove("reveal"));
+    items.forEach(el => { el.classList.remove("reveal"); el.classList.add("is-seen"); });
     return;
   }
   const observer = new IntersectionObserver(entries => {
     entries.forEach(entry => {
       if (!entry.isIntersecting) return;
-      entry.target.classList.add("is-visible");
+      entry.target.classList.add("is-visible", "is-seen");
       settle(entry.target);
       observer.unobserve(entry.target);
     });
@@ -1498,12 +2108,54 @@ function initReveal() {
   items.forEach(el => observer.observe(el));
 }
 
-// The header gets a soft shadow once the page is scrolled,
-// and the menu shows which part of the page you are in
+// A soft circle spreads from where a button is pressed
+function initRipple() {
+  if (calmMotion) return;
+  const targets = ".btn, .chip, .tab, .filter, .lang-btn, .location-btn, .chat-fab, .helpline, .scheme-more";
+  document.addEventListener("pointerdown", e => {
+    const el = e.target.closest(targets);
+    if (!el) return;
+    const box = el.getBoundingClientRect();
+    const size = Math.max(box.width, box.height) * 2;
+    const ripple = document.createElement("span");
+    ripple.className = "ripple";
+    ripple.style.width = ripple.style.height = size + "px";
+    ripple.style.left = e.clientX - box.left - size / 2 + "px";
+    ripple.style.top = e.clientY - box.top - size / 2 + "px";
+    el.appendChild(ripple);
+    ripple.addEventListener("animationend", () => ripple.remove());
+  });
+}
+
+// A faint light follows the mouse across a card
+function initSpotlight() {
+  if (calmMotion || !window.matchMedia("(hover: hover) and (pointer: fine)").matches) return;
+  document.addEventListener("pointermove", e => {
+    const card = e.target.closest(".card, .scheme");
+    if (!card) return;
+    const box = card.getBoundingClientRect();
+    card.style.setProperty("--mx", e.clientX - box.left + "px");
+    card.style.setProperty("--my", e.clientY - box.top + "px");
+  }, { passive: true });
+}
+
+// Keeps the sliding pill under the right tab when sizes change
+function refreshTabPills() {
+  document.querySelectorAll(".tabs").forEach(moveTabPill);
+}
+
+// The header gets a soft shadow once the page is scrolled, a thin bar shows
+// how far down you are, and the menu shows which part of the page you are in
 function initHeader() {
   const header = document.querySelector(".site-header");
-  const onScroll = () => header.classList.toggle("is-scrolled", window.scrollY > 8);
+  const bar = document.querySelector(".scroll-progress");
+  const onScroll = () => {
+    header.classList.toggle("is-scrolled", window.scrollY > 8);
+    const room = document.documentElement.scrollHeight - window.innerHeight;
+    bar.style.setProperty("--scroll", room > 0 ? Math.min(1, window.scrollY / room) : 0);
+  };
   window.addEventListener("scroll", onScroll, { passive: true });
+  window.addEventListener("resize", refreshTabPills);
   onScroll();
 
   if (!("IntersectionObserver" in window)) return;
@@ -1533,15 +2185,20 @@ function renderAllText() {
   renderMsp(tabState.mspTabs);
   fillCalculatorOptions();
   renderCalculators();
+  renderPlan();
+  renderSchemeFilters();
+  renderSchemes();
+  renderPaperCount();
   renderChatLog();
   if (weather) renderWeather();
+  refreshTabPills();
 }
 
 function initLanguage() {
   $("langBtn").addEventListener("click", () => {
     lang = lang === "hi" ? "en" : "hi";
     writeStore("local", "km_lang", lang);
-    renderAllText();
+    smoothly(renderAllText);
   });
 }
 
@@ -1564,26 +2221,35 @@ function init() {
   initTabs("cropTabs", "season", season, renderCropList);
   initTabs("mspTabs", "msp", season === "kharif" ? "kharif" : "rabi", renderMsp);
   initCalculators();
+  initPlan();
 
-  // 4. Chat
+  // 4. Schemes and the papers checklist
+  initSchemes();
+  initPapers();
+
+  // 5. Chat
   initChat();
 
-  // 5. Place, then weather for it
+  // 6. Place, then weather for it
   initLocation();
   initSprayDetail();
   loadWeather();
   $("refreshWeather").addEventListener("click", () => loadWeather({ force: true }));
 
-  // 6. Keep the weather fresh while the page is being looked at
+  // 7. Keep the weather fresh while the page is being looked at
   setInterval(() => { if (!document.hidden) loadWeather({ force: true }); }, CONFIG.WEATHER_REFRESH_MS);
   document.addEventListener("visibilitychange", () => {
     const stale = weather && Date.now() - weather.fetchedAt > CONFIG.WEATHER_REFRESH_MS;
     if (!document.hidden && stale) loadWeather({ force: true });
   });
 
-  // 7. Page motion
+  // 8. Page motion
   initHeader();
   initReveal();
+  initRipple();
+  initSpotlight();
+  refreshTabPills();
+  document.fonts?.ready.then(refreshTabPills);     // tab widths change once the fonts arrive
 
   console.log("🌾 KrishiMitra loaded. Jai Kisan!");
 }
