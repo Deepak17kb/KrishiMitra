@@ -390,17 +390,20 @@ let weather = null;       // latest Open-Meteo response
 function weatherUrl({ lat, lon }) {
   return "https://api.open-meteo.com/v1/forecast" +
     `?latitude=${lat}&longitude=${lon}` +
-    "&current=temperature_2m,relative_humidity_2m,precipitation,weather_code,wind_speed_10m,is_day" +
-    "&hourly=temperature_2m,relative_humidity_2m,precipitation_probability,precipitation," +
+    "&current=temperature_2m,apparent_temperature,relative_humidity_2m,precipitation,weather_code," +
+      "wind_speed_10m,wind_direction_10m,wind_gusts_10m,is_day" +
+    "&hourly=temperature_2m,relative_humidity_2m,precipitation_probability,precipitation,weather_code," +
       "wind_speed_10m,is_day,soil_temperature_6cm,soil_moisture_3_to_9cm,soil_moisture_9_to_27cm" +
     "&daily=weather_code,temperature_2m_max,temperature_2m_min,precipitation_sum," +
-      "precipitation_probability_max,wind_gusts_10m_max,et0_fao_evapotranspiration" +
+      "precipitation_probability_max,wind_speed_10m_max,wind_gusts_10m_max,sunrise,sunset," +
+      "uv_index_max,et0_fao_evapotranspiration" +
     "&timezone=auto&forecast_days=7";
 }
 
 async function loadWeather({ force = false } = {}) {
   const key = `${place.lat},${place.lon}`;
-  const cached = readStore("session", "km_weather");
+  // The name changes whenever the request asks for new fields, so old saved copies are ignored
+  const cached = readStore("session", "km_weather_v2");
   const fresh = cached && cached.key === key && Date.now() - cached.at < CONFIG.WEATHER_CACHE_MS;
 
   if (fresh && !force) {
@@ -420,7 +423,7 @@ async function loadWeather({ force = false } = {}) {
     const firstLoad = !weather;
     weather = data;
     weather.fetchedAt = Date.now();
-    writeStore("session", "km_weather", { key, at: weather.fetchedAt, data });
+    writeStore("session", "km_weather_v2", { key, at: weather.fetchedAt, data });
     renderWeather();
     if (!firstLoad) flashStats();
   } catch (err) {
@@ -444,6 +447,7 @@ function rainChanceAhead(hours) {
 
 function renderWeather() {
   renderNow();
+  renderHourly();
   renderForecast();
   renderSpray();
   renderWater();
@@ -465,6 +469,8 @@ function showWeatherError() {
   setText("waterAnswer", missing);
   setText("alertAnswer", missing);
   setText("dryAnswer", missing);
+  setText("weekSummary", missing);
+  $("hourly").innerHTML = "";
   $("forecastList").innerHTML = `<li class="placeholder">${missing}</li>`;
 }
 
@@ -499,13 +505,56 @@ function renderNow() {
   });
 
   const condition = `<span class="wx-icon" aria-hidden="true">${info.icon}</span> ${info.label}`;
+  const d = weather.daily;
+  const kmh = tr("km/h", "किमी/घंटा");
+  const high = Math.round(d.temperature_2m_max[0]);
+  const low = Math.round(d.temperature_2m_min[0]);
 
   countTo($("wxTemp"), temp, v => Math.round(v) + "°");
   $("wxCond").innerHTML = condition;
   setText("wxPlace", placeLabel());
+  setText("wxFeels", tr(
+    `Feels like ${Math.round(c.apparent_temperature)}°. Today ${high}° by day, ${low}° at night.`,
+    `महसूस होता है ${Math.round(c.apparent_temperature)}°। आज दिन में ${high}°, रात में ${low}°।`
+  ));
+
+  // Rain: the chance, and when it is most likely
+  const rainAt = nextRainHour();
+  const rainToday = d.precipitation_sum[0] ?? 0;
   setText("wxRain", rainChance + "%");
-  setText("wxWind", `${windWord(c.wind_speed_10m)} · ${Math.round(c.wind_speed_10m)} ${tr("km/h", "किमी/घंटा")}`);
+  setText("wxRainNote",
+    rainAt !== null ? tr(`Rain likely around ${hourLabel(rainAt)}`, `लगभग ${hourLabel(rainAt)} बजे बारिश हो सकती है`)
+    : rainToday >= 0.5 ? tr(`About ${num(rainToday, 0)} mm today`, `आज लगभग ${num(rainToday, 0)} मिमी`)
+    : tr("No rain expected today", "आज बारिश की उम्मीद नहीं"));
+
+  // Wind: strength, where it blows from, and gusts when they matter
+  const from = pick(WIND_FROM[Math.round(c.wind_direction_10m / 45) % 8]);
+  const gust = Math.round(c.wind_gusts_10m ?? 0);
+  setText("wxWind", `${windWord(c.wind_speed_10m)} · ${Math.round(c.wind_speed_10m)} ${kmh}`);
+  setText("wxWindNote", tr(`From the ${from}`, `${from} से`) +
+    (gust >= 30 ? tr(`. Gusts up to ${gust} km/h.`, `। झोंके ${gust} किमी/घंटा तक।`) : ""));
+
   setText("wxHumidity", c.relative_humidity_2m + "%");
+  setText("wxHumidityNote", humidityWord(c.relative_humidity_2m));
+
+  const sun = sunStrength(d.uv_index_max[0]);
+  setText("wxUv", sun.word);
+  setText("wxUvNote", sun.note);
+
+  // Sun: rise, set, length of the day and how long until sunset
+  const minutes = iso => Number(iso.slice(11, 13)) * 60 + Number(iso.slice(14, 16));
+  const span = mins => tr(`${Math.floor(mins / 60)} h ${mins % 60} min`, `${Math.floor(mins / 60)} घंटे ${mins % 60} मिनट`);
+  const rise = minutes(d.sunrise[0]);
+  const set = minutes(d.sunset[0]);
+  const nowMin = minutes(c.time);
+  setText("wxSunrise", clock(d.sunrise[0]));
+  setText("wxSunset", clock(d.sunset[0]));
+  setText("wxDayLength", tr(`${span(set - rise)} of daylight`, `${span(set - rise)} का दिन`));
+  setText("wxNightNote",
+    nowMin < rise ? tr(`Sun rises in ${span(rise - nowMin)}`, `${span(rise - nowMin)} में सूरज उगेगा`)
+    : nowMin < set ? tr(`${span(set - nowMin)} of light left`, `${span(set - nowMin)} की रोशनी बाकी`)
+    : tr("The sun has set", "सूरज डूब चुका है"));
+
   setText("wxAdvice", advice);
   setText("wxUpdated", tr(`Updated at ${clock(c.time)}`, `${clock(c.time)} बजे की जानकारी`));
 
@@ -516,26 +565,130 @@ function renderNow() {
   setText("heroAdvice", advice);
 }
 
+// Where the wind blows from, in words
+const WIND_FROM = [
+  ["north", "उत्तर"], ["north-east", "उत्तर-पूर्व"], ["east", "पूर्व"], ["south-east", "दक्षिण-पूर्व"],
+  ["south", "दक्षिण"], ["south-west", "दक्षिण-पश्चिम"], ["west", "पश्चिम"], ["north-west", "उत्तर-पश्चिम"],
+];
+
+function humidityWord(humidity) {
+  if (humidity < 30) return tr("Dry air", "सूखी हवा");
+  if (humidity < 60) return tr("Comfortable", "ठीक-ठाक");
+  if (humidity < 85) return tr("Humid", "उमस है");
+  return tr("Very humid. Crop disease can spread.", "बहुत उमस। फ़सल में रोग फैल सकता है।");
+}
+
+// How strong the sun is today (UV index), with what to do about it
+function sunStrength(uv) {
+  if (uv == null) return { word: "--", note: "" };
+  if (uv < 3)  return { word: tr("Low", "कम"),           note: tr("Safe to work outside all day.", "दिन भर बाहर काम करना सुरक्षित है।") };
+  if (uv < 6)  return { word: tr("Medium", "मध्यम"),     note: tr("Wear a cap or gamchha at midday.", "दोपहर में टोपी या गमछा पहनें।") };
+  if (uv < 8)  return { word: tr("Strong", "तेज़"),       note: tr("Cover your head from 11 am to 3 pm.", "सुबह 11 से दोपहर 3 बजे तक सिर ढककर रखें।") };
+  if (uv < 11) return { word: tr("Very strong", "बहुत तेज़"), note: tr("Stay out of the midday sun. Drink plenty of water.", "दोपहर की धूप से बचें। ख़ूब पानी पिएँ।") };
+  return { word: tr("Extreme", "बेहद तेज़"), note: tr("Stay in the shade at midday.", "दोपहर में छाँव में रहें।") };
+}
+
+// The first hour in the next 12 when rain is likely, or null
+function nextRainHour() {
+  const h = weather.hourly;
+  const now = hourIndexNow();
+  for (let i = now; i < Math.min(now + 12, h.time.length); i++) {
+    if ((h.precipitation_probability[i] ?? 0) >= 50 || (h.precipitation[i] ?? 0) >= 0.3) return i;
+  }
+  return null;
+}
+
+/* ── Next 24 hours ── */
+function renderHourly() {
+  const h = weather.hourly;
+  const now = hourIndexNow();
+  const temps = h.temperature_2m.slice(now, now + 25);
+  if (temps.length < 25) { $("hourly").innerHTML = ""; return; }
+
+  // Temperature curve: 800 wide, 80 tall, warmer is higher
+  const low = Math.min(...temps);
+  const high = Math.max(...temps);
+  const range = Math.max(1, high - low);
+  const line = temps
+    .map((t, i) => `${i ? "L" : "M"}${((i / 24) * 800).toFixed(1)} ${(68 - ((t - low) / range) * 56).toFixed(1)}`)
+    .join(" ");
+
+  // One column for every three hours. Each column starts at its own time on the curve.
+  const slots = [0, 3, 6, 9, 12, 15, 18, 21].map((offset, n) => {
+    const i = now + offset;
+    const info = describeWeather(h.weather_code[i], h.is_day[i] === 1);
+    const rain = h.precipitation_probability[i] ?? 0;
+    return `
+      <li class="hourly-slot" style="--i:${n}">
+        <span class="hourly-time">${offset === 0 ? tr("Now", "अभी") : hourLabel(i)}</span>
+        <span class="hourly-icon" role="img" aria-label="${info.label}" title="${info.label}">${info.icon}</span>
+        <span class="hourly-temp">${Math.round(h.temperature_2m[i])}°</span>
+        <span class="hourly-rain">${rain >= 20 ? `💧${rain}%` : ""}</span>
+      </li>
+    `;
+  }).join("");
+
+  const warmAt = hourLabel(now + temps.indexOf(high));
+  const coolAt = hourLabel(now + temps.indexOf(low));
+
+  $("hourly").innerHTML = `
+    <svg class="hourly-curve" viewBox="0 0 800 80" preserveAspectRatio="none" aria-hidden="true">
+      <defs>
+        <linearGradient id="hourlyFill" x1="0" y1="0" x2="0" y2="1">
+          <stop offset="0" stop-color="#e3bd6a" stop-opacity="0.45" />
+          <stop offset="1" stop-color="#e3bd6a" stop-opacity="0" />
+        </linearGradient>
+      </defs>
+      <path class="hourly-area" d="${line} L800 80 L0 80 Z" fill="url(#hourlyFill)" />
+      <path class="hourly-line" d="${line}" pathLength="1" />
+    </svg>
+    <ol class="hourly-slots">${slots}</ol>
+    <p class="meta">${tr(
+      `Warmest ${Math.round(high)}° around ${warmAt}. Coolest ${Math.round(low)}° around ${coolAt}.`,
+      `सबसे गर्म ${Math.round(high)}°, लगभग ${warmAt} बजे। सबसे ठंडा ${Math.round(low)}°, लगभग ${coolAt} बजे।`
+    )}</p>
+  `;
+}
+
 /* ── Next 7 days ── */
 function renderForecast() {
   const d = weather.daily;
   const mm = tr("mm", "मिमी");
+  const kmh = tr("km/h", "किमी/घंटा");
+
+  // One line for the whole week
+  const wetDays = d.precipitation_sum.filter(v => (v ?? 0) >= 0.5).length;
+  const total = Math.round(sum(d.precipitation_sum));
+  const hottest = Math.round(Math.max(...d.temperature_2m_max));
+  const coolest = Math.round(Math.min(...d.temperature_2m_min));
+  const rainLine = wetDays === 0 ? tr("A dry week.", "पूरा हफ़्ता सूखा रहेगा।")
+    : wetDays === 1 ? tr(`Rain on 1 day, about ${total} mm.`, `1 दिन बारिश, लगभग ${total} मिमी।`)
+    : tr(`Rain on ${wetDays} days, about ${total} mm in all.`, `${wetDays} दिन बारिश, कुल लगभग ${total} मिमी।`);
+  $("weekSummary").className = "answer" + (wetDays ? " is-wait" : " is-good");
+  setText("weekSummary", `${rainLine} ${tr(
+    `Hottest day ${hottest}°, coolest night ${coolest}°.`,
+    `सबसे गर्म दिन ${hottest}°, सबसे ठंडी रात ${coolest}°।`
+  )}`);
 
   $("forecastList").innerHTML = d.time.map((date, i) => {
     const info = describeWeather(d.weather_code[i]);
     const rain = d.precipitation_sum[i] ?? 0;
     const chance = d.precipitation_probability_max[i] ?? 0;
+    const wind = Math.round(d.wind_speed_10m_max[i] ?? 0);
 
     let rainText = tr("No rain", "बारिश नहीं");
-    if (rain >= 0.5)       rainText = tr(`Rain ${num(rain, 0)} ${mm}`, `बारिश ${num(rain, 0)} ${mm}`);
-    else if (chance >= 40) rainText = tr("Rain possible", "बारिश हो सकती है");
+    if (rain >= 0.5)       rainText = tr(`Rain ${num(rain, 0)} ${mm}, ${chance}% chance`, `बारिश ${num(rain, 0)} ${mm}, ${chance}% संभावना`);
+    else if (chance >= 40) rainText = tr(`Rain possible, ${chance}% chance`, `बारिश हो सकती है, ${chance}% संभावना`);
     const wet = rain >= 0.5 || chance >= 40;
 
     return `
       <li class="fc-row${i === 0 ? " is-today" : ""}" style="--i:${i}">
-        <span class="fc-day">${i === 0 ? tr("Today", "आज") : dayName(date)}</span>
+        <span class="fc-day">${i === 0 ? tr("Today", "आज") : `${dayName(date)} ${Number(date.slice(8, 10))}`}</span>
         <span class="fc-icon" role="img" aria-label="${info.label}" title="${info.label}">${info.icon}</span>
-        <span class="fc-rain${wet ? " is-wet" : ""}">${rainText}</span>
+        <span class="fc-text">
+          <span class="fc-label">${info.label}</span>
+          <span class="fc-detail"><span class="fc-rain${wet ? " is-wet" : ""}">${rainText}</span> · ${tr("wind", "हवा")} ${wind} ${kmh}</span>
+        </span>
         <span class="fc-temps"><span class="fc-max">${Math.round(d.temperature_2m_max[i])}°</span><span class="fc-min">${Math.round(d.temperature_2m_min[i])}°</span></span>
       </li>
     `;

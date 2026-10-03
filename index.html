@@ -135,7 +135,7 @@
         <div class="grid">
 
           <!-- ── WEATHER NOW ── -->
-          <article class="card col-5 reveal" aria-labelledby="wx-h">
+          <article class="card col-7 reveal" aria-labelledby="wx-h">
             <header class="card-head">
               <span class="card-icon" aria-hidden="true">🌤️</span>
               <h3 class="card-title" id="wx-h" data-hi="अभी का मौसम">Weather now</h3>
@@ -150,21 +150,30 @@
                 <span class="wx-place" id="wxPlace">…</span>
               </span>
             </div>
-            <dl class="stats">
-              <div class="stat"><dt data-hi="बारिश की संभावना">Chance of rain</dt><dd id="wxRain">--</dd></div>
-              <div class="stat"><dt data-hi="हवा">Wind</dt><dd id="wxWind">--</dd></div>
-              <div class="stat"><dt data-hi="हवा में नमी">Humidity</dt><dd id="wxHumidity">--</dd></div>
+            <p class="wx-feels" id="wxFeels"></p>
+            <dl class="stats stats-detail">
+              <div class="stat"><dt data-hi="बारिश की संभावना">Chance of rain</dt><dd id="wxRain">--</dd><dd class="stat-note" id="wxRainNote"></dd></div>
+              <div class="stat"><dt data-hi="हवा">Wind</dt><dd id="wxWind">--</dd><dd class="stat-note" id="wxWindNote"></dd></div>
+              <div class="stat"><dt data-hi="हवा में नमी">Humidity</dt><dd id="wxHumidity">--</dd><dd class="stat-note" id="wxHumidityNote"></dd></div>
+              <div class="stat"><dt data-hi="धूप की तेज़ी">Sun strength</dt><dd id="wxUv">--</dd><dd class="stat-note" id="wxUvNote"></dd></div>
+              <div class="stat"><dt data-hi="सूरज उगेगा">Sunrise</dt><dd id="wxSunrise">--</dd><dd class="stat-note" id="wxDayLength"></dd></div>
+              <div class="stat"><dt data-hi="सूरज डूबेगा">Sunset</dt><dd id="wxSunset">--</dd><dd class="stat-note" id="wxNightNote"></dd></div>
             </dl>
+
+            <h4 class="mini-title" data-hi="अगले 24 घंटे">Next 24 hours</h4>
+            <div class="hourly" id="hourly"></div>
+
             <p class="advice" id="wxAdvice">…</p>
             <p class="meta" id="wxUpdated"></p>
           </article>
 
           <!-- ── NEXT 7 DAYS ── -->
-          <article class="card col-7 reveal" aria-labelledby="fc-h">
+          <article class="card col-5 reveal" aria-labelledby="fc-h">
             <header class="card-head">
               <span class="card-icon" aria-hidden="true">📅</span>
               <h3 class="card-title" id="fc-h" data-hi="अगले 7 दिन">Next 7 days</h3>
             </header>
+            <p class="answer" id="weekSummary">…</p>
             <ol class="forecast" id="forecastList">
               <li class="placeholder">…</li>
             </ol>

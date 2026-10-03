@@ -55,8 +55,9 @@ No login. No app to install. No cost.
 <td width="50%" valign="top">
 
 ### 🌤️ Today on the farm
-- **Weather now**, with one line of advice for field work
-- **Next 7 days** of rain and temperature
+- **Weather now**: feels-like, when rain is likely, wind direction, sun strength, sunrise and sunset, with one line of advice for field work
+- **Next 24 hours** as a temperature curve
+- **Next 7 days** of rain, wind and temperature, summed up in one line
 - **When to spray?** Every hour of today and tomorrow marked good, okay or do not spray
 - **Should I water?** A straight yes, wait or no hurry
 - **Any danger this week?** Storm, heavy rain, heat, frost and strong wind warnings
