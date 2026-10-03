@@ -2,17 +2,20 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>KrishiMitra — Kisan ka Sachcha Mitra</title>
-  <meta name="description" content="A free farm companion for Indian farmers: live weather, the right hours to spray, soil and irrigation outlook, crop calendar, MSP, farm calculators and an AI assistant in Hindi and English." />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <title>KrishiMitra | Kisan ka Sachcha Mitra</title>
+  <meta name="description" content="A free farm helper for Indian farmers. Today's weather, when to spray, when to water, what to sow, government prices and an AI assistant, in Hindi and English." />
   <meta name="theme-color" content="#183a25" />
+  <meta name="apple-mobile-web-app-title" content="KrishiMitra" />
   <meta property="og:type" content="website" />
-  <meta property="og:title" content="KrishiMitra — Kisan ka Sachcha Mitra" />
-  <meta property="og:description" content="Live weather, spray timing, crop calendar, MSP, farm calculators and an AI assistant for Indian farmers." />
-  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 40 40'%3E%3Crect width='40' height='40' rx='11' fill='%23183a25'/%3E%3Cpath d='M20 31V12' stroke='%23e3bd6a' stroke-width='2' stroke-linecap='round'/%3E%3Cg fill='%23e3bd6a'%3E%3Cellipse cx='20' cy='11' rx='2.1' ry='3.4'/%3E%3Cellipse cx='16.2' cy='16.5' rx='3.2' ry='1.8' transform='rotate(-32 16.2 16.5)'/%3E%3Cellipse cx='23.8' cy='16.5' rx='3.2' ry='1.8' transform='rotate(32 23.8 16.5)'/%3E%3Cellipse cx='15.6' cy='21.6' rx='3.2' ry='1.8' transform='rotate(-28 15.6 21.6)'/%3E%3Cellipse cx='24.4' cy='21.6' rx='3.2' ry='1.8' transform='rotate(28 24.4 21.6)'/%3E%3C/g%3E%3C/svg%3E" />
+  <meta property="og:title" content="KrishiMitra | Kisan ka Sachcha Mitra" />
+  <meta property="og:description" content="Weather, spray timing, irrigation, crop calendar, MSP and an AI farm assistant in Hindi and English." />
+  <link rel="icon" href="favicon.svg" type="image/svg+xml" />
+  <link rel="apple-touch-icon" href="apple-touch-icon.png" />
+  <link rel="manifest" href="manifest.webmanifest" />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400..600;1,9..144,400..600&display=swap" />
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400..600;1,9..144,400..600&family=Tiro+Devanagari+Hindi:ital@0;1&display=swap" />
   <link rel="stylesheet" href="style.css" />
   <script>document.documentElement.classList.add("js");</script>
   <script src="script.js" defer></script>
@@ -22,19 +25,18 @@
   <!-- ═══════════════════════════════════════
        ICON SPRITE (used with <use href="#…">)
   ═══════════════════════════════════════ -->
-  <svg xmlns="http://www.w3.org/2000/svg" hidden>
-    <symbol id="mark" viewBox="0 0 40 40">
-      <rect width="40" height="40" rx="11" fill="#183a25" />
-      <path d="M20 31V12" stroke="#e3bd6a" stroke-width="2" stroke-linecap="round" fill="none" />
-      <g fill="#e3bd6a">
-        <ellipse cx="20" cy="11" rx="2.1" ry="3.4" />
-        <ellipse cx="16.2" cy="16.5" rx="3.2" ry="1.8" transform="rotate(-32 16.2 16.5)" />
-        <ellipse cx="23.8" cy="16.5" rx="3.2" ry="1.8" transform="rotate(32 23.8 16.5)" />
-        <ellipse cx="15.6" cy="21.6" rx="3.2" ry="1.8" transform="rotate(-28 15.6 21.6)" />
-        <ellipse cx="24.4" cy="21.6" rx="3.2" ry="1.8" transform="rotate(28 24.4 21.6)" />
-        <ellipse cx="16" cy="26.6" rx="2.8" ry="1.6" transform="rotate(-24 16 26.6)" opacity=".8" />
-        <ellipse cx="24" cy="26.6" rx="2.8" ry="1.6" transform="rotate(24 24 26.6)" opacity=".8" />
-      </g>
+  <svg xmlns="http://www.w3.org/2000/svg" width="0" height="0" class="sprite" aria-hidden="true">
+    <defs>
+      <linearGradient id="mark-bg" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#2f6f47" /><stop offset="1" stop-color="#10301e" /></linearGradient>
+      <linearGradient id="mark-gold" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#f5dc9a" /><stop offset="1" stop-color="#d9a441" /></linearGradient>
+      <linearGradient id="mark-leaf" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#bfe6c4" /><stop offset="1" stop-color="#7fc08d" /></linearGradient>
+    </defs>
+    <symbol id="mark" viewBox="0 0 48 48">
+      <rect width="48" height="48" rx="13" fill="url(#mark-bg)" />
+      <path d="M11 38c7-3 19-3 26 0" stroke="#f4efe1" stroke-opacity=".4" stroke-width="2" stroke-linecap="round" fill="none" />
+      <path d="M24 37V22" stroke="#f4efe1" stroke-width="2.4" stroke-linecap="round" fill="none" />
+      <path d="M24 30c-7.5 0-11.5-4-11.5-11 7.5 0 11.5 4 11.5 11z" fill="url(#mark-leaf)" />
+      <path d="M24 24.5c0-7 4-11 11.5-11 0 7-4 11-11.5 11z" fill="url(#mark-gold)" />
     </symbol>
     <symbol id="i-pin" viewBox="0 0 24 24"><path d="M21 10c0 7-9 13-9 13S3 17 3 10a9 9 0 0 1 18 0z" /><circle cx="12" cy="10" r="3" /></symbol>
     <symbol id="i-refresh" viewBox="0 0 24 24"><path d="M23 4v6h-6" /><path d="M20.49 15a9 9 0 1 1-2.12-9.36L23 10" /></symbol>
@@ -48,34 +50,34 @@
     <symbol id="i-locate" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9" /><path d="M22 12h-4M6 12H2M12 6V2M12 22v-4" /></symbol>
   </svg>
 
-  <a class="skip-link" href="#main">Skip to content</a>
+  <a class="skip-link" href="#main" data-hi="सीधे जानकारी पर जाएँ">Skip to content</a>
 
   <!-- ═══════════════════════════════════════
        HEADER
   ═══════════════════════════════════════ -->
   <header class="site-header" id="top">
     <div class="container header-inner">
-      <a class="brand" href="#top" aria-label="KrishiMitra — back to top">
+      <a class="brand" href="#top" aria-label="KrishiMitra">
         <svg class="brand-mark" aria-hidden="true"><use href="#mark" /></svg>
         <span class="brand-text">
           <span class="brand-name">KrishiMitra</span>
-          <span class="brand-tag">Kisan ka Sachcha Mitra</span>
+          <span class="brand-tag" data-hi="किसान का सच्चा मित्र">Kisan ka Sachcha Mitra</span>
         </span>
       </a>
 
       <nav class="site-nav" aria-label="Sections">
-        <a href="#today">Today</a>
-        <a href="#season">Season</a>
-        <a href="#tools">Calculators</a>
-        <a href="#support">Schemes</a>
+        <a href="#today" data-hi="आज">Today</a>
+        <a href="#crops" data-hi="फ़सल">Crops</a>
+        <a href="#tools" data-hi="हिसाब">Calculators</a>
+        <a href="#help" data-hi="मदद">Help</a>
       </nav>
 
       <div class="header-actions">
-        <button class="location-btn" id="locationBtn" type="button" aria-haspopup="dialog" title="Change location">
+        <button class="lang-btn" id="langBtn" type="button" aria-label="Change language / भाषा बदलें">हिंदी</button>
+        <button class="location-btn" id="locationBtn" type="button" aria-haspopup="dialog">
           <svg class="icon" aria-hidden="true"><use href="#i-pin" /></svg>
-          <span id="locationLabel">Detecting…</span>
+          <span id="locationLabel">…</span>
         </button>
-        <button class="btn btn-primary btn-sm header-ask" type="button" data-open-chat>Ask Mitra</button>
       </div>
     </div>
   </header>
@@ -84,33 +86,34 @@
        HERO
   ═══════════════════════════════════════ -->
   <section class="hero">
+    <div class="hero-glow" aria-hidden="true"></div>
     <div class="container hero-inner">
       <div class="hero-copy">
-        <p class="eyebrow eyebrow-light">Free farm companion · Made for India</p>
-        <h1>Apni zameen, <em>apna data.</em></h1>
-        <p class="lead">Today's weather, the right hours to spray, soil and irrigation outlook, crop planning and government schemes — plus an assistant that answers in Hindi or English.</p>
+        <p class="eyebrow eyebrow-light" data-hi="मुफ़्त · भारतीय किसानों के लिए">Free · For Indian farmers</p>
+        <h1 data-hi="अपनी ज़मीन, <em>अपनी जानकारी</em>">Apni zameen, <em>apna data.</em></h1>
+        <p class="lead" data-hi="आज का मौसम, छिड़काव का सही समय, सिंचाई कब करें, क्या बोएँ, और एक साथी जिससे आप हिंदी या अंग्रेज़ी में कुछ भी पूछ सकते हैं।">Today's weather, when to spray, when to water, what to sow, and a helper you can ask anything in Hindi or English.</p>
         <div class="hero-actions">
           <button class="btn btn-gold" type="button" data-open-chat>
             <svg class="icon" aria-hidden="true"><use href="#i-chat" /></svg>
-            Ask Mitra
+            <span data-hi="मित्र से पूछें">Ask Mitra</span>
           </button>
-          <a class="btn btn-ghost" href="#today">See today's outlook</a>
+          <a class="btn btn-ghost" href="#today" data-hi="आज का मौसम देखें">See today's weather</a>
         </div>
       </div>
 
-      <aside class="hero-card" aria-label="Today at a glance">
+      <aside class="hero-card" aria-label="Today">
         <div class="hero-card-top">
-          <span id="heroDate">—</span>
-          <span class="pill pill-gold" id="heroSeason">—</span>
+          <span id="heroDate">…</span>
+          <span class="pill pill-gold" id="heroSeason">…</span>
         </div>
         <div class="hero-now">
           <span class="hero-temp" id="heroTemp">--°</span>
           <span class="hero-now-text">
-            <span class="hero-cond" id="heroCond">Loading weather…</span>
-            <span class="hero-place" id="heroPlace">—</span>
+            <span class="hero-cond" id="heroCond">…</span>
+            <span class="hero-place" id="heroPlace">…</span>
           </span>
         </div>
-        <p class="hero-advice" id="heroAdvice">Fetching today's farm advice…</p>
+        <p class="hero-advice" id="heroAdvice">…</p>
       </aside>
     </div>
   </section>
@@ -118,14 +121,14 @@
   <main id="main">
 
     <!-- ═══════════════════════════════════════
-         TODAY — weather, forecast, spray window, soil
+         TODAY: weather, 7 days, spray, water
     ═══════════════════════════════════════ -->
     <section class="section" id="today" aria-labelledby="today-h">
       <div class="container">
         <header class="section-head reveal">
-          <p class="eyebrow">Today</p>
-          <h2 id="today-h">On your farm today</h2>
-          <p class="section-desc">Live conditions for your location, refreshed every 15 minutes.</p>
+          <p class="eyebrow" data-hi="आज">Today</p>
+          <h2 id="today-h" data-hi="आज आपके खेत में">Today on your farm</h2>
+          <p class="section-desc" data-hi="आपकी जगह का मौसम। हर 15 मिनट में नया।">Weather for your place. Updates every 15 minutes.</p>
         </header>
 
         <div class="grid">
@@ -133,83 +136,71 @@
           <!-- ── WEATHER NOW ── -->
           <article class="card col-5 reveal" aria-labelledby="wx-h">
             <header class="card-head">
-              <div>
-                <p class="kicker">Right now</p>
-                <h3 class="card-title" id="wx-h">Weather</h3>
-              </div>
-              <button class="icon-btn" id="refreshWeather" type="button" aria-label="Refresh weather" title="Refresh">
+              <span class="card-icon" aria-hidden="true">🌤️</span>
+              <h3 class="card-title" id="wx-h" data-hi="अभी का मौसम">Weather now</h3>
+              <button class="icon-btn" id="refreshWeather" type="button" aria-label="Refresh / ताज़ा करें">
                 <svg class="icon" aria-hidden="true"><use href="#i-refresh" /></svg>
               </button>
             </header>
             <div class="wx-main">
               <span class="wx-temp" id="wxTemp">--°</span>
               <span class="wx-desc">
-                <span class="wx-cond" id="wxCond">Loading…</span>
-                <span class="wx-place" id="wxPlace">—</span>
+                <span class="wx-cond" id="wxCond">…</span>
+                <span class="wx-place" id="wxPlace">…</span>
               </span>
             </div>
             <dl class="stats">
-              <div class="stat"><dt>Feels like</dt><dd id="wxFeels">--</dd></div>
-              <div class="stat"><dt>Humidity</dt><dd id="wxHumidity">--</dd></div>
-              <div class="stat"><dt>Wind</dt><dd id="wxWind">--</dd></div>
-              <div class="stat"><dt>Rain chance · 6 h</dt><dd id="wxRain">--</dd></div>
-              <div class="stat"><dt>UV index · max</dt><dd id="wxUv">--</dd></div>
-              <div class="stat"><dt>Sunrise · Sunset</dt><dd id="wxSun">--</dd></div>
+              <div class="stat"><dt data-hi="बारिश की संभावना">Chance of rain</dt><dd id="wxRain">--</dd></div>
+              <div class="stat"><dt data-hi="हवा">Wind</dt><dd id="wxWind">--</dd></div>
+              <div class="stat"><dt data-hi="हवा में नमी">Humidity</dt><dd id="wxHumidity">--</dd></div>
             </dl>
-            <p class="advice" id="wxAdvice">Fetching today's farm advice…</p>
+            <p class="advice" id="wxAdvice">…</p>
             <p class="meta" id="wxUpdated"></p>
           </article>
 
-          <!-- ── 7-DAY FORECAST ── -->
+          <!-- ── NEXT 7 DAYS ── -->
           <article class="card col-7 reveal" aria-labelledby="fc-h">
             <header class="card-head">
-              <div>
-                <p class="kicker">Week ahead</p>
-                <h3 class="card-title" id="fc-h">7-day forecast</h3>
-              </div>
+              <span class="card-icon" aria-hidden="true">📅</span>
+              <h3 class="card-title" id="fc-h" data-hi="अगले 7 दिन">Next 7 days</h3>
             </header>
             <ol class="forecast" id="forecastList">
-              <li class="placeholder">Loading forecast…</li>
+              <li class="placeholder">…</li>
             </ol>
           </article>
 
-          <!-- ── SPRAY & FIELD-WORK WINDOW ── -->
+          <!-- ── WHEN TO SPRAY ── -->
           <article class="card col-7 reveal" aria-labelledby="sp-h">
             <header class="card-head">
-              <div>
-                <p class="kicker">Next two days</p>
-                <h3 class="card-title" id="sp-h">Spray &amp; field-work window</h3>
-              </div>
+              <span class="card-icon" aria-hidden="true">💦</span>
+              <h3 class="card-title" id="sp-h" data-hi="छिड़काव कब करें?">When to spray?</h3>
             </header>
-            <p class="verdict" id="sprayBest">Working out the best hours…</p>
-            <p class="meta" id="sprayWhy"></p>
+            <p class="answer" id="sprayBest">…</p>
+            <p class="answer-why" id="sprayWhy"></p>
             <div class="spray" id="sprayBars"></div>
-            <ul class="legend" aria-label="Legend">
-              <li><span class="swatch good"></span>Good</li>
-              <li><span class="swatch fair"></span>Fair</li>
-              <li><span class="swatch avoid"></span>Avoid</li>
-              <li><span class="swatch night"></span>Night</li>
+            <ul class="legend">
+              <li><span class="swatch good"></span><span data-hi="अच्छा">Good</span></li>
+              <li><span class="swatch fair"></span><span data-hi="ठीक-ठाक">Okay</span></li>
+              <li><span class="swatch avoid"></span><span data-hi="न करें">Do not spray</span></li>
+              <li><span class="swatch night"></span><span data-hi="रात">Night</span></li>
             </ul>
-            <p class="meta">Worked out from forecast wind, rain, heat and humidity. Always follow the product label.</p>
+            <p class="meta" id="sprayDetail"></p>
           </article>
 
-          <!-- ── SOIL & IRRIGATION ── -->
-          <article class="card col-5 reveal" aria-labelledby="so-h">
+          <!-- ── SHOULD I WATER ── -->
+          <article class="card col-5 reveal" aria-labelledby="wa-h">
             <header class="card-head">
-              <div>
-                <p class="kicker">Below ground</p>
-                <h3 class="card-title" id="so-h">Soil &amp; irrigation</h3>
-              </div>
-              <span class="pill" id="soilTag" hidden></span>
+              <span class="card-icon" aria-hidden="true">💧</span>
+              <h3 class="card-title" id="wa-h" data-hi="सिंचाई करें?">Should I water?</h3>
             </header>
-            <dl class="stats stats-2">
-              <div class="stat"><dt>Soil temperature · 6 cm</dt><dd id="soilTemp">--</dd></div>
-              <div class="stat"><dt>Soil moisture · 3–9 cm</dt><dd id="soilMoisture">--</dd></div>
-              <div class="stat"><dt>Crop water use today</dt><dd id="soilEt0">--</dd></div>
-              <div class="stat"><dt>Rain expected · 3 days</dt><dd id="soilRain">--</dd></div>
+            <p class="answer" id="waterAnswer">…</p>
+            <p class="answer-why" id="waterWhy"></p>
+            <dl class="stats">
+              <div class="stat"><dt data-hi="मिट्टी">Soil</dt><dd id="soilState">--</dd></div>
+              <div class="stat"><dt data-hi="3 दिन में बारिश">Rain in 3 days</dt><dd id="soilRain">--</dd></div>
+              <div class="stat"><dt data-hi="मिट्टी का तापमान">Soil warmth</dt><dd id="soilTemp">--</dd></div>
             </dl>
-            <p class="advice" id="soilVerdict">Working out the irrigation outlook…</p>
-            <p class="meta">Modelled for your area by Open-Meteo, not measured in your field — check the soil by hand before deciding.</p>
+            <p class="meta" data-hi="यह मौसम के अनुमान से निकाला गया है। मिट्टी हाथ से भी जाँच लें।">Worked out from the weather forecast. Check your soil by hand too.</p>
           </article>
 
         </div>
@@ -217,59 +208,54 @@
     </section>
 
     <!-- ═══════════════════════════════════════
-         SEASON — crop calendar, pest watch, MSP
+         CROPS: what to sow, pests, government price
     ═══════════════════════════════════════ -->
-    <section class="section section-tint" id="season" aria-labelledby="season-h">
+    <section class="section section-tint" id="crops" aria-labelledby="crops-h">
       <div class="container">
         <header class="section-head reveal">
-          <p class="eyebrow">Season</p>
-          <h2 id="season-h">Plan the season</h2>
-          <p class="section-desc">What to sow, what to watch for, and the price the government assures.</p>
+          <p class="eyebrow" data-hi="फ़सल">Crops</p>
+          <h2 id="crops-h" data-hi="इस मौसम में क्या उगाएँ">What to grow this season</h2>
+          <p class="section-desc" data-hi="अभी क्या बोएँ, किससे बचें, और सरकारी भाव।">What to sow now, what to watch for, and the government price.</p>
         </header>
 
         <div class="grid">
 
-          <!-- ── CROP CALENDAR ── -->
+          <!-- ── WHAT TO SOW ── -->
           <article class="card col-7 reveal" aria-labelledby="cc-h">
             <header class="card-head">
-              <div>
-                <p class="kicker">Sowing &amp; harvest</p>
-                <h3 class="card-title" id="cc-h">Crop calendar</h3>
-              </div>
-              <div class="tabs" id="cropTabs" role="tablist" aria-label="Crop season">
-                <button class="tab" type="button" role="tab" data-season="kharif">Kharif</button>
-                <button class="tab" type="button" role="tab" data-season="rabi">Rabi</button>
-                <button class="tab" type="button" role="tab" data-season="zaid">Zaid</button>
+              <span class="card-icon" aria-hidden="true">🌱</span>
+              <h3 class="card-title" id="cc-h" data-hi="क्या बोएँ?">What to sow?</h3>
+              <div class="tabs" id="cropTabs" role="tablist">
+                <button class="tab" type="button" role="tab" data-season="kharif" data-hi="खरीफ़">Kharif</button>
+                <button class="tab" type="button" role="tab" data-season="rabi" data-hi="रबी">Rabi</button>
+                <button class="tab" type="button" role="tab" data-season="zaid" data-hi="ज़ायद">Zaid</button>
               </div>
             </header>
-            <p class="verdict" id="sowSummary"></p>
+            <p class="answer" id="sowSummary"></p>
             <ul class="rows" id="cropList"></ul>
-            <p class="meta">Typical windows for North and Central India. Local dates vary — confirm with your Krishi Vigyan Kendra.</p>
+            <p class="meta" data-hi="ये उत्तर और मध्य भारत के सामान्य समय हैं। अपने इलाक़े का सही समय कृषि विज्ञान केंद्र से पूछें।">These are usual dates for North and Central India. Ask your Krishi Vigyan Kendra for your area.</p>
           </article>
 
-          <!-- ── PEST & DISEASE WATCH ── -->
+          <!-- ── PESTS AND DISEASE ── -->
           <article class="card col-5 reveal" aria-labelledby="pw-h">
             <header class="card-head">
-              <div>
-                <p class="kicker" id="pestSeason">This season</p>
-                <h3 class="card-title" id="pw-h">Pest &amp; disease watch</h3>
-              </div>
+              <span class="card-icon" aria-hidden="true">🐛</span>
+              <h3 class="card-title" id="pw-h" data-hi="इनसे सावधान रहें">Watch out for</h3>
+              <span class="pill" id="pestSeason"></span>
             </header>
             <ul class="rows" id="pestList"></ul>
             <p class="advice" id="pestTip"></p>
-            <p class="meta">For the right product and dose, call the Kisan Call Centre on 1800-180-1551 or ask your KVK.</p>
+            <p class="meta" data-hi="सही दवा और मात्रा के लिए 1800-180-1551 पर फ़ोन करें। यह मुफ़्त है।">For the right medicine and dose, call 1800-180-1551. It is free.</p>
           </article>
 
-          <!-- ── MINIMUM SUPPORT PRICES ── -->
+          <!-- ── GOVERNMENT PRICE (MSP) ── -->
           <article class="card col-12 reveal" aria-labelledby="msp-h">
             <header class="card-head">
-              <div>
-                <p class="kicker">Government assured price</p>
-                <h3 class="card-title" id="msp-h">Minimum Support Price</h3>
-              </div>
-              <div class="tabs" id="mspTabs" role="tablist" aria-label="MSP season">
-                <button class="tab" type="button" role="tab" data-msp="kharif">Kharif 2026-27</button>
-                <button class="tab" type="button" role="tab" data-msp="rabi">Rabi 2027-28</button>
+              <span class="card-icon card-icon-text" aria-hidden="true">₹</span>
+              <h3 class="card-title" id="msp-h" data-hi="सरकारी भाव (MSP)">Government price (MSP)</h3>
+              <div class="tabs" id="mspTabs" role="tablist">
+                <button class="tab" type="button" role="tab" data-msp="kharif" data-hi="खरीफ़ 2026-27">Kharif 2026-27</button>
+                <button class="tab" type="button" role="tab" data-msp="rabi" data-hi="रबी 2027-28">Rabi 2027-28</button>
               </div>
             </header>
             <dl class="msp" id="mspGrid"></dl>
@@ -281,130 +267,104 @@
     </section>
 
     <!-- ═══════════════════════════════════════
-         TOOLS — fertilizer, profit, land units, soil pH
+         CALCULATORS: fertilizer, profit, land units
     ═══════════════════════════════════════ -->
     <section class="section" id="tools" aria-labelledby="tools-h">
       <div class="container">
         <header class="section-head reveal">
-          <p class="eyebrow">Calculators</p>
-          <h2 id="tools-h">Work out the numbers</h2>
-          <p class="section-desc">Quick estimates to plan with. Adjust them to your soil test and your local prices.</p>
+          <p class="eyebrow" data-hi="हिसाब">Calculators</p>
+          <h2 id="tools-h" data-hi="आसान हिसाब">Easy calculators</h2>
+          <p class="section-desc" data-hi="अपने आँकड़े लिखें। जवाब तुरंत बदल जाएगा।">Type your numbers. The answer changes at once.</p>
         </header>
 
         <div class="grid">
 
-          <!-- ── FERTILIZER DOSE ── -->
+          <!-- ── FERTILIZER ── -->
           <article class="card col-4 reveal" aria-labelledby="fe-h">
             <header class="card-head">
-              <div>
-                <p class="kicker">Urea · DAP · MOP</p>
-                <h3 class="card-title" id="fe-h">Fertilizer dose</h3>
-              </div>
+              <span class="card-icon" aria-hidden="true">🧪</span>
+              <h3 class="card-title" id="fe-h" data-hi="कितनी खाद?">How much fertilizer?</h3>
             </header>
             <form class="form" id="fertForm" novalidate>
               <label class="field">
-                <span>Crop</span>
+                <span data-hi="फ़सल">Crop</span>
                 <select id="fertCrop"></select>
               </label>
               <div class="field-row">
                 <label class="field">
-                  <span>Land area</span>
-                  <input type="number" id="fertArea" value="1" min="0" step="0.1" inputmode="decimal" />
+                  <span data-hi="ज़मीन">Land</span>
+                  <input type="number" id="fertArea" value="1" min="0" step="0.5" inputmode="decimal" />
                 </label>
                 <label class="field">
-                  <span>Unit</span>
+                  <span data-hi="नाप">Unit</span>
                   <select id="fertUnit"></select>
                 </label>
               </div>
             </form>
             <div id="fertResult" aria-live="polite"></div>
-            <p class="meta" id="fertBasis"></p>
+            <p class="meta" data-hi="यह सामान्य अनुमान है। सही मात्रा आपके मृदा स्वास्थ्य कार्ड में मिलेगी।">This is a general guide. Your Soil Health Card gives the exact amount.</p>
           </article>
 
-          <!-- ── PROFIT ESTIMATE ── -->
+          <!-- ── PROFIT ── -->
           <article class="card col-4 reveal" aria-labelledby="pr-h">
             <header class="card-head">
-              <div>
-                <p class="kicker">Income − cost</p>
-                <h3 class="card-title" id="pr-h">Profit estimate</h3>
-              </div>
+              <span class="card-icon" aria-hidden="true">💰</span>
+              <h3 class="card-title" id="pr-h" data-hi="कितना मुनाफ़ा?">How much profit?</h3>
             </header>
             <form class="form" id="profitForm" novalidate>
               <label class="field">
-                <span>Crop</span>
+                <span data-hi="फ़सल">Crop</span>
                 <select id="profitCrop"></select>
               </label>
               <div class="field-row">
                 <label class="field">
-                  <span>Land area</span>
-                  <input type="number" id="profitArea" value="1" min="0" step="0.1" inputmode="decimal" />
+                  <span data-hi="ज़मीन">Land</span>
+                  <input type="number" id="profitArea" value="1" min="0" step="0.5" inputmode="decimal" />
                 </label>
                 <label class="field">
-                  <span>Unit</span>
+                  <span data-hi="नाप">Unit</span>
                   <select id="profitUnit"></select>
                 </label>
               </div>
               <div class="field-row">
                 <label class="field">
-                  <span>Yield per acre (qtl)</span>
-                  <input type="number" id="profitYield" min="0" step="0.5" inputmode="decimal" />
+                  <span data-hi="1 एकड़ की पैदावार (क्विंटल)">Crop from 1 acre (quintal)</span>
+                  <input type="number" id="profitYield" min="0" step="1" inputmode="decimal" />
                 </label>
                 <label class="field">
-                  <span>Price (₹ per qtl)</span>
+                  <span data-hi="भाव (₹ प्रति क्विंटल)">Price (₹ per quintal)</span>
                   <input type="number" id="profitPrice" min="0" step="10" inputmode="decimal" />
                 </label>
               </div>
               <label class="field">
-                <span>Cost per acre (₹) — seed, fertilizer, labour, water</span>
+                <span data-hi="1 एकड़ का ख़र्च (₹): बीज, खाद, मज़दूरी, पानी">Cost for 1 acre (₹): seed, fertilizer, labour, water</span>
                 <input type="number" id="profitCost" min="0" step="500" inputmode="decimal" />
               </label>
             </form>
-            <div class="profit" id="profitResult" aria-live="polite"></div>
-            <p class="meta">The starting figures are examples only — replace them with your own.</p>
+            <div id="profitResult" aria-live="polite"></div>
+            <p class="meta" data-hi="ये आँकड़े सिर्फ़ उदाहरण हैं। अपने खेत के हिसाब से बदल लें।">These numbers are only examples. Change them to match your farm.</p>
           </article>
 
-          <!-- ── LAND UNIT CONVERTER ── -->
+          <!-- ── LAND UNITS ── -->
           <article class="card col-4 md-12 reveal" aria-labelledby="lc-h">
             <header class="card-head">
-              <div>
-                <p class="kicker">Acre · hectare · guntha · kanal</p>
-                <h3 class="card-title" id="lc-h">Land converter</h3>
-              </div>
+              <span class="card-icon" aria-hidden="true">📏</span>
+              <h3 class="card-title" id="lc-h" data-hi="ज़मीन की नाप">Land units</h3>
             </header>
             <form class="form" id="landForm" novalidate>
               <div class="field-row">
                 <label class="field">
-                  <span>Area</span>
-                  <input type="number" id="landValue" value="1" min="0" step="0.1" inputmode="decimal" />
+                  <span data-hi="ज़मीन">Land</span>
+                  <input type="number" id="landValue" value="1" min="0" step="0.5" inputmode="decimal" />
                 </label>
                 <label class="field">
-                  <span>Unit</span>
+                  <span data-hi="नाप">Unit</span>
                   <select id="landUnit"></select>
                 </label>
               </div>
             </form>
             <dl class="kv" id="landResult" aria-live="polite"></dl>
-            <p class="meta">A bigha is not a fixed size — it changes from state to state. Ask your patwari for the local measure.</p>
-          </article>
-
-          <!-- ── SOIL pH GUIDE ── -->
-          <article class="card col-12 reveal" aria-labelledby="ph-h">
-            <header class="card-head">
-              <div>
-                <p class="kicker">Read your Soil Health Card</p>
-                <h3 class="card-title" id="ph-h">Soil pH guide</h3>
-              </div>
-            </header>
-            <div class="ph">
-              <div class="ph-control">
-                <label class="field" for="phSlider">
-                  <span>Your soil pH: <strong id="phValue">6.5</strong></span>
-                </label>
-                <input class="ph-slider" type="range" id="phSlider" min="4" max="9.5" step="0.1" value="6.5" />
-                <div class="ph-scale" aria-hidden="true"><span>4 · acidic</span><span>7 · neutral</span><span>9.5 · alkaline</span></div>
-              </div>
-              <div class="ph-result" id="phResult" aria-live="polite"></div>
-            </div>
+            <p class="meta" data-hi="बीघा हर राज्य में अलग होता है। अपने पटवारी से पूछें।">A bigha is different in every state. Ask your patwari.</p>
           </article>
 
         </div>
@@ -412,14 +372,14 @@
     </section>
 
     <!-- ═══════════════════════════════════════
-         SUPPORT — schemes & helplines
+         HELP: schemes and helplines
     ═══════════════════════════════════════ -->
-    <section class="section section-tint" id="support" aria-labelledby="support-h">
+    <section class="section section-tint" id="help" aria-labelledby="help-h">
       <div class="container">
         <header class="section-head reveal">
-          <p class="eyebrow">Support</p>
-          <h2 id="support-h">Schemes &amp; helplines</h2>
-          <p class="section-desc">Government programmes worth knowing, with links to the official sites.</p>
+          <p class="eyebrow" data-hi="मदद">Help</p>
+          <h2 id="help-h" data-hi="सरकारी मदद">Government help</h2>
+          <p class="section-desc" data-hi="आपके काम की योजनाएँ और फ़ोन नंबर।">Schemes you can use and numbers you can call.</p>
         </header>
 
         <div class="grid">
@@ -427,99 +387,96 @@
           <!-- ── SCHEMES ── -->
           <article class="card col-8 reveal" aria-labelledby="sc-h">
             <header class="card-head">
-              <div>
-                <p class="kicker">Central schemes</p>
-                <h3 class="card-title" id="sc-h">Schemes for farmers</h3>
-              </div>
+              <span class="card-icon" aria-hidden="true">🏛️</span>
+              <h3 class="card-title" id="sc-h" data-hi="आपके लिए योजनाएँ">Schemes for you</h3>
             </header>
             <ul class="rows schemes">
               <li class="row">
                 <div class="row-main">
-                  <span class="row-title">PM-KISAN</span>
-                  <span class="row-sub">₹6,000 a year in three instalments of ₹2,000, paid straight to the bank account of eligible landholding farmer families. e-KYC is required.</span>
+                  <span class="row-title" data-hi="पीएम-किसान">PM-KISAN</span>
+                  <span class="row-sub" data-hi="हर साल ₹6,000, तीन किस्तों में सीधे आपके बैंक खाते में।">₹6,000 every year, sent to your bank account in 3 parts.</span>
                 </div>
-                <a class="link" href="https://pmkisan.gov.in" target="_blank" rel="noopener noreferrer">pmkisan.gov.in <svg class="icon" aria-hidden="true"><use href="#i-external" /></svg></a>
+                <a class="link" href="https://pmkisan.gov.in" target="_blank" rel="noopener noreferrer"><span data-hi="वेबसाइट खोलें">Open site</span> <svg class="icon" aria-hidden="true"><use href="#i-external" /></svg></a>
               </li>
               <li class="row">
                 <div class="row-main">
-                  <span class="row-title">PM Fasal Bima Yojana</span>
-                  <span class="row-sub">Crop insurance against weather, pest and disease loss. The farmer pays 2% of the sum insured for Kharif crops, 1.5% for Rabi and 5% for commercial and horticultural crops.</span>
+                  <span class="row-title" data-hi="पीएम फ़सल बीमा">PM Fasal Bima</span>
+                  <span class="row-sub" data-hi="फ़सल का बीमा। खरीफ़ में सिर्फ़ 2% और रबी में 1.5% प्रीमियम देना होता है।">Crop insurance. You pay only 2% for Kharif crops and 1.5% for Rabi crops.</span>
                 </div>
-                <a class="link" href="https://pmfby.gov.in" target="_blank" rel="noopener noreferrer">pmfby.gov.in <svg class="icon" aria-hidden="true"><use href="#i-external" /></svg></a>
+                <a class="link" href="https://pmfby.gov.in" target="_blank" rel="noopener noreferrer"><span data-hi="वेबसाइट खोलें">Open site</span> <svg class="icon" aria-hidden="true"><use href="#i-external" /></svg></a>
               </li>
               <li class="row">
                 <div class="row-main">
-                  <span class="row-title">Kisan Credit Card</span>
-                  <span class="row-sub">Short-term crop loans at 7% interest. Repay on time and the effective rate comes down to 4%. Apply at your bank or cooperative society.</span>
+                  <span class="row-title" data-hi="किसान क्रेडिट कार्ड">Kisan Credit Card</span>
+                  <span class="row-sub" data-hi="सस्ता फ़सल ऋण। समय पर चुकाने पर सिर्फ़ 4% ब्याज।">Low-cost crop loan. Only 4% interest if you repay on time.</span>
                 </div>
-                <a class="link" href="https://www.myscheme.gov.in/schemes/kcc" target="_blank" rel="noopener noreferrer">myscheme.gov.in <svg class="icon" aria-hidden="true"><use href="#i-external" /></svg></a>
+                <a class="link" href="https://www.myscheme.gov.in/schemes/kcc" target="_blank" rel="noopener noreferrer"><span data-hi="वेबसाइट खोलें">Open site</span> <svg class="icon" aria-hidden="true"><use href="#i-external" /></svg></a>
               </li>
               <li class="row">
                 <div class="row-main">
-                  <span class="row-title">Soil Health Card</span>
-                  <span class="row-sub">Free soil testing, with fertilizer recommendations for the crops you grow on that field.</span>
+                  <span class="row-title" data-hi="मृदा स्वास्थ्य कार्ड">Soil Health Card</span>
+                  <span class="row-sub" data-hi="मिट्टी की मुफ़्त जाँच। बताता है कि खेत को कितनी खाद चाहिए।">Free soil test. It tells you how much fertilizer your field needs.</span>
                 </div>
-                <a class="link" href="https://soilhealth.dac.gov.in" target="_blank" rel="noopener noreferrer">soilhealth.dac.gov.in <svg class="icon" aria-hidden="true"><use href="#i-external" /></svg></a>
+                <a class="link" href="https://soilhealth.dac.gov.in" target="_blank" rel="noopener noreferrer"><span data-hi="वेबसाइट खोलें">Open site</span> <svg class="icon" aria-hidden="true"><use href="#i-external" /></svg></a>
               </li>
               <li class="row">
                 <div class="row-main">
-                  <span class="row-title">Per Drop More Crop (PMKSY)</span>
-                  <span class="row-sub">Subsidy on drip and sprinkler systems — usually 55% for small and marginal farmers and 45% for others.</span>
+                  <span class="row-title" data-hi="ड्रिप और स्प्रिंकलर पर सब्सिडी">Drip and sprinkler subsidy</span>
+                  <span class="row-sub" data-hi="ड्रिप और स्प्रिंकलर के ख़र्च का लगभग आधा सरकार देती है।">The government pays about half the cost of drip and sprinkler sets.</span>
                 </div>
-                <a class="link" href="https://pmksy.gov.in" target="_blank" rel="noopener noreferrer">pmksy.gov.in <svg class="icon" aria-hidden="true"><use href="#i-external" /></svg></a>
+                <a class="link" href="https://pmksy.gov.in" target="_blank" rel="noopener noreferrer"><span data-hi="वेबसाइट खोलें">Open site</span> <svg class="icon" aria-hidden="true"><use href="#i-external" /></svg></a>
               </li>
               <li class="row">
                 <div class="row-main">
-                  <span class="row-title">Farm machinery subsidy (SMAM)</span>
-                  <span class="row-sub">Help with the cost of tractors, implements and harvest machinery — usually 40–50% depending on the farmer category.</span>
+                  <span class="row-title" data-hi="कृषि यंत्र पर सब्सिडी">Farm machine subsidy</span>
+                  <span class="row-sub" data-hi="ट्रैक्टर और कृषि यंत्रों की क़ीमत पर 40 से 50% मदद।">40 to 50% help on the cost of tractors and farm machines.</span>
                 </div>
-                <a class="link" href="https://agrimachinery.nic.in" target="_blank" rel="noopener noreferrer">agrimachinery.nic.in <svg class="icon" aria-hidden="true"><use href="#i-external" /></svg></a>
+                <a class="link" href="https://agrimachinery.nic.in" target="_blank" rel="noopener noreferrer"><span data-hi="वेबसाइट खोलें">Open site</span> <svg class="icon" aria-hidden="true"><use href="#i-external" /></svg></a>
               </li>
               <li class="row">
                 <div class="row-main">
-                  <span class="row-title">e-NAM</span>
-                  <span class="row-sub">Sell produce online to buyers across mandis, and compare prices before you sell.</span>
+                  <span class="row-title" data-hi="ई-नाम (ऑनलाइन मंडी)">e-NAM (online mandi)</span>
+                  <span class="row-sub" data-hi="फ़सल ऑनलाइन बेचें और दूसरी मंडियों के भाव देखें।">Sell your crop online and see prices in other mandis.</span>
                 </div>
-                <a class="link" href="https://enam.gov.in" target="_blank" rel="noopener noreferrer">enam.gov.in <svg class="icon" aria-hidden="true"><use href="#i-external" /></svg></a>
+                <a class="link" href="https://enam.gov.in" target="_blank" rel="noopener noreferrer"><span data-hi="वेबसाइट खोलें">Open site</span> <svg class="icon" aria-hidden="true"><use href="#i-external" /></svg></a>
               </li>
             </ul>
-            <p class="meta">Amounts and rules change, and states add their own conditions. The official site has the final word.</p>
+            <p class="meta" data-hi="नियम बदल सकते हैं। सरकारी वेबसाइट पर जाँच लें।">Rules can change. Check the official site.</p>
           </article>
 
           <!-- ── HELPLINES ── -->
           <article class="card col-4 md-12 reveal" aria-labelledby="hl-h">
             <header class="card-head">
-              <div>
-                <p class="kicker">Tap to call</p>
-                <h3 class="card-title" id="hl-h">Helplines</h3>
-              </div>
+              <span class="card-icon" aria-hidden="true">📞</span>
+              <h3 class="card-title" id="hl-h" data-hi="फ़ोन पर मदद">Call for help</h3>
             </header>
             <ul class="helplines">
               <li>
                 <a class="helpline" href="tel:18001801551">
                   <svg class="icon" aria-hidden="true"><use href="#i-phone" /></svg>
-                  <span><span class="helpline-num">1800-180-1551</span><span class="helpline-name">Kisan Call Centre · free, 6 am–10 pm, in your language</span></span>
+                  <span><span class="helpline-num">1800-180-1551</span><span class="helpline-name" data-hi="किसान कॉल सेंटर। मुफ़्त, सुबह 6 से रात 10 बजे, आपकी भाषा में।">Kisan Call Centre. Free, 6 am to 10 pm, in your language.</span></span>
                 </a>
               </li>
               <li>
                 <a class="helpline" href="tel:155261">
                   <svg class="icon" aria-hidden="true"><use href="#i-phone" /></svg>
-                  <span><span class="helpline-num">155261</span><span class="helpline-name">PM-KISAN helpline</span></span>
+                  <span><span class="helpline-num">155261</span><span class="helpline-name" data-hi="पीएम-किसान हेल्पलाइन">PM-KISAN helpline</span></span>
                 </a>
               </li>
               <li>
                 <a class="helpline" href="tel:14447">
                   <svg class="icon" aria-hidden="true"><use href="#i-phone" /></svg>
-                  <span><span class="helpline-num">14447</span><span class="helpline-name">Crop insurance (PMFBY)</span></span>
+                  <span><span class="helpline-num">14447</span><span class="helpline-name" data-hi="फ़सल बीमा हेल्पलाइन">Crop insurance helpline</span></span>
                 </a>
               </li>
               <li>
                 <a class="helpline" href="tel:18002700224">
                   <svg class="icon" aria-hidden="true"><use href="#i-phone" /></svg>
-                  <span><span class="helpline-num">1800-270-0224</span><span class="helpline-name">e-NAM helpdesk</span></span>
+                  <span><span class="helpline-num">1800-270-0224</span><span class="helpline-name" data-hi="ई-नाम (ऑनलाइन मंडी) सहायता">e-NAM (online mandi) help</span></span>
                 </a>
               </li>
             </ul>
+            <p class="meta" data-hi="नंबर दबाते ही फ़ोन लग जाएगा।">Tap a number to call.</p>
           </article>
 
         </div>
@@ -527,20 +484,20 @@
     </section>
 
     <!-- ═══════════════════════════════════════
-         ASK MITRA — call to action
+         ASK MITRA
     ═══════════════════════════════════════ -->
     <section class="ask" aria-labelledby="ask-h">
       <div class="container ask-inner reveal">
         <div>
-          <p class="eyebrow eyebrow-light">AI assistant</p>
-          <h2 id="ask-h">Kuch poochna hai? <em>Ask Mitra.</em></h2>
-          <p class="lead">Crops, pests, irrigation, schemes — ask in Hindi, Hinglish or English. Mitra already knows your weather and the season.</p>
+          <p class="eyebrow eyebrow-light" data-hi="आपका खेती साथी">Your farm helper</p>
+          <h2 id="ask-h" data-hi="कुछ पूछना है? <em>मित्र से पूछें</em>">Kuch poochna hai? <em>Ask Mitra.</em></h2>
+          <p class="lead" data-hi="फ़सल, कीट, सिंचाई, योजना, कुछ भी पूछिए। मित्र को आपका मौसम और फ़सल का समय पहले से पता है।">Crops, pests, water, schemes. Ask anything in Hindi or English. Mitra already knows your weather and the season.</p>
         </div>
         <div class="ask-chips">
-          <button class="chip" type="button" data-ask="Is mausam mein kaunsi fasal lagana sabse accha rahega?">Is mausam mein kaunsi fasal lagayein?</button>
-          <button class="chip" type="button" data-ask="Gehun mein pehli sinchai kab karni chahiye?">Gehun mein pehli sinchai kab?</button>
-          <button class="chip" type="button" data-ask="My tomato leaves are turning yellow with brown spots. What should I do?">Tomato leaves turning yellow</button>
-          <button class="chip" type="button" data-ask="How do I apply for PM-KISAN and what documents do I need?">How to apply for PM-KISAN?</button>
+          <button class="chip" type="button" data-ask="Which crop is best to sow this season?" data-ask-hi="इस मौसम में कौन सी फ़सल बोना सबसे अच्छा रहेगा?" data-hi="इस मौसम में क्या बोएँ?">What should I sow this season?</button>
+          <button class="chip" type="button" data-ask="When should I give the first irrigation to wheat?" data-ask-hi="गेहूँ में पहली सिंचाई कब करनी चाहिए?" data-hi="गेहूँ में पहली सिंचाई कब?">First watering for wheat?</button>
+          <button class="chip" type="button" data-ask="My tomato leaves are turning yellow with brown spots. What should I do?" data-ask-hi="मेरे टमाटर की पत्तियाँ पीली हो रही हैं और उन पर भूरे धब्बे हैं। क्या करूँ?" data-hi="टमाटर की पत्तियाँ पीली हो रही हैं">Tomato leaves turning yellow</button>
+          <button class="chip" type="button" data-ask="How do I apply for PM-KISAN and what papers do I need?" data-ask-hi="पीएम-किसान के लिए आवेदन कैसे करें और कौन से काग़ज़ चाहिए?" data-hi="पीएम-किसान में आवेदन कैसे करें?">How to apply for PM-KISAN?</button>
         </div>
       </div>
     </section>
@@ -556,21 +513,19 @@
         <svg class="brand-mark" aria-hidden="true"><use href="#mark" /></svg>
         <div>
           <p class="footer-name">KrishiMitra</p>
-          <p>Kisan ka Sachcha Mitra — a free, open-source project for Indian farmers.</p>
+          <p data-hi="किसान का सच्चा मित्र। भारतीय किसानों के लिए मुफ़्त।">Kisan ka Sachcha Mitra. Free for Indian farmers.</p>
         </div>
       </div>
-      <nav class="footer-links" aria-label="Official portals">
-        <p class="footer-title">Official portals</p>
-        <a href="https://agmarknet.gov.in" target="_blank" rel="noopener noreferrer">Agmarknet — mandi prices</a>
-        <a href="https://mausam.imd.gov.in" target="_blank" rel="noopener noreferrer">IMD — weather warnings</a>
-        <a href="https://cacp.da.gov.in" target="_blank" rel="noopener noreferrer">CACP — support prices</a>
-        <a href="https://enam.gov.in" target="_blank" rel="noopener noreferrer">e-NAM — online mandi</a>
+      <nav class="footer-links" aria-label="Official sites">
+        <p class="footer-title" data-hi="सरकारी वेबसाइट">Official sites</p>
+        <a href="https://agmarknet.gov.in" target="_blank" rel="noopener noreferrer" data-hi="एगमार्कनेट: मंडी भाव">Agmarknet: mandi prices</a>
+        <a href="https://mausam.imd.gov.in" target="_blank" rel="noopener noreferrer" data-hi="मौसम विभाग: चेतावनी">IMD: weather warnings</a>
+        <a href="https://enam.gov.in" target="_blank" rel="noopener noreferrer" data-hi="ई-नाम: ऑनलाइन मंडी">e-NAM: online mandi</a>
       </nav>
       <div class="footer-note">
-        <p class="footer-title">About the data</p>
-        <p>Weather and soil estimates by <a href="https://open-meteo.com" target="_blank" rel="noopener noreferrer">Open-Meteo</a>. Support prices as announced by the Government of India. The assistant runs on Google Gemini and can be wrong.</p>
-        <p>Everything here is advisory. Confirm with your local Krishi Vigyan Kendra or agriculture office before you act.</p>
-        <p><a href="https://github.com/Deepak17kb/KrishiMitra" target="_blank" rel="noopener noreferrer">Source code on GitHub</a></p>
+        <p class="footer-title" data-hi="ध्यान दें">Please note</p>
+        <p data-hi="यहाँ की जानकारी सिर्फ़ सलाह है। कोई बड़ा फ़ैसला लेने से पहले अपने कृषि विज्ञान केंद्र या कृषि अधिकारी से पूछ लें।">Everything here is advice only. Before a big decision, ask your Krishi Vigyan Kendra or agriculture officer.</p>
+        <p><span data-hi="मौसम की जानकारी:">Weather data:</span> <a href="https://open-meteo.com" target="_blank" rel="noopener noreferrer">Open-Meteo</a> · <a href="https://github.com/Deepak17kb/KrishiMitra" target="_blank" rel="noopener noreferrer">GitHub</a></p>
       </div>
     </div>
   </footer>
@@ -580,20 +535,20 @@
   ═══════════════════════════════════════ -->
   <button class="chat-fab" id="chatFab" type="button" data-open-chat aria-controls="chatPanel" aria-expanded="false">
     <svg class="icon" aria-hidden="true"><use href="#i-chat" /></svg>
-    <span>Ask Mitra</span>
+    <span data-hi="मित्र से पूछें">Ask Mitra</span>
   </button>
 
   <section class="chat" id="chatPanel" role="dialog" aria-labelledby="chatTitle" inert>
     <header class="chat-head">
       <svg class="brand-mark" aria-hidden="true"><use href="#mark" /></svg>
       <div class="chat-head-text">
-        <h2 id="chatTitle">Mitra</h2>
-        <p id="chatStatus">Farm assistant · Hindi &amp; English</p>
+        <h2 id="chatTitle" data-hi="मित्र">Mitra</h2>
+        <p data-hi="आपका खेती साथी · हिंदी और अंग्रेज़ी">Your farm helper · Hindi and English</p>
       </div>
-      <button class="icon-btn icon-btn-light" id="chatClear" type="button" aria-label="Clear conversation" title="Clear conversation">
+      <button class="icon-btn icon-btn-light" id="chatClear" type="button" aria-label="Clear chat / बातचीत मिटाएँ">
         <svg class="icon" aria-hidden="true"><use href="#i-trash" /></svg>
       </button>
-      <button class="icon-btn icon-btn-light" id="chatClose" type="button" aria-label="Close chat" title="Close">
+      <button class="icon-btn icon-btn-light" id="chatClose" type="button" aria-label="Close / बंद करें">
         <svg class="icon" aria-hidden="true"><use href="#i-close" /></svg>
       </button>
     </header>
@@ -601,20 +556,20 @@
     <div class="chat-log" id="chatLog" role="log" aria-live="polite"></div>
 
     <div class="chat-chips" id="chatChips">
-      <button class="chip chip-sm" type="button" data-ask="Is mausam mein kaunsi fasal lagana sabse accha rahega?">Best crop this season?</button>
-      <button class="chip chip-sm" type="button" data-ask="Aaj ke mausam ke hisaab se mujhe khet mein kya karna chahiye?">Aaj khet mein kya karein?</button>
-      <button class="chip chip-sm" type="button" data-ask="What are safe ways to control pests without heavy chemicals?">Pest control tips</button>
-      <button class="chip chip-sm" type="button" data-ask="Am I eligible for PM-KISAN and how do I apply?">PM-KISAN eligibility</button>
+      <button class="chip chip-sm" type="button" data-ask="Which crop is best to sow this season?" data-ask-hi="इस मौसम में कौन सी फ़सल बोना सबसे अच्छा रहेगा?" data-hi="इस मौसम में क्या बोएँ?">What to sow now?</button>
+      <button class="chip chip-sm" type="button" data-ask="Looking at today's weather, what should I do on my farm today?" data-ask-hi="आज के मौसम के हिसाब से मुझे खेत में क्या करना चाहिए?" data-hi="आज खेत में क्या करें?">What to do today?</button>
+      <button class="chip chip-sm" type="button" data-ask="How can I control pests without using too many chemicals?" data-ask-hi="ज़्यादा दवा डाले बिना कीटों से कैसे बचाव करें?" data-hi="कीटों से बचाव">Pest control</button>
+      <button class="chip chip-sm" type="button" data-ask="Can I get PM-KISAN money and how do I apply?" data-ask-hi="क्या मुझे पीएम-किसान का पैसा मिल सकता है और आवेदन कैसे करूँ?" data-hi="पीएम-किसान">PM-KISAN</button>
     </div>
 
     <form class="chat-form" id="chatForm">
-      <label class="sr-only" for="chatInput">Your question</label>
-      <textarea id="chatInput" rows="1" maxlength="2000" placeholder="Apna sawal likhein… (Hindi / English)"></textarea>
-      <button class="chat-send" id="chatSend" type="submit" aria-label="Send">
+      <label class="sr-only" for="chatInput" data-hi="आपका सवाल">Your question</label>
+      <textarea id="chatInput" rows="1" maxlength="2000" placeholder="Type your question…" data-hi-placeholder="अपना सवाल लिखें…"></textarea>
+      <button class="chat-send" id="chatSend" type="submit" aria-label="Send / भेजें">
         <svg class="icon" aria-hidden="true"><use href="#i-send" /></svg>
       </button>
     </form>
-    <p class="chat-foot">AI answers can be wrong. Check important decisions with your KVK.</p>
+    <p class="chat-foot" data-hi="मित्र से ग़लती हो सकती है। बड़े फ़ैसले से पहले कृषि अधिकारी से पूछें।">Mitra can make mistakes. For big decisions, ask your agriculture officer.</p>
   </section>
 
   <!-- ═══════════════════════════════════════
@@ -622,24 +577,24 @@
   ═══════════════════════════════════════ -->
   <dialog class="dialog" id="locationDialog" aria-labelledby="locTitle">
     <header class="dialog-head">
-      <h2 id="locTitle">Choose your location</h2>
-      <button class="icon-btn" id="locationClose" type="button" aria-label="Close">
+      <h2 id="locTitle" data-hi="अपनी जगह चुनें">Choose your place</h2>
+      <button class="icon-btn" id="locationClose" type="button" aria-label="Close / बंद करें">
         <svg class="icon" aria-hidden="true"><use href="#i-close" /></svg>
       </button>
     </header>
     <form class="dialog-search" id="locationForm">
-      <label class="sr-only" for="locationQuery">Village, town or city</label>
-      <input type="search" id="locationQuery" placeholder="Village, town or city" autocomplete="off" required minlength="2" />
+      <label class="sr-only" for="locationQuery" data-hi="गाँव, क़स्बा या शहर">Village, town or city</label>
+      <input type="search" id="locationQuery" placeholder="Village, town or city" data-hi-placeholder="गाँव, क़स्बा या शहर" autocomplete="off" required minlength="2" />
       <button class="btn btn-primary" type="submit">
         <svg class="icon" aria-hidden="true"><use href="#i-search" /></svg>
-        Search
+        <span data-hi="खोजें">Search</span>
       </button>
     </form>
     <p class="meta" id="locationStatus" aria-live="polite"></p>
     <ul class="dialog-results" id="locationResults"></ul>
     <button class="btn btn-outline" id="useMyLocation" type="button">
       <svg class="icon" aria-hidden="true"><use href="#i-locate" /></svg>
-      Use my current location
+      <span data-hi="मेरी अभी की जगह इस्तेमाल करें">Use my current place</span>
     </button>
   </dialog>
 
