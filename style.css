@@ -754,14 +754,31 @@ html[lang="hi"] .profit-main-label {
    TABS
 ══════════════════════════════ */
 .tabs {
+  position: relative;
   display: inline-flex;
   padding: 4px;
   border-radius: 999px;
   background: var(--inset);
 }
+/* The white pill that slides under the chosen tab (placed by script.js) */
+.tabs::before {
+  content: "";
+  position: absolute;
+  top: 4px;
+  bottom: 4px;
+  left: 0;
+  width: var(--pill-w, 0);
+  border-radius: 999px;
+  background: var(--surface);
+  box-shadow: 0 1px 3px rgba(24, 42, 30, 0.16);
+  transform: translateX(var(--pill-x, 0));
+  transition: transform 0.4s var(--ease), width 0.4s var(--ease);
+}
 .tab {
+  position: relative;
   min-height: 36px;
   padding: 0.35rem 0.95rem;
+  overflow: hidden;
   border: 0;
   border-radius: 999px;
   background: transparent;
@@ -770,13 +787,9 @@ html[lang="hi"] .profit-main-label {
   font-weight: 600;
   white-space: nowrap;
   cursor: pointer;
-  transition: background 0.3s var(--ease), color 0.3s, box-shadow 0.3s;
+  transition: color 0.3s;
 }
-.tab[aria-selected="true"] {
-  background: var(--surface);
-  color: var(--ink);
-  box-shadow: 0 1px 3px rgba(24, 42, 30, 0.16);
-}
+.tab[aria-selected="true"] { color: var(--ink); }
 
 /* ══════════════════════════════
    ROW LISTS (crops, pests, schemes)
@@ -884,6 +897,7 @@ html[lang="hi"] .profit-main-label {
 
 input[type="number"],
 input[type="search"],
+input[type="date"],
 select,
 textarea {
   width: 100%;
@@ -903,6 +917,7 @@ input[type="search"] {
 }
 input[type="number"]:focus,
 input[type="search"]:focus,
+input[type="date"]:focus,
 select:focus,
 textarea:focus {
   outline: none;
@@ -1324,10 +1339,351 @@ textarea:focus {
 .result-btn span { font-size: 0.84rem; color: var(--ink-muted); }
 
 /* ══════════════════════════════
+   SCROLL PROGRESS BAR
+══════════════════════════════ */
+.scroll-progress {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 90;
+  height: 3px;
+  background: linear-gradient(90deg, var(--gold), var(--rate-good));
+  transform: scaleX(var(--scroll, 0));
+  transform-origin: left;
+  pointer-events: none;
+}
+
+/* A short gold line draws itself under each section heading */
+.section-head h2 {
+  position: relative;
+  padding-bottom: 0.6rem;
+}
+.section-head h2::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  width: 3.2rem;
+  height: 3px;
+  border-radius: 3px;
+  background: var(--gold);
+  transform-origin: left;
+  transition: transform 0.9s var(--ease) 0.25s;
+}
+.js .section-head:not(.is-seen) h2::after { transform: scaleX(0); }
+
+/* The weather symbol floats gently */
+.wx-icon {
+  display: inline-block;
+  animation: float 4.5s ease-in-out infinite;
+}
+
+/* ══════════════════════════════
+   ANY DANGER THIS WEEK
+══════════════════════════════ */
+.alerts {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  list-style: none;
+}
+.alert {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.65rem;
+  padding: 0.65rem 0.85rem;
+  border-radius: var(--radius-sm);
+  background: var(--gold-soft);
+  font-size: 0.94rem;
+  animation: rise 0.45s var(--ease) backwards;
+  animation-delay: calc(var(--i, 0) * 70ms);
+}
+.alert-bad { background: var(--clay-soft); }
+.alert-icon { flex: none; font-size: 1.2rem; line-height: 1.3; }
+
+/* ══════════════════════════════
+   DAYS TO HARVEST AND DRY
+══════════════════════════════ */
+.daychips {
+  display: grid;
+  grid-template-columns: repeat(7, minmax(0, 1fr));
+  gap: 0.45rem;
+  list-style: none;
+}
+.daychip {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.15rem;
+  padding: 0.6rem 0.2rem;
+  border: 1px solid transparent;
+  border-radius: var(--radius-sm);
+  background: var(--inset);
+  text-align: center;
+  animation: pop 0.45s var(--spring) backwards;
+  animation-delay: calc(var(--i, 0) * 55ms);
+  transition: transform 0.3s var(--ease);
+}
+.daychip.is-dry { background: var(--green-soft); border-color: rgba(42, 106, 63, 0.18); }
+.daychip.is-wet { opacity: 0.8; }
+.daychip-day  { font-size: 0.86rem; font-weight: 700; }
+.daychip-icon { font-size: 1.35rem; line-height: 1.2; }
+.daychip-note { font-size: 0.74rem; line-height: 1.3; color: var(--ink-soft); }
+.daychip.is-dry .daychip-note { color: var(--green-dark); font-weight: 600; }
+
+/* ══════════════════════════════
+   MY CROP CALENDAR
+══════════════════════════════ */
+.form-inline {
+  flex-direction: row;
+  flex-wrap: wrap;
+  max-width: 34rem;
+}
+.form-inline .field { flex: 1 1 12rem; }
+
+.steps {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(14.5rem, 1fr));
+  gap: 0.6rem;
+  list-style: none;
+}
+.step {
+  display: flex;
+  flex-direction: column;
+  gap: 0.3rem;
+  padding: 0.8rem 0.9rem;
+  border: 1px solid var(--line);
+  border-left: 3px solid var(--line-strong);
+  border-radius: var(--radius-sm);
+  background: var(--surface);
+  animation: rise 0.45s var(--ease) backwards;
+  animation-delay: calc(var(--i, 0) * 50ms);
+  transition: transform 0.3s var(--ease), border-color 0.3s, background 0.3s;
+}
+.step.is-past { opacity: 0.55; }
+.step.is-next { border-left-color: var(--green); background: var(--green-soft); }
+.step-date {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.4rem;
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+}
+.step-text { font-size: 0.92rem; color: var(--ink-soft); }
+
+/* ══════════════════════════════
+   GOVERNMENT SCHEMES
+══════════════════════════════ */
+.filters {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin-bottom: 1.25rem;
+}
+.filter {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+  min-height: 44px;
+  padding: 0.45rem 1rem;
+  overflow: hidden;
+  border: 1px solid var(--line-strong);
+  border-radius: 999px;
+  background: var(--surface);
+  color: var(--ink-soft);
+  font-size: 0.94rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.3s var(--ease), border-color 0.3s, color 0.3s, transform 0.25s var(--ease);
+}
+.filter:active { transform: scale(0.96); }
+.filter[aria-pressed="true"] {
+  border-color: var(--forest);
+  background: var(--forest);
+  color: var(--cream);
+}
+.filter-count {
+  min-width: 1.5rem;
+  padding: 0 0.4rem;
+  border-radius: 999px;
+  background: var(--inset);
+  color: var(--ink-soft);
+  font-size: 0.78rem;
+  line-height: 1.5rem;
+  text-align: center;
+  transition: background 0.3s, color 0.3s;
+}
+.filter[aria-pressed="true"] .filter-count { background: rgba(244, 239, 225, 0.18); color: var(--cream); }
+
+.scheme-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(19rem, 1fr));
+  gap: 1rem;
+  align-items: start;
+}
+.scheme {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  padding: 1.15rem;
+  overflow: hidden;
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  background: var(--surface);
+  box-shadow: var(--shadow);
+  animation: rise 0.5s var(--ease) backwards;
+  animation-delay: calc(var(--i, 0) * 45ms);
+  transition: transform 0.35s var(--ease), box-shadow 0.35s var(--ease), border-color 0.35s;
+}
+.scheme-head {
+  display: flex;
+  align-items: center;
+  gap: 0.8rem;
+  margin-bottom: 0.75rem;
+}
+.scheme-name {
+  margin-bottom: 0.2rem;
+  font-size: 1.14rem;
+  line-height: 1.25;
+  letter-spacing: -0.005em;
+}
+.scheme-get { font-size: 0.98rem; }
+.scheme-extra {
+  margin-top: 0.6rem;
+  padding: 0.5rem 0.75rem;
+  border-radius: 10px;
+  background: var(--green-soft);
+  font-size: 0.9rem;
+  color: var(--green-dark);
+}
+
+.scheme-more {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.75rem;
+  width: 100%;
+  min-height: 44px;
+  margin-top: 0.8rem;
+  padding: 0.5rem 0.8rem;
+  overflow: hidden;
+  border: 0;
+  border-radius: 10px;
+  background: var(--inset);
+  color: var(--ink);
+  font-size: 0.92rem;
+  font-weight: 600;
+  text-align: left;
+  cursor: pointer;
+  transition: background 0.25s;
+}
+.chevron { transition: transform 0.35s var(--ease); }
+.scheme.is-open .chevron { transform: rotate(180deg); }
+
+/* Opens smoothly: the row grows from zero to the height of its content */
+.scheme-details {
+  display: grid;
+  grid-template-rows: 0fr;
+  transition: grid-template-rows 0.4s var(--ease);
+}
+.scheme.is-open .scheme-details { grid-template-rows: 1fr; }
+.scheme-details > div {
+  min-height: 0;
+  overflow: hidden;
+  font-size: 0.93rem;
+  color: var(--ink-soft);
+}
+.scheme-details p { padding-top: 0.7rem; }
+.scheme-details strong { color: var(--ink); }
+
+.scheme-foot {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem 1.1rem;
+  margin-top: 0.9rem;
+  padding-top: 0.8rem;
+  border-top: 1px solid var(--line);
+}
+.scheme-all { width: auto; margin: 1.1rem auto 0; display: flex; background: var(--surface); }
+.scheme-note { margin-top: 1rem; }
+.help-grid { margin-top: 1.75rem; }
+
+/* Papers checklist */
+.papers {
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+  list-style: none;
+}
+.papers label {
+  display: flex;
+  align-items: center;
+  gap: 0.7rem;
+  min-height: 46px;
+  padding: 0.45rem 0.7rem;
+  border-radius: 10px;
+  cursor: pointer;
+  transition: background 0.25s, color 0.25s;
+}
+.papers input {
+  flex: none;
+  width: 1.3rem;
+  height: 1.3rem;
+  accent-color: var(--green);
+  cursor: pointer;
+}
+.papers label:has(input:checked) { background: var(--green-soft); color: var(--green-dark); }
+
+.profit-main-value small { font-family: var(--font-body); font-size: 1rem; font-weight: 600; }
+
+/* ══════════════════════════════
+   TAP RIPPLE
+══════════════════════════════ */
+.filter, .chip, .helpline, .lang-btn, .location-btn, .chat-fab { position: relative; overflow: hidden; }
+.chat-fab { position: fixed; }
+
+.ripple {
+  position: absolute;
+  border-radius: 50%;
+  background: currentColor;
+  opacity: 0.18;
+  transform: scale(0);
+  animation: ripple 0.6s var(--ease) forwards;
+  pointer-events: none;
+}
+
+/* ══════════════════════════════
    HOVER EFFECTS
    Only on devices with a mouse, so nothing "sticks" after a tap on a phone
 ══════════════════════════════ */
 @media (hover: hover) and (pointer: fine) {
+  /* A faint light follows the mouse across a card (position set by script.js) */
+  .card, .scheme { position: relative; }
+  .card::before, .scheme::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+    background: radial-gradient(280px circle at var(--mx, 50%) var(--my, 0%), rgba(227, 189, 106, 0.16), transparent 70%);
+    opacity: 0;
+    transition: opacity 0.4s;
+    pointer-events: none;
+  }
+  .card:hover::before, .scheme:hover::before { opacity: 1; }
+
+  .scheme:hover { transform: translateY(-4px); box-shadow: var(--shadow-hover); border-color: var(--line-strong); }
+  .scheme:hover .card-icon { transform: rotate(-8deg) scale(1.1); background: var(--gold-soft); }
+  .scheme-more:hover { background: var(--green-soft); }
+  .filter:hover { border-color: var(--green); color: var(--ink); transform: translateY(-2px); }
+  .filter[aria-pressed="true"]:hover { color: var(--cream); }
+  .daychip:hover, .step:hover { transform: translateY(-3px); }
+  .step:hover { border-color: var(--line-strong); }
+  .papers label:hover { background: var(--inset); }
+
   .btn:hover { transform: translateY(-2px); }
   .btn-primary:hover { background: var(--green-dark); box-shadow: 0 12px 24px -14px rgba(31, 84, 49, 0.9); }
   .btn-gold:hover { background: #ecc97c; box-shadow: 0 16px 30px -12px rgba(227, 189, 106, 0.9); }
@@ -1434,6 +1790,20 @@ textarea:focus {
 @keyframes flash {
   from { background-color: var(--gold-soft); }
 }
+@keyframes float {
+  0%, 100% { transform: translateY(0); }
+  50%      { transform: translateY(-4px); }
+}
+@keyframes ripple {
+  to { opacity: 0; transform: scale(1); }
+}
+
+/* Language switch and scheme filter cross-fade instead of snapping */
+::view-transition-old(root),
+::view-transition-new(root) {
+  animation-duration: 0.35s;
+  animation-timing-function: cubic-bezier(0.2, 0.7, 0.2, 1);
+}
 
 @media (prefers-reduced-motion: reduce) {
   html { scroll-behavior: auto; }
@@ -1506,6 +1876,10 @@ textarea:focus {
   .hour { height: 34px; }
   .row-side { max-width: 44%; white-space: normal; }
   .msp { grid-template-columns: minmax(0, 1fr); }
+  .daychips { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+  .scheme-grid { grid-template-columns: minmax(0, 1fr); }
+  .filters { gap: 0.4rem; }
+  .filter { padding-inline: 0.8rem; }
   .dialog-search { flex-direction: column; }
 
   /* Chat fills the phone screen and follows the keyboard (see script.js) */

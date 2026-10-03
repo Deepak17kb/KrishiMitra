@@ -51,6 +51,7 @@
   </svg>
 
   <a class="skip-link" href="#main" data-hi="सीधे जानकारी पर जाएँ">Skip to content</a>
+  <div class="scroll-progress" aria-hidden="true"></div>
 
   <!-- ═══════════════════════════════════════
        HEADER
@@ -69,7 +70,7 @@
         <a href="#today" data-hi="आज">Today</a>
         <a href="#crops" data-hi="फ़सल">Crops</a>
         <a href="#tools" data-hi="हिसाब">Calculators</a>
-        <a href="#help" data-hi="मदद">Help</a>
+        <a href="#schemes" data-hi="योजनाएँ">Schemes</a>
       </nav>
 
       <div class="header-actions">
@@ -203,6 +204,28 @@
             <p class="meta" data-hi="यह मौसम के अनुमान से निकाला गया है। मिट्टी हाथ से भी जाँच लें।">Worked out from the weather forecast. Check your soil by hand too.</p>
           </article>
 
+          <!-- ── WEATHER DANGER THIS WEEK ── -->
+          <article class="card col-5 reveal" aria-labelledby="al-h">
+            <header class="card-head">
+              <span class="card-icon" aria-hidden="true">⚠️</span>
+              <h3 class="card-title" id="al-h" data-hi="इस हफ़्ते कोई ख़तरा?">Any danger this week?</h3>
+            </header>
+            <p class="answer" id="alertAnswer">…</p>
+            <ul class="alerts" id="alertList"></ul>
+            <p class="meta" data-hi="अगले 7 दिन के मौसम के अनुमान से।">From the forecast for the next 7 days.</p>
+          </article>
+
+          <!-- ── DAYS TO HARVEST AND DRY ── -->
+          <article class="card col-7 reveal" aria-labelledby="dd-h">
+            <header class="card-head">
+              <span class="card-icon" aria-hidden="true">🌾</span>
+              <h3 class="card-title" id="dd-h" data-hi="कटाई और सुखाने के दिन">Days to harvest and dry</h3>
+            </header>
+            <p class="answer" id="dryAnswer">…</p>
+            <ul class="daychips" id="dryDays"></ul>
+            <p class="meta" data-hi="हरे दिन सूखे रहेंगे। वे कटाई, गहाई और अनाज सुखाने के लिए अच्छे हैं।">Green days will stay dry. They are good for harvesting, threshing and drying grain.</p>
+          </article>
+
         </div>
       </div>
     </section>
@@ -248,8 +271,29 @@
             <p class="meta" data-hi="सही दवा और मात्रा के लिए 1800-180-1551 पर फ़ोन करें। यह मुफ़्त है।">For the right medicine and dose, call 1800-180-1551. It is free.</p>
           </article>
 
+          <!-- ── MY CROP CALENDAR ── -->
+          <article class="card col-12 reveal" aria-labelledby="pl-h">
+            <header class="card-head">
+              <span class="card-icon" aria-hidden="true">🗓️</span>
+              <h3 class="card-title" id="pl-h" data-hi="मेरी फ़सल का कैलेंडर">My crop calendar</h3>
+            </header>
+            <form class="form form-inline" id="planForm" novalidate>
+              <label class="field">
+                <span data-hi="फ़सल">Crop</span>
+                <select id="planCrop"></select>
+              </label>
+              <label class="field">
+                <span data-hi="बुवाई की तारीख़">Sowing date</span>
+                <input type="date" id="planDate" />
+              </label>
+            </form>
+            <p class="answer" id="planNext"></p>
+            <ol class="steps" id="planList"></ol>
+            <p class="meta" data-hi="यह सामान्य योजना है। बीज की क़िस्म और इलाक़े के हिसाब से तारीख़ें बदल सकती हैं।">This is the usual plan. Your seed variety and area can change the dates.</p>
+          </article>
+
           <!-- ── GOVERNMENT PRICE (MSP) ── -->
-          <article class="card col-12 reveal" aria-labelledby="msp-h">
+          <article class="card col-12 reveal" id="msp" aria-labelledby="msp-h">
             <header class="card-head">
               <span class="card-icon card-icon-text" aria-hidden="true">₹</span>
               <h3 class="card-title" id="msp-h" data-hi="सरकारी भाव (MSP)">Government price (MSP)</h3>
@@ -305,6 +349,32 @@
             <p class="meta" data-hi="यह सामान्य अनुमान है। सही मात्रा आपके मृदा स्वास्थ्य कार्ड में मिलेगी।">This is a general guide. Your Soil Health Card gives the exact amount.</p>
           </article>
 
+          <!-- ── SEED ── -->
+          <article class="card col-4 reveal" aria-labelledby="se-h">
+            <header class="card-head">
+              <span class="card-icon" aria-hidden="true">🌰</span>
+              <h3 class="card-title" id="se-h" data-hi="कितना बीज?">How much seed?</h3>
+            </header>
+            <form class="form" id="seedForm" novalidate>
+              <label class="field">
+                <span data-hi="फ़सल">Crop</span>
+                <select id="seedCrop"></select>
+              </label>
+              <div class="field-row">
+                <label class="field">
+                  <span data-hi="ज़मीन">Land</span>
+                  <input type="number" id="seedArea" value="1" min="0" step="0.5" inputmode="decimal" />
+                </label>
+                <label class="field">
+                  <span data-hi="नाप">Unit</span>
+                  <select id="seedUnit"></select>
+                </label>
+              </div>
+            </form>
+            <div id="seedResult" aria-live="polite"></div>
+            <p class="meta" data-hi="यह अच्छे बीज के लिए सामान्य मात्रा है। देर से बुवाई में थोड़ा ज़्यादा बीज लगता है।">This is the usual amount for good seed. Late sowing needs a little more.</p>
+          </article>
+
           <!-- ── PROFIT ── -->
           <article class="card col-4 reveal" aria-labelledby="pr-h">
             <header class="card-head">
@@ -345,8 +415,50 @@
             <p class="meta" data-hi="ये आँकड़े सिर्फ़ उदाहरण हैं। अपने खेत के हिसाब से बदल लें।">These numbers are only examples. Change them to match your farm.</p>
           </article>
 
+          <!-- ── CROP INSURANCE PREMIUM ── -->
+          <article class="card col-4 reveal" aria-labelledby="in-h">
+            <header class="card-head">
+              <span class="card-icon" aria-hidden="true">🛡️</span>
+              <h3 class="card-title" id="in-h" data-hi="फ़सल बीमा का ख़र्च">Crop insurance cost</h3>
+            </header>
+            <form class="form" id="insForm" novalidate>
+              <label class="field">
+                <span data-hi="फ़सल का प्रकार">Kind of crop</span>
+                <select id="insSeason"></select>
+              </label>
+              <label class="field">
+                <span data-hi="बीमा की रक़म (₹)। यह बैंक या जन सेवा केंद्र बताता है।">Insured amount (₹). Your bank or CSC tells you this.</span>
+                <input type="number" id="insAmount" value="40000" min="0" step="1000" inputmode="decimal" />
+              </label>
+            </form>
+            <div id="insResult" aria-live="polite"></div>
+            <p class="meta" data-hi="पीएम फ़सल बीमा योजना की दरें। कुछ राज्यों में किसान का हिस्सा और भी कम है।">Rates of PM Fasal Bima Yojana. In some states the farmer pays even less.</p>
+          </article>
+
+          <!-- ── KCC LOAN INTEREST ── -->
+          <article class="card col-4 reveal" aria-labelledby="lo-h">
+            <header class="card-head">
+              <span class="card-icon" aria-hidden="true">💳</span>
+              <h3 class="card-title" id="lo-h" data-hi="फ़सल ऋण का ब्याज">Crop loan interest</h3>
+            </header>
+            <form class="form" id="loanForm" novalidate>
+              <div class="field-row">
+                <label class="field">
+                  <span data-hi="ऋण की रक़म (₹)">Loan amount (₹)</span>
+                  <input type="number" id="loanAmount" value="100000" min="0" step="5000" inputmode="decimal" />
+                </label>
+                <label class="field">
+                  <span data-hi="कितने महीने">Months</span>
+                  <input type="number" id="loanMonths" value="6" min="1" max="12" step="1" inputmode="numeric" />
+                </label>
+              </div>
+            </form>
+            <div id="loanResult" aria-live="polite"></div>
+            <p class="meta" data-hi="किसान क्रेडिट कार्ड के फ़सल ऋण की दरें। ऋण की सीमा अपने बैंक से पूछें।">Rates for Kisan Credit Card crop loans. Ask your bank about the loan limit.</p>
+          </article>
+
           <!-- ── LAND UNITS ── -->
-          <article class="card col-4 md-12 reveal" aria-labelledby="lc-h">
+          <article class="card col-4 reveal" aria-labelledby="lc-h">
             <header class="card-head">
               <span class="card-icon" aria-hidden="true">📏</span>
               <h3 class="card-title" id="lc-h" data-hi="ज़मीन की नाप">Land units</h3>
@@ -372,80 +484,43 @@
     </section>
 
     <!-- ═══════════════════════════════════════
-         HELP: schemes and helplines
+         GOVERNMENT SCHEMES: schemes, papers, helplines, apps
     ═══════════════════════════════════════ -->
-    <section class="section section-tint" id="help" aria-labelledby="help-h">
+    <section class="section section-tint" id="schemes" aria-labelledby="schemes-h">
       <div class="container">
         <header class="section-head reveal">
-          <p class="eyebrow" data-hi="मदद">Help</p>
-          <h2 id="help-h" data-hi="सरकारी मदद">Government help</h2>
-          <p class="section-desc" data-hi="आपके काम की योजनाएँ और फ़ोन नंबर।">Schemes you can use and numbers you can call.</p>
+          <p class="eyebrow" data-hi="योजनाएँ">Schemes</p>
+          <h2 id="schemes-h" data-hi="सरकारी योजनाएँ">Government schemes</h2>
+          <p class="section-desc" data-hi="आपको किस तरह की मदद चाहिए? चुनिए और देखिए क्या मिलता है और कैसे।">What kind of help do you need? Pick one to see what you get and how to get it.</p>
         </header>
 
-        <div class="grid">
+        <!-- Filled by script.js from the SCHEMES list -->
+        <div class="filters reveal" id="schemeFilters"></div>
+        <div class="scheme-grid" id="schemeList"></div>
+        <button class="btn btn-outline scheme-all" id="schemeAll" type="button" hidden></button>
+        <p class="meta scheme-note" data-hi="रक़म और नियम बदल सकते हैं, और राज्य अपने नियम भी जोड़ते हैं। हमेशा सरकारी वेबसाइट पर जाँच लें। आवेदन के लिए किसी को पैसा न दें।">Amounts and rules can change, and states add their own rules. Always check the official site. Never pay anyone a fee to apply.</p>
 
-          <!-- ── SCHEMES ── -->
-          <article class="card col-8 reveal" aria-labelledby="sc-h">
+        <div class="grid help-grid">
+
+          <!-- ── PAPERS YOU NEED ── -->
+          <article class="card col-4 reveal" aria-labelledby="pp-h">
             <header class="card-head">
-              <span class="card-icon" aria-hidden="true">🏛️</span>
-              <h3 class="card-title" id="sc-h" data-hi="आपके लिए योजनाएँ">Schemes for you</h3>
+              <span class="card-icon" aria-hidden="true">📄</span>
+              <h3 class="card-title" id="pp-h" data-hi="ज़रूरी काग़ज़">Papers you need</h3>
             </header>
-            <ul class="rows schemes">
-              <li class="row">
-                <div class="row-main">
-                  <span class="row-title" data-hi="पीएम-किसान">PM-KISAN</span>
-                  <span class="row-sub" data-hi="हर साल ₹6,000, तीन किस्तों में सीधे आपके बैंक खाते में।">₹6,000 every year, sent to your bank account in 3 parts.</span>
-                </div>
-                <a class="link" href="https://pmkisan.gov.in" target="_blank" rel="noopener noreferrer"><span data-hi="वेबसाइट खोलें">Open site</span> <svg class="icon" aria-hidden="true"><use href="#i-external" /></svg></a>
-              </li>
-              <li class="row">
-                <div class="row-main">
-                  <span class="row-title" data-hi="पीएम फ़सल बीमा">PM Fasal Bima</span>
-                  <span class="row-sub" data-hi="फ़सल का बीमा। खरीफ़ में सिर्फ़ 2% और रबी में 1.5% प्रीमियम देना होता है।">Crop insurance. You pay only 2% for Kharif crops and 1.5% for Rabi crops.</span>
-                </div>
-                <a class="link" href="https://pmfby.gov.in" target="_blank" rel="noopener noreferrer"><span data-hi="वेबसाइट खोलें">Open site</span> <svg class="icon" aria-hidden="true"><use href="#i-external" /></svg></a>
-              </li>
-              <li class="row">
-                <div class="row-main">
-                  <span class="row-title" data-hi="किसान क्रेडिट कार्ड">Kisan Credit Card</span>
-                  <span class="row-sub" data-hi="सस्ता फ़सल ऋण। समय पर चुकाने पर सिर्फ़ 4% ब्याज।">Low-cost crop loan. Only 4% interest if you repay on time.</span>
-                </div>
-                <a class="link" href="https://www.myscheme.gov.in/schemes/kcc" target="_blank" rel="noopener noreferrer"><span data-hi="वेबसाइट खोलें">Open site</span> <svg class="icon" aria-hidden="true"><use href="#i-external" /></svg></a>
-              </li>
-              <li class="row">
-                <div class="row-main">
-                  <span class="row-title" data-hi="मृदा स्वास्थ्य कार्ड">Soil Health Card</span>
-                  <span class="row-sub" data-hi="मिट्टी की मुफ़्त जाँच। बताता है कि खेत को कितनी खाद चाहिए।">Free soil test. It tells you how much fertilizer your field needs.</span>
-                </div>
-                <a class="link" href="https://soilhealth.dac.gov.in" target="_blank" rel="noopener noreferrer"><span data-hi="वेबसाइट खोलें">Open site</span> <svg class="icon" aria-hidden="true"><use href="#i-external" /></svg></a>
-              </li>
-              <li class="row">
-                <div class="row-main">
-                  <span class="row-title" data-hi="ड्रिप और स्प्रिंकलर पर सब्सिडी">Drip and sprinkler subsidy</span>
-                  <span class="row-sub" data-hi="ड्रिप और स्प्रिंकलर के ख़र्च का लगभग आधा सरकार देती है।">The government pays about half the cost of drip and sprinkler sets.</span>
-                </div>
-                <a class="link" href="https://pmksy.gov.in" target="_blank" rel="noopener noreferrer"><span data-hi="वेबसाइट खोलें">Open site</span> <svg class="icon" aria-hidden="true"><use href="#i-external" /></svg></a>
-              </li>
-              <li class="row">
-                <div class="row-main">
-                  <span class="row-title" data-hi="कृषि यंत्र पर सब्सिडी">Farm machine subsidy</span>
-                  <span class="row-sub" data-hi="ट्रैक्टर और कृषि यंत्रों की क़ीमत पर 40 से 50% मदद।">40 to 50% help on the cost of tractors and farm machines.</span>
-                </div>
-                <a class="link" href="https://agrimachinery.nic.in" target="_blank" rel="noopener noreferrer"><span data-hi="वेबसाइट खोलें">Open site</span> <svg class="icon" aria-hidden="true"><use href="#i-external" /></svg></a>
-              </li>
-              <li class="row">
-                <div class="row-main">
-                  <span class="row-title" data-hi="ई-नाम (ऑनलाइन मंडी)">e-NAM (online mandi)</span>
-                  <span class="row-sub" data-hi="फ़सल ऑनलाइन बेचें और दूसरी मंडियों के भाव देखें।">Sell your crop online and see prices in other mandis.</span>
-                </div>
-                <a class="link" href="https://enam.gov.in" target="_blank" rel="noopener noreferrer"><span data-hi="वेबसाइट खोलें">Open site</span> <svg class="icon" aria-hidden="true"><use href="#i-external" /></svg></a>
-              </li>
+            <p class="answer-why" data-hi="ज़्यादातर योजनाओं में यही काग़ज़ माँगे जाते हैं। जो तैयार है उस पर निशान लगाएँ।">Most schemes ask for these papers. Tick the ones you have ready.</p>
+            <ul class="papers" id="paperList">
+              <li><label><input type="checkbox" data-paper="aadhaar" /><span data-hi="आधार कार्ड">Aadhaar card</span></label></li>
+              <li><label><input type="checkbox" data-paper="bank" /><span data-hi="बैंक पासबुक (खाता आधार से जुड़ा हो)">Bank passbook (account linked to Aadhaar)</span></label></li>
+              <li><label><input type="checkbox" data-paper="land" /><span data-hi="ज़मीन के काग़ज़ (खसरा, खतौनी या 7/12)">Land papers (khasra, khatauni or 7/12)</span></label></li>
+              <li><label><input type="checkbox" data-paper="mobile" /><span data-hi="आधार से जुड़ा मोबाइल नंबर">Mobile number linked to Aadhaar</span></label></li>
+              <li><label><input type="checkbox" data-paper="photo" /><span data-hi="पासपोर्ट साइज़ फ़ोटो">Passport size photo</span></label></li>
             </ul>
-            <p class="meta" data-hi="नियम बदल सकते हैं। सरकारी वेबसाइट पर जाँच लें।">Rules can change. Check the official site.</p>
+            <p class="meta" id="paperCount"></p>
           </article>
 
           <!-- ── HELPLINES ── -->
-          <article class="card col-4 md-12 reveal" aria-labelledby="hl-h">
+          <article class="card col-4 reveal" aria-labelledby="hl-h">
             <header class="card-head">
               <span class="card-icon" aria-hidden="true">📞</span>
               <h3 class="card-title" id="hl-h" data-hi="फ़ोन पर मदद">Call for help</h3>
@@ -477,6 +552,45 @@
               </li>
             </ul>
             <p class="meta" data-hi="नंबर दबाते ही फ़ोन लग जाएगा।">Tap a number to call.</p>
+          </article>
+
+          <!-- ── GOVERNMENT APPS ── -->
+          <article class="card col-4 reveal" aria-labelledby="ap-h">
+            <header class="card-head">
+              <span class="card-icon" aria-hidden="true">📱</span>
+              <h3 class="card-title" id="ap-h" data-hi="सरकारी ऐप">Government apps</h3>
+            </header>
+            <ul class="rows apps">
+              <li class="row">
+                <div class="row-main">
+                  <span class="row-title" data-hi="मेघदूत">Meghdoot</span>
+                  <span class="row-sub" data-hi="मौसम विभाग की ओर से आपके ज़िले के लिए मौसम और फ़सल की सलाह, आपकी भाषा में।">Weather and crop advice for your district from the weather department, in your language.</span>
+                </div>
+                <a class="link" href="https://play.google.com/store/apps/details?id=com.aas.meghdoot" target="_blank" rel="noopener noreferrer"><span data-hi="ऐप">App</span> <svg class="icon" aria-hidden="true"><use href="#i-external" /></svg></a>
+              </li>
+              <li class="row">
+                <div class="row-main">
+                  <span class="row-title" data-hi="पीएम-किसान ऐप">PM-KISAN app</span>
+                  <span class="row-sub" data-hi="अपनी किस्त की स्थिति देखें और ई-केवाईसी करें।">Check your instalment and do your e-KYC.</span>
+                </div>
+                <a class="link" href="https://play.google.com/store/apps/details?id=com.nic.project.pmkisan" target="_blank" rel="noopener noreferrer"><span data-hi="ऐप">App</span> <svg class="icon" aria-hidden="true"><use href="#i-external" /></svg></a>
+              </li>
+              <li class="row">
+                <div class="row-main">
+                  <span class="row-title" data-hi="फ़सल बीमा ऐप">Crop Insurance app</span>
+                  <span class="row-sub" data-hi="बीमा कराएँ और फ़सल के नुकसान की सूचना दें।">Buy insurance and report crop loss.</span>
+                </div>
+                <a class="link" href="https://play.google.com/store/apps/details?id=in.farmguide.farmerapp.central" target="_blank" rel="noopener noreferrer"><span data-hi="ऐप">App</span> <svg class="icon" aria-hidden="true"><use href="#i-external" /></svg></a>
+              </li>
+              <li class="row">
+                <div class="row-main">
+                  <span class="row-title" data-hi="ई-नाम ऐप">e-NAM app</span>
+                  <span class="row-sub" data-hi="मंडी भाव देखें और फ़सल ऑनलाइन बेचें।">See mandi prices and sell your crop online.</span>
+                </div>
+                <a class="link" href="https://play.google.com/store/apps/details?id=in.gov.enam" target="_blank" rel="noopener noreferrer"><span data-hi="ऐप">App</span> <svg class="icon" aria-hidden="true"><use href="#i-external" /></svg></a>
+              </li>
+            </ul>
+            <p class="meta" data-hi="ये एंड्रॉइड फ़ोन के लिए गूगल प्ले पर मुफ़्त हैं।">Free on Google Play for Android phones.</p>
           </article>
 
         </div>

@@ -59,12 +59,15 @@ No login. No app to install. No cost.
 - **Next 7 days** of rain and temperature
 - **When to spray?** Every hour of today and tomorrow marked good, okay or do not spray
 - **Should I water?** A straight yes, wait or no hurry
+- **Any danger this week?** Storm, heavy rain, heat, frost and strong wind warnings
+- **Days to harvest and dry**: the dry days of the week at a glance
 
 </td>
 <td width="50%" valign="top">
 
 ### 🌾 This season
 - **What to sow?** Kharif, Rabi and Zaid crops, with "sow now" tags for the current month
+- **My crop calendar**: enter the sowing date and get the dates for watering, urea and harvest
 - **Watch out for** the pests and diseases of the season: the sign to look for and the first thing to do
 - **Government price (MSP)** for Kharif 2026-27 and Rabi 2027-28
 
@@ -75,20 +78,31 @@ No login. No app to install. No cost.
 
 ### 🧮 Easy calculators
 - **How much fertilizer?** Answer in bags of urea, DAP and potash
+- **How much seed?** For 13 common crops
 - **How much profit?** With the price below which you make a loss
+- **Crop insurance cost** under PM Fasal Bima
+- **Crop loan interest** on a Kisan Credit Card, on time and late
 - **Land units**: acre, hectare, guntha, kanal, marla, cent
 
 </td>
 <td width="50%" valign="top">
 
-### 🤝 Help that is one tap away
-- **Schemes**: PM-KISAN, Fasal Bima, Kisan Credit Card and more, each in one simple line
+### 🏛️ Government schemes
+- **13 schemes** with what you get, who can get it and how to apply
+- **Pick the help you need**: money, insurance, loan, water and solar, machines, soil and organic, selling
+- **Papers you need**: a checklist the phone remembers
 - **Helplines**: tap a number and the phone calls it
-- **Mitra**: ask anything, in Hindi, Hinglish or English
+- **Government apps**: Meghdoot, PM-KISAN, Crop Insurance, e-NAM
 
 </td>
 </tr>
 </table>
+
+<p align="center">
+  <img src="docs/desktop-schemes.png" width="92%" alt="Government schemes with a filter by kind of help" />
+</p>
+
+And on every page: **Mitra**, the AI helper. Ask anything, in Hindi, Hinglish or English.
 
 ---
 
@@ -122,6 +136,8 @@ Nothing on the page is made up or simulated.
 | Soil moisture and soil temperature | Open-Meteo soil model |
 | Spray timing | Worked out hour by hour from wind, rain, heat and humidity |
 | Watering advice | Water the crop will lose in 3 days, compared with the rain that is coming |
+| Weekly warnings and dry days | The 7-day forecast, checked for storms, heavy rain, heat, frost and strong wind |
+| Schemes | Checked against the official scheme websites in October 2026 |
 | MSP | As announced by the Union Cabinet (Kharif: 13 May 2026, Rabi: 1 October 2026) |
 | Mitra's answers | Google Gemini, guided by an agriculture prompt plus the live weather and season |
 
@@ -234,9 +250,10 @@ If the website ever moves to a new address, add that address to the `cors` list 
 
 ## 🗓️ Once a year
 
-Two lists in `script.js` need fresh numbers each year:
+Three lists in `script.js` need a fresh look each year:
 
 - **`MSP`**: the government prices. Kharif prices come out around June, Rabi prices around October.
+- **`SCHEMES`**: amounts and rules of the government schemes.
 - **`PROFIT_CROPS`**: the example yield and cost in the profit calculator.
 
 The Gemini models are listed in `GEMINI_MODELS` at the top of `backend/server.js`.
