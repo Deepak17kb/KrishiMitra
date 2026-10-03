@@ -6,7 +6,7 @@
 
 <div align="center">
 
-![Typing SVG](https://readme-typing-svg.demolab.com?font=Georgia&size=20&pause=1200&color=5a7a3a&center=true&vCenter=true&width=620&lines=AI-powered+farming+companion+for+India;Live+weather+and+mandi+rates;Built+for+every+Indian+farmer;Hindi+and+English+support)
+![Typing SVG](https://readme-typing-svg.demolab.com?font=Georgia&size=20&pause=1200&color=5a7a3a&center=true&vCenter=true&width=620&lines=AI-powered+farming+companion+for+India;Live+weather%2C+spray+timing+and+soil+outlook;Built+for+every+Indian+farmer;Hindi+and+English+support)
 
 </div>
 
@@ -16,9 +16,15 @@
 
 ![Node.js](https://img.shields.io/badge/Node.js-4a7c3f?style=for-the-badge&logo=nodedotjs&logoColor=white)
 ![Express](https://img.shields.io/badge/Express-3d6b35?style=for-the-badge&logo=express&logoColor=white)
-![Gemini](https://img.shields.io/badge/Gemini%202.5%20Flash-c8902a?style=for-the-badge&logo=google&logoColor=white)
+![Gemini](https://img.shields.io/badge/Gemini%203.8%20Flash-c8902a?style=for-the-badge&logo=google&logoColor=white)
 ![JavaScript](https://img.shields.io/badge/Vanilla%20JS-d4a843?style=for-the-badge&logo=javascript&logoColor=white)
 ![Free](https://img.shields.io/badge/100%25%20Free%20APIs-6b8f5e?style=for-the-badge)
+
+</div>
+
+<div align="center">
+
+**[Open the live site →](https://krishi-mitra-silk-nine.vercel.app)**
 
 </div>
 
@@ -37,7 +43,7 @@
 
 KrishiMitra started from a simple observation — Indian farmers have access to smartphones but rarely have access to timely, reliable farming guidance in their own language. This project is an attempt to bridge that gap with free, accessible technology.
 
-It is a full-stack web application that brings together AI-powered advice, live weather, mandi prices, crop calendars, and government schemes — all under one roof, in Hindi and English.
+It is a full-stack web application that brings together an AI assistant, live weather, spray timing, soil and irrigation outlook, a crop calendar, support prices, farm calculators and government schemes — on one calm page, in Hindi and English.
 
 <table>
 <tr>
@@ -45,30 +51,30 @@ It is a full-stack web application that brings together AI-powered advice, live 
 
 **AI at its core**
 
-Gemini 2.5 Flash powers a chatbot that understands agriculture-specific questions about crops, pests, soil, irrigation, and government schemes — and answers in the farmer's preferred language.
+Mitra, the built-in assistant, answers questions about crops, pests, soil, irrigation and schemes in the farmer's own language. It already knows the farmer's location, weather and season.
 
 </td>
 <td width="50%">
 
-**Always current**
+**Real data only**
 
-Weather data updates in real time via Open-Meteo. The app auto-detects location and translates conditions into actionable farm advice — no manual input needed.
+Weather, hourly forecast and soil estimates come live from Open-Meteo. Nothing on the page is simulated — where live data is not available, the page links to the official source instead.
 
 </td>
 </tr>
 <tr>
 <td width="50%">
 
-**Market aware**
+**Decisions, not just numbers**
 
-Live mandi prices for Wheat, Rice, Maize, Cotton, Onion and more — so farmers can make informed decisions about when and where to sell.
+The forecast is turned into answers: which hours are safe to spray, whether to irrigate in the next three days, what to sow this month.
 
 </td>
 <td width="50%">
 
 **Built for Bharat**
 
-Kharif, Rabi, and Zaid crop calendars. Guidance on PM-KISAN, Fasal Bima, Soil Health Card, and SMAM — with direct links to official portals.
+Kharif, Rabi and Zaid calendars, MSP as announced by the Government of India, local land units (guntha, kanal, marla, cent) and tap-to-call helplines.
 
 </td>
 </tr>
@@ -80,14 +86,18 @@ Kharif, Rabi, and Zaid crop calendars. Guidance on PM-KISAN, Fasal Bima, Soil He
 
 <div align="center">
 
-| Feature | What it does | Type |
-|---------|-------------|------|
-| **AI Chatbot** | Answers crop, pest, irrigation and scheme questions in Hindi and English | ![Gemini](https://img.shields.io/badge/Gemini-c8902a?style=flat-square) |
-| **Weather Dashboard** | Temperature, humidity, wind, rain probability with smart farm advice | ![Free](https://img.shields.io/badge/Free-6b8f5e?style=flat-square) |
-| **Mandi Rates** | Daily crop prices for major commodities across India | ![Live](https://img.shields.io/badge/Live-4a7a9b?style=flat-square) |
-| **Crop Calendar** | Sowing and harvest windows for Kharif, Rabi, and Zaid seasons | ![Built-in](https://img.shields.io/badge/Built--in-5a7a3a?style=flat-square) |
-| **Government Schemes** | PM-KISAN, Fasal Bima, SMAM — explained simply with direct links | ![Gov](https://img.shields.io/badge/India%20Gov-b87333?style=flat-square) |
-| **Agriculture News** | Latest farming news from India via NewsData.io | ![Live](https://img.shields.io/badge/Live-4a7a9b?style=flat-square) |
+| Feature | What it does | Source |
+|---------|-------------|--------|
+| **Mitra — AI assistant** | Answers crop, pest, irrigation and scheme questions in Hindi, Hinglish and English | Google Gemini |
+| **Weather now** | Temperature, humidity, wind, rain chance, UV, sunrise and sunset with plain farm advice | Open-Meteo |
+| **7-day forecast** | Daily rain and temperature range for the week ahead | Open-Meteo |
+| **Spray & field-work window** | Rates every daylight hour for the next two days from wind, rain, heat and humidity | Open-Meteo |
+| **Soil & irrigation** | Soil temperature and moisture, crop water use and a 3-day irrigation outlook | Open-Meteo |
+| **Crop calendar** | Sowing and harvest windows for Kharif, Rabi and Zaid, with "sow now" markers | Built-in |
+| **Pest & disease watch** | What to look for this season and the first step to take | Built-in |
+| **Minimum Support Price** | Kharif 2026-27 and Rabi 2027-28 prices | Government of India |
+| **Calculators** | Fertilizer dose, profit estimate, land unit converter, soil pH guide | Built-in |
+| **Schemes & helplines** | PM-KISAN, Fasal Bima, KCC, Soil Health Card and more, with official links | Government of India |
 
 </div>
 
@@ -99,12 +109,12 @@ Kharif, Rabi, and Zaid crop calendars. Guidance on PM-KISAN, Fasal Bima, Soil He
 
 | Layer | Technology | Notes |
 |:-----:|-----------|-------|
-| **Frontend** | HTML · CSS · Vanilla JS | No frameworks. Lightweight, runs anywhere. |
+| **Frontend** | HTML · CSS · Vanilla JS | No frameworks, no build step. One page, three files. |
 | **Backend** | Node.js + Express | REST API with CORS, rate limiting, error handling |
-| **AI** | Gemini 2.5 Flash | Free tier — 250 requests per day |
-| **Weather** | Open-Meteo | Completely free, no API key required |
-| **News** | NewsData.io | Free tier — 200 calls per day |
-| **Geocoding** | Nominatim OSM | Free reverse geocoding |
+| **AI** | Gemini 3.8 Flash | Falls back automatically to other Gemini models if one is busy |
+| **Weather & soil** | Open-Meteo | Free, no API key required |
+| **Place search** | Open-Meteo Geocoding | Free, no API key required |
+| **Place names** | BigDataCloud | Free reverse geocoding for the browser |
 
 </div>
 
@@ -112,14 +122,14 @@ Kharif, Rabi, and Zaid crop calendars. Guidance on PM-KISAN, Fasal Bima, Soil He
 
 ## File Structure
 ```
-krishimitra/
+KrishiMitra/
 │
-├── index.html
-├── style.css
-├── script.js
+├── index.html               ← page structure
+├── style.css                ← design
+├── script.js                ← weather, widgets, calculators, chat
 │
 └── backend/
-    ├── server.js
+    ├── server.js            ← chat API (talks to Gemini)
     ├── package.json
     ├── package-lock.json
     ├── .env.example
@@ -132,8 +142,8 @@ krishimitra/
 
 **Clone the repository**
 ```bash
-git clone https://github.com/yourusername/krishimitra.git
-cd krishimitra/backend
+git clone https://github.com/Deepak17kb/KrishiMitra.git
+cd KrishiMitra/backend
 ```
 
 **Install dependencies**
@@ -146,7 +156,7 @@ npm install
 cp .env.example .env
 ```
 
-Open `.env` and add your keys:
+Open `.env` and add your key:
 ```env
 # Get your free key at aistudio.google.com
 GEMINI_API_KEY=your_gemini_api_key_here
@@ -159,7 +169,39 @@ NODE_ENV=development
 npm start
 ```
 
-Then open `index.html` in your browser. That is all it takes.
+**Open the site**
+
+Serve the project folder with any static server on port 5500 — for example the *Live Server* extension in VS Code — and open:
+
+```
+http://localhost:5500/?backend=local
+```
+
+`?backend=local` makes the page talk to the backend on your computer. Without it, the page uses the live backend on Render.
+
+---
+
+## Deployment
+
+| Part | Where | How it updates |
+|------|-------|----------------|
+| Website | [Vercel](https://krishi-mitra-silk-nine.vercel.app) and [GitHub Pages](https://deepak17kb.github.io/KrishiMitra/) | Automatically on every push to `main` |
+| Backend | [Render](https://krishimitra-backend-6spu.onrender.com/health) web service running the `backend` folder with `npm start` | Deploys from `main` — automatic if auto-deploy is on in Render, otherwise use *Manual Deploy* |
+
+The backend needs one environment variable on Render: `GEMINI_API_KEY`.
+
+If the website moves to a new address, add that address to the `cors` list in `backend/server.js`, or the chat will be blocked.
+
+---
+
+## Keeping it current
+
+Two things in `script.js` need a look once a year:
+
+- **`MSP`** — support prices. The Union Cabinet announces Kharif prices around June and Rabi prices around October.
+- **`PROFIT_CROPS`** — the example yields and costs in the profit estimate.
+
+The Gemini models the chat uses are listed in `GEMINI_MODELS` at the top of `backend/server.js`.
 
 ---
 
@@ -173,7 +215,6 @@ Then open `index.html` in your browser. That is all it takes.
 
 [![Gemini](https://img.shields.io/badge/Get%20Gemini%20Key-c8902a?style=for-the-badge&logo=google&logoColor=white)](https://aistudio.google.com)
 [![Open-Meteo](https://img.shields.io/badge/Open--Meteo-4a7a9b?style=for-the-badge)](https://open-meteo.com)
-[![NewsData](https://img.shields.io/badge/NewsData.io-6b8f5e?style=for-the-badge)](https://newsdata.io)
 [![PM-KISAN](https://img.shields.io/badge/PM--KISAN-b87333?style=for-the-badge)](https://pmkisan.gov.in)
 [![Node.js](https://img.shields.io/badge/Node.js-4a7c3f?style=for-the-badge&logo=nodedotjs&logoColor=white)](https://nodejs.org)
 

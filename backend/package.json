@@ -1,6 +1,6 @@
 {
   "name": "krishimitra-backend",
-  "version": "1.0.0",
+  "version": "3.0.0",
   "description": "KrishiMitra — Kisan ka Sachcha Mitra | Agriculture AI Backend (Gemini)",
   "main": "server.js",
   "scripts": {

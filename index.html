@@ -2,840 +2,646 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>KrishiMitra — Kisan ka Sachcha Mitra</title>
+  <meta name="description" content="A free farm companion for Indian farmers: live weather, the right hours to spray, soil and irrigation outlook, crop calendar, MSP, farm calculators and an AI assistant in Hindi and English." />
+  <meta name="theme-color" content="#183a25" />
+  <meta property="og:type" content="website" />
+  <meta property="og:title" content="KrishiMitra — Kisan ka Sachcha Mitra" />
+  <meta property="og:description" content="Live weather, spray timing, crop calendar, MSP, farm calculators and an AI assistant for Indian farmers." />
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 40 40'%3E%3Crect width='40' height='40' rx='11' fill='%23183a25'/%3E%3Cpath d='M20 31V12' stroke='%23e3bd6a' stroke-width='2' stroke-linecap='round'/%3E%3Cg fill='%23e3bd6a'%3E%3Cellipse cx='20' cy='11' rx='2.1' ry='3.4'/%3E%3Cellipse cx='16.2' cy='16.5' rx='3.2' ry='1.8' transform='rotate(-32 16.2 16.5)'/%3E%3Cellipse cx='23.8' cy='16.5' rx='3.2' ry='1.8' transform='rotate(32 23.8 16.5)'/%3E%3Cellipse cx='15.6' cy='21.6' rx='3.2' ry='1.8' transform='rotate(-28 15.6 21.6)'/%3E%3Cellipse cx='24.4' cy='21.6' rx='3.2' ry='1.8' transform='rotate(28 24.4 21.6)'/%3E%3C/g%3E%3C/svg%3E" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400..600;1,9..144,400..600&display=swap" />
   <link rel="stylesheet" href="style.css" />
-  <link href="https://fonts.googleapis.com/css2?family=Tiro+Devanagari+Hindi&family=Syne:wght@500;700;800&family=Instrument+Sans:wght@300;400;500&display=swap" rel="stylesheet" />
+  <script>document.documentElement.classList.add("js");</script>
+  <script src="script.js" defer></script>
 </head>
 <body>
 
   <!-- ═══════════════════════════════════════
+       ICON SPRITE (used with <use href="#…">)
+  ═══════════════════════════════════════ -->
+  <svg xmlns="http://www.w3.org/2000/svg" hidden>
+    <symbol id="mark" viewBox="0 0 40 40">
+      <rect width="40" height="40" rx="11" fill="#183a25" />
+      <path d="M20 31V12" stroke="#e3bd6a" stroke-width="2" stroke-linecap="round" fill="none" />
+      <g fill="#e3bd6a">
+        <ellipse cx="20" cy="11" rx="2.1" ry="3.4" />
+        <ellipse cx="16.2" cy="16.5" rx="3.2" ry="1.8" transform="rotate(-32 16.2 16.5)" />
+        <ellipse cx="23.8" cy="16.5" rx="3.2" ry="1.8" transform="rotate(32 23.8 16.5)" />
+        <ellipse cx="15.6" cy="21.6" rx="3.2" ry="1.8" transform="rotate(-28 15.6 21.6)" />
+        <ellipse cx="24.4" cy="21.6" rx="3.2" ry="1.8" transform="rotate(28 24.4 21.6)" />
+        <ellipse cx="16" cy="26.6" rx="2.8" ry="1.6" transform="rotate(-24 16 26.6)" opacity=".8" />
+        <ellipse cx="24" cy="26.6" rx="2.8" ry="1.6" transform="rotate(24 24 26.6)" opacity=".8" />
+      </g>
+    </symbol>
+    <symbol id="i-pin" viewBox="0 0 24 24"><path d="M21 10c0 7-9 13-9 13S3 17 3 10a9 9 0 0 1 18 0z" /><circle cx="12" cy="10" r="3" /></symbol>
+    <symbol id="i-refresh" viewBox="0 0 24 24"><path d="M23 4v6h-6" /><path d="M20.49 15a9 9 0 1 1-2.12-9.36L23 10" /></symbol>
+    <symbol id="i-send" viewBox="0 0 24 24"><path d="M22 2 11 13" /><path d="M22 2 15 22l-4-9-9-4 20-7z" /></symbol>
+    <symbol id="i-close" viewBox="0 0 24 24"><path d="M18 6 6 18M6 6l12 12" /></symbol>
+    <symbol id="i-trash" viewBox="0 0 24 24"><path d="M3 6h18" /><path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6" /><path d="M10 11v6M14 11v6" /><path d="M9 6V4a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v2" /></symbol>
+    <symbol id="i-chat" viewBox="0 0 24 24"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z" /></symbol>
+    <symbol id="i-phone" viewBox="0 0 24 24"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z" /></symbol>
+    <symbol id="i-external" viewBox="0 0 24 24"><path d="M7 17 17 7" /><path d="M7 7h10v10" /></symbol>
+    <symbol id="i-search" viewBox="0 0 24 24"><circle cx="11" cy="11" r="8" /><path d="m21 21-4.35-4.35" /></symbol>
+    <symbol id="i-locate" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9" /><path d="M22 12h-4M6 12H2M12 6V2M12 22v-4" /></symbol>
+  </svg>
+
+  <a class="skip-link" href="#main">Skip to content</a>
+
+  <!-- ═══════════════════════════════════════
        HEADER
   ═══════════════════════════════════════ -->
-  <header class="site-header">
-    <div class="header-left">
-      <div class="logo-mark">
-        <svg class="logo-svg" width="42" height="42" viewBox="0 0 42 42" fill="none" xmlns="http://www.w3.org/2000/svg">
-          <!-- Hexagon base -->
-          <polygon points="21,2 38,11.5 38,30.5 21,40 4,30.5 4,11.5" fill="rgba(255,255,255,0.10)" stroke="rgba(255,255,255,0.28)" stroke-width="1.2"/>
-          <!-- Wheat stalk center -->
-          <line x1="21" y1="34" x2="21" y2="13" stroke="#f4c842" stroke-width="2" stroke-linecap="round"/>
-          <!-- Wheat grains left -->
-          <ellipse cx="17.5" cy="20" rx="3.2" ry="1.8" fill="#f4c842" transform="rotate(-30 17.5 20)"/>
-          <ellipse cx="16.5" cy="24.5" rx="3.2" ry="1.8" fill="#f4c842" transform="rotate(-25 16.5 24.5)"/>
-          <ellipse cx="17" cy="29" rx="2.8" ry="1.6" fill="rgba(244,200,66,0.75)" transform="rotate(-20 17 29)"/>
-          <!-- Wheat grains right -->
-          <ellipse cx="24.5" cy="20" rx="3.2" ry="1.8" fill="#f4c842" transform="rotate(30 24.5 20)"/>
-          <ellipse cx="25.5" cy="24.5" rx="3.2" ry="1.8" fill="#f4c842" transform="rotate(25 25.5 24.5)"/>
-          <ellipse cx="25" cy="29" rx="2.8" ry="1.6" fill="rgba(244,200,66,0.75)" transform="rotate(20 25 29)"/>
-          <!-- Top grain -->
-          <ellipse cx="21" cy="13.5" rx="2.2" ry="3.2" fill="#f4c842"/>
-          <!-- Leaf left -->
-          <path d="M21 30 Q13 26 14 20" stroke="rgba(114,184,110,0.9)" stroke-width="1.5" fill="none" stroke-linecap="round"/>
-          <!-- Leaf right -->
-          <path d="M21 30 Q29 26 28 20" stroke="rgba(114,184,110,0.9)" stroke-width="1.5" fill="none" stroke-linecap="round"/>
-        </svg>
+  <header class="site-header" id="top">
+    <div class="container header-inner">
+      <a class="brand" href="#top" aria-label="KrishiMitra — back to top">
+        <svg class="brand-mark" aria-hidden="true"><use href="#mark" /></svg>
+        <span class="brand-text">
+          <span class="brand-name">KrishiMitra</span>
+          <span class="brand-tag">Kisan ka Sachcha Mitra</span>
+        </span>
+      </a>
+
+      <nav class="site-nav" aria-label="Sections">
+        <a href="#today">Today</a>
+        <a href="#season">Season</a>
+        <a href="#tools">Calculators</a>
+        <a href="#support">Schemes</a>
+      </nav>
+
+      <div class="header-actions">
+        <button class="location-btn" id="locationBtn" type="button" aria-haspopup="dialog" title="Change location">
+          <svg class="icon" aria-hidden="true"><use href="#i-pin" /></svg>
+          <span id="locationLabel">Detecting…</span>
+        </button>
+        <button class="btn btn-primary btn-sm header-ask" type="button" data-open-chat>Ask Mitra</button>
       </div>
-      <div class="logo-text-group">
-        <span class="logo-name">KrishiMitra</span>
-        <span class="logo-tagline">Kisan ka Sachcha Mitra</span>
-      </div>
-    </div>
-    <nav class="header-nav">
-      <a href="#dashboard">Dashboard</a>
-      <a href="#news">News</a>
-      <a href="#mandi">Mandi Rates</a>
-      <a href="#calendar">Season</a>
-    </nav>
-    <div class="header-right">
-      <div class="live-clock" id="liveClock">--:-- --</div>
-      <div class="location-pill" id="locationPill">📍 Detecting...</div>
     </div>
   </header>
 
   <!-- ═══════════════════════════════════════
-       HERO BANNER
+       HERO
   ═══════════════════════════════════════ -->
   <section class="hero">
-    <div class="hero-bg-pattern"></div>
-    <!-- Decorative grid lines -->
-    <div class="hero-grid-overlay"></div>
-    <div class="hero-content">
-      <div class="hero-badge">
-        <span class="hero-badge-dot"></span>
-        🇮🇳 India's Farmer Digital Platform
+    <div class="container hero-inner">
+      <div class="hero-copy">
+        <p class="eyebrow eyebrow-light">Free farm companion · Made for India</p>
+        <h1>Apni zameen, <em>apna data.</em></h1>
+        <p class="lead">Today's weather, the right hours to spray, soil and irrigation outlook, crop planning and government schemes — plus an assistant that answers in Hindi or English.</p>
+        <div class="hero-actions">
+          <button class="btn btn-gold" type="button" data-open-chat>
+            <svg class="icon" aria-hidden="true"><use href="#i-chat" /></svg>
+            Ask Mitra
+          </button>
+          <a class="btn btn-ghost" href="#today">See today's outlook</a>
+        </div>
       </div>
-      <h1 class="hero-title">Apni Zameen,<br/><em>Apna Data.</em></h1>
-      <p class="hero-subtitle">Weather · Mandi Prices · Crop Calendar · AI Help — everything your farm needs, in one place.</p>
-      <div class="hero-stats">
-        <div class="hero-stat"><span id="heroTemp">--°C</span><small>Temperature</small></div>
-        <div class="hero-stat-divider"></div>
-        <div class="hero-stat"><span id="heroDate">--</span><small>Today</small></div>
-        <div class="hero-stat-divider"></div>
-        <div class="hero-stat"><span id="heroSeason">--</span><small>Season</small></div>
-      </div>
-    </div>
-    <div class="hero-illustration">
-      <svg class="field-svg" width="340" height="220" viewBox="0 0 340 220" fill="none" xmlns="http://www.w3.org/2000/svg">
-        <!-- Sky gradient -->
-        <defs>
-          <linearGradient id="skyGrad" x1="0" y1="0" x2="0" y2="1">
-            <stop offset="0%" stop-color="rgba(255,255,255,0.04)"/>
-            <stop offset="100%" stop-color="rgba(255,255,255,0)"/>
-          </linearGradient>
-          <linearGradient id="soilGrad" x1="0" y1="0" x2="0" y2="1">
-            <stop offset="0%" stop-color="#7a4f2d"/>
-            <stop offset="100%" stop-color="#4a2e18"/>
-          </linearGradient>
-        </defs>
-        <!-- Sun -->
-        <circle cx="290" cy="38" r="28" fill="rgba(244,200,66,0.18)" />
-        <circle cx="290" cy="38" r="20" fill="rgba(244,200,66,0.28)" />
-        <circle cx="290" cy="38" r="13" fill="#f4c842" opacity="0.9"/>
-        <!-- Sun rays -->
-        <line x1="290" y1="8" x2="290" y2="15" stroke="#f4c842" stroke-width="2" stroke-linecap="round" opacity="0.6"/>
-        <line x1="310" y1="18" x2="305" y2="23" stroke="#f4c842" stroke-width="2" stroke-linecap="round" opacity="0.6"/>
-        <line x1="320" y1="38" x2="313" y2="38" stroke="#f4c842" stroke-width="2" stroke-linecap="round" opacity="0.6"/>
-        <line x1="270" y1="18" x2="275" y2="23" stroke="#f4c842" stroke-width="2" stroke-linecap="round" opacity="0.6"/>
-        <line x1="260" y1="38" x2="267" y2="38" stroke="#f4c842" stroke-width="2" stroke-linecap="round" opacity="0.6"/>
-        <!-- Cloud 1 -->
-        <ellipse cx="80" cy="30" rx="36" ry="14" fill="rgba(255,255,255,0.10)"/>
-        <ellipse cx="60" cy="34" rx="22" ry="11" fill="rgba(255,255,255,0.08)"/>
-        <ellipse cx="100" cy="36" rx="20" ry="10" fill="rgba(255,255,255,0.08)"/>
-        <!-- Cloud 2 -->
-        <ellipse cx="190" cy="22" rx="28" ry="10" fill="rgba(255,255,255,0.07)"/>
-        <ellipse cx="175" cy="26" rx="16" ry="8" fill="rgba(255,255,255,0.05)"/>
-        <!-- Soil strip -->
-        <rect x="0" y="190" width="340" height="30" rx="0" fill="url(#soilGrad)" opacity="0.7"/>
-        <!-- Field rows - wheat stalks repeated -->
-        <!-- Row back (small) -->
-        <g opacity="0.55" transform="translate(0,10)">
-          <line x1="20" y1="175" x2="20" y2="148" stroke="#72b86e" stroke-width="1.2" stroke-linecap="round"/>
-          <ellipse cx="20" cy="148" rx="1.5" ry="4" fill="#a0c878"/>
-          <ellipse cx="17.5" cy="154" rx="2.5" ry="1.2" fill="#72b86e" transform="rotate(-25 17.5 154)"/>
-          <ellipse cx="22.5" cy="154" rx="2.5" ry="1.2" fill="#72b86e" transform="rotate(25 22.5 154)"/>
 
-          <line x1="48" y1="175" x2="48" y2="148" stroke="#72b86e" stroke-width="1.2" stroke-linecap="round"/>
-          <ellipse cx="48" cy="148" rx="1.5" ry="4" fill="#a0c878"/>
-          <ellipse cx="45.5" cy="154" rx="2.5" ry="1.2" fill="#72b86e" transform="rotate(-25 45.5 154)"/>
-          <ellipse cx="50.5" cy="154" rx="2.5" ry="1.2" fill="#72b86e" transform="rotate(25 50.5 154)"/>
-
-          <line x1="76" y1="175" x2="76" y2="148" stroke="#72b86e" stroke-width="1.2" stroke-linecap="round"/>
-          <ellipse cx="76" cy="148" rx="1.5" ry="4" fill="#a0c878"/>
-          <ellipse cx="73.5" cy="154" rx="2.5" ry="1.2" fill="#72b86e" transform="rotate(-25 73.5 154)"/>
-          <ellipse cx="78.5" cy="154" rx="2.5" ry="1.2" fill="#72b86e" transform="rotate(25 78.5 154)"/>
-
-          <line x1="104" y1="175" x2="104" y2="148" stroke="#72b86e" stroke-width="1.2" stroke-linecap="round"/>
-          <ellipse cx="104" cy="148" rx="1.5" ry="4" fill="#a0c878"/>
-          <line x1="132" y1="175" x2="132" y2="148" stroke="#72b86e" stroke-width="1.2" stroke-linecap="round"/>
-          <ellipse cx="132" cy="148" rx="1.5" ry="4" fill="#a0c878"/>
-          <line x1="160" y1="175" x2="160" y2="148" stroke="#72b86e" stroke-width="1.2" stroke-linecap="round"/>
-          <ellipse cx="160" cy="148" rx="1.5" ry="4" fill="#a0c878"/>
-          <line x1="188" y1="175" x2="188" y2="148" stroke="#72b86e" stroke-width="1.2" stroke-linecap="round"/>
-          <ellipse cx="188" cy="148" rx="1.5" ry="4" fill="#a0c878"/>
-          <line x1="216" y1="175" x2="216" y2="148" stroke="#72b86e" stroke-width="1.2" stroke-linecap="round"/>
-          <ellipse cx="216" cy="148" rx="1.5" ry="4" fill="#a0c878"/>
-          <line x1="244" y1="175" x2="244" y2="148" stroke="#72b86e" stroke-width="1.2" stroke-linecap="round"/>
-          <ellipse cx="244" cy="148" rx="1.5" ry="4" fill="#a0c878"/>
-        </g>
-        <!-- Row front (larger) -->
-        <g opacity="0.85">
-          <line x1="12" y1="192" x2="12" y2="152" stroke="#4a8c47" stroke-width="1.8" stroke-linecap="round"/>
-          <ellipse cx="12" cy="152" rx="2" ry="5.5" fill="#72b86e"/>
-          <ellipse cx="8.5" cy="160" rx="3.5" ry="1.6" fill="#4a8c47" transform="rotate(-28 8.5 160)"/>
-          <ellipse cx="15.5" cy="160" rx="3.5" ry="1.6" fill="#4a8c47" transform="rotate(28 15.5 160)"/>
-          <ellipse cx="8" cy="168" rx="3" ry="1.4" fill="rgba(74,140,71,0.7)" transform="rotate(-20 8 168)"/>
-          <ellipse cx="16" cy="168" rx="3" ry="1.4" fill="rgba(74,140,71,0.7)" transform="rotate(20 16 168)"/>
-
-          <line x1="46" y1="192" x2="46" y2="152" stroke="#4a8c47" stroke-width="1.8" stroke-linecap="round"/>
-          <ellipse cx="46" cy="152" rx="2" ry="5.5" fill="#72b86e"/>
-          <ellipse cx="42.5" cy="160" rx="3.5" ry="1.6" fill="#4a8c47" transform="rotate(-28 42.5 160)"/>
-          <ellipse cx="49.5" cy="160" rx="3.5" ry="1.6" fill="#4a8c47" transform="rotate(28 49.5 160)"/>
-
-          <line x1="80" y1="192" x2="80" y2="152" stroke="#4a8c47" stroke-width="1.8" stroke-linecap="round"/>
-          <ellipse cx="80" cy="152" rx="2" ry="5.5" fill="#72b86e"/>
-          <ellipse cx="76.5" cy="160" rx="3.5" ry="1.6" fill="#4a8c47" transform="rotate(-28 76.5 160)"/>
-          <ellipse cx="83.5" cy="160" rx="3.5" ry="1.6" fill="#4a8c47" transform="rotate(28 83.5 160)"/>
-
-          <line x1="114" y1="192" x2="114" y2="152" stroke="#4a8c47" stroke-width="1.8" stroke-linecap="round"/>
-          <ellipse cx="114" cy="152" rx="2" ry="5.5" fill="#72b86e"/>
-          <ellipse cx="110.5" cy="160" rx="3.5" ry="1.6" fill="#4a8c47" transform="rotate(-28 110.5 160)"/>
-          <ellipse cx="117.5" cy="160" rx="3.5" ry="1.6" fill="#4a8c47" transform="rotate(28 117.5 160)"/>
-
-          <line x1="148" y1="192" x2="148" y2="152" stroke="#4a8c47" stroke-width="1.8" stroke-linecap="round"/>
-          <ellipse cx="148" cy="152" rx="2" ry="5.5" fill="#72b86e"/>
-          <ellipse cx="144.5" cy="160" rx="3.5" ry="1.6" fill="#4a8c47" transform="rotate(-28 144.5 160)"/>
-          <ellipse cx="151.5" cy="160" rx="3.5" ry="1.6" fill="#4a8c47" transform="rotate(28 151.5 160)"/>
-
-          <line x1="182" y1="192" x2="182" y2="152" stroke="#4a8c47" stroke-width="1.8" stroke-linecap="round"/>
-          <ellipse cx="182" cy="152" rx="2" ry="5.5" fill="#72b86e"/>
-          <ellipse cx="178.5" cy="160" rx="3.5" ry="1.6" fill="#4a8c47" transform="rotate(-28 178.5 160)"/>
-          <ellipse cx="185.5" cy="160" rx="3.5" ry="1.6" fill="#4a8c47" transform="rotate(28 185.5 160)"/>
-
-          <line x1="216" y1="192" x2="216" y2="152" stroke="#4a8c47" stroke-width="1.8" stroke-linecap="round"/>
-          <ellipse cx="216" cy="152" rx="2" ry="5.5" fill="#72b86e"/>
-          <ellipse cx="212.5" cy="160" rx="3.5" ry="1.6" fill="#4a8c47" transform="rotate(-28 212.5 160)"/>
-          <ellipse cx="219.5" cy="160" rx="3.5" ry="1.6" fill="#4a8c47" transform="rotate(28 219.5 160)"/>
-
-          <line x1="250" y1="192" x2="250" y2="152" stroke="#4a8c47" stroke-width="1.8" stroke-linecap="round"/>
-          <ellipse cx="250" cy="152" rx="2" ry="5.5" fill="#72b86e"/>
-
-          <line x1="284" y1="192" x2="284" y2="152" stroke="#4a8c47" stroke-width="1.8" stroke-linecap="round"/>
-          <ellipse cx="284" cy="152" rx="2" ry="5.5" fill="#72b86e"/>
-
-          <line x1="318" y1="192" x2="318" y2="152" stroke="#4a8c47" stroke-width="1.8" stroke-linecap="round"/>
-          <ellipse cx="318" cy="152" rx="2" ry="5.5" fill="#72b86e"/>
-        </g>
-        <!-- Ground line -->
-        <line x1="0" y1="192" x2="340" y2="192" stroke="rgba(122,79,45,0.5)" stroke-width="1"/>
-      </svg>
+      <aside class="hero-card" aria-label="Today at a glance">
+        <div class="hero-card-top">
+          <span id="heroDate">—</span>
+          <span class="pill pill-gold" id="heroSeason">—</span>
+        </div>
+        <div class="hero-now">
+          <span class="hero-temp" id="heroTemp">--°</span>
+          <span class="hero-now-text">
+            <span class="hero-cond" id="heroCond">Loading weather…</span>
+            <span class="hero-place" id="heroPlace">—</span>
+          </span>
+        </div>
+        <p class="hero-advice" id="heroAdvice">Fetching today's farm advice…</p>
+      </aside>
     </div>
   </section>
 
-  <!-- ═══════════════════════════════════════
-       TICKER BAR
-  ═══════════════════════════════════════ -->
-  <div class="ticker-bar">
-    <div class="ticker-label">🔴 LIVE</div>
-    <div class="ticker-track">
-      <div class="ticker-content">
-        <span>🌾 Wheat MSP 2024-25: ₹2,275/quintal</span>
-        <span class="ticker-sep">·</span>
-        <span>🍚 Paddy MSP: ₹2,300/quintal</span>
-        <span class="ticker-sep">·</span>
-        <span>🌽 Maize MSP: ₹2,090/quintal</span>
-        <span class="ticker-sep">·</span>
-        <span>🫘 Soybean MSP: ₹4,892/quintal</span>
-        <span class="ticker-sep">·</span>
-        <span>🥜 Groundnut MSP: ₹6,783/quintal</span>
-        <span class="ticker-sep">·</span>
-        <span>🟡 Mustard MSP: ₹5,950/quintal</span>
-        <span class="ticker-sep">·</span>
-        <span>☁️ PM-KISAN Next Installment: December 2024</span>
-        <span class="ticker-sep">·</span>
-        <span>💧 Drip irrigation subsidy: Up to 55% for small farmers</span>
-        <span class="ticker-sep">·</span>
-        <span>🌾 Wheat MSP 2024-25: ₹2,275/quintal</span>
-        <span class="ticker-sep">·</span>
-        <span>🍚 Paddy MSP: ₹2,300/quintal</span>
-        <span class="ticker-sep">·</span>
-        <span>🌽 Maize MSP: ₹2,090/quintal</span>
-        <span class="ticker-sep">·</span>
-        <span>🫘 Soybean MSP: ₹4,892/quintal</span>
-        <span class="ticker-sep">·</span>
-        <span>🥜 Groundnut MSP: ₹6,783/quintal</span>
-        <span class="ticker-sep">·</span>
-        <span>🟡 Mustard MSP: ₹5,950/quintal</span>
-      </div>
-    </div>
-  </div>
+  <main id="main">
 
-  <!-- ═══════════════════════════════════════
-       DASHBOARD GRID
-  ═══════════════════════════════════════ -->
-  <main class="dashboard" id="dashboard">
+    <!-- ═══════════════════════════════════════
+         TODAY — weather, forecast, spray window, soil
+    ═══════════════════════════════════════ -->
+    <section class="section" id="today" aria-labelledby="today-h">
+      <div class="container">
+        <header class="section-head reveal">
+          <p class="eyebrow">Today</p>
+          <h2 id="today-h">On your farm today</h2>
+          <p class="section-desc">Live conditions for your location, refreshed every 15 minutes.</p>
+        </header>
 
-    <!-- ── WEATHER CARD ── -->
-    <div class="card card-weather animate-card" style="--delay:0.1s">
-      <div class="card-header">
-        <span class="card-icon">🌤️</span>
-        <span class="card-label">Live Weather</span>
-        <span class="refresh-btn" onclick="fetchWeather()" title="Refresh">↻</span>
-      </div>
-      <div class="weather-main">
-        <div class="weather-temp" id="weatherTemp">--°</div>
-        <div class="weather-info">
-          <div class="weather-desc" id="weatherDesc">Loading...</div>
-          <div class="weather-loc" id="weatherLoc">Detecting location...</div>
-        </div>
-      </div>
-      <div class="weather-stats-grid">
-        <div class="w-stat">
-          <div class="w-stat-icon">💧</div>
-          <div class="w-stat-val" id="wHumidity">--%</div>
-          <div class="w-stat-label">Humidity</div>
-        </div>
-        <div class="w-stat">
-          <div class="w-stat-icon">🌬️</div>
-          <div class="w-stat-val" id="wWind">-- km/h</div>
-          <div class="w-stat-label">Wind</div>
-        </div>
-        <div class="w-stat">
-          <div class="w-stat-icon">🌡️</div>
-          <div class="w-stat-val" id="wFeels">--°</div>
-          <div class="w-stat-label">Feels Like</div>
-        </div>
-        <div class="w-stat">
-          <div class="w-stat-icon">☔</div>
-          <div class="w-stat-val" id="wRain">--%</div>
-          <div class="w-stat-label">Rain Chance</div>
-        </div>
-      </div>
-      <div class="farm-advice" id="farmAdvice">
-        <span class="advice-icon">💡</span>
-        <span id="adviceText">Fetching farm advice...</span>
-      </div>
-    </div>
+        <div class="grid">
 
-    <!-- ── DATE & SEASON CARD ── -->
-    <div class="card card-date animate-card" style="--delay:0.2s">
-      <div class="card-header">
-        <span class="card-icon">📅</span>
-        <span class="card-label">Date & Season</span>
-      </div>
-      <div class="date-display">
-        <div class="date-day" id="dateDay">--</div>
-        <div class="date-rest">
-          <div class="date-month-year" id="dateMonthYear">-- ----</div>
-          <div class="date-weekday" id="dateWeekday">--------</div>
-        </div>
-      </div>
-      <div class="season-block" id="seasonBlock">
-        <div class="season-name" id="seasonName">--</div>
-        <div class="season-crops" id="seasonCrops">Loading seasonal crops...</div>
-      </div>
-      <div class="sowing-calendar">
-        <div class="sowing-title">📆 Sowing Calendar</div>
-        <div class="sowing-list" id="sowingList">Loading...</div>
-      </div>
-    </div>
-
-    <!-- ── MANDI RATES CARD ── -->
-    <div class="card card-mandi animate-card" style="--delay:0.3s" id="mandi">
-      <div class="card-header">
-        <span class="card-icon">💰</span>
-        <span class="card-label">Today's Mandi Rates</span>
-        <span class="live-dot"></span><span class="live-text">LIVE</span>
-      </div>
-      <div class="mandi-table">
-        <div class="mandi-row mandi-head">
-          <span>Crop</span><span>Min ₹</span><span>Max ₹</span><span>Modal ₹</span>
-        </div>
-        <div id="mandiRates">
-          <!-- Populated by script.js -->
-          <div class="mandi-row"><span>🌾 Wheat</span><span>2,015</span><span>2,275</span><span>2,150</span></div>
-          <div class="mandi-row"><span>🌽 Maize</span><span>1,780</span><span>1,980</span><span>1,870</span></div>
-          <div class="mandi-row"><span>🍚 Rice</span><span>2,100</span><span>2,450</span><span>2,300</span></div>
-          <div class="mandi-row"><span>🫘 Soybean</span><span>3,800</span><span>4,200</span><span>4,000</span></div>
-          <div class="mandi-row"><span>🧅 Onion</span><span>800</span><span>1,400</span><span>1,100</span></div>
-          <div class="mandi-row"><span>🍅 Tomato</span><span>600</span><span>1,200</span><span>900</span></div>
-        </div>
-      </div>
-      <div class="mandi-note">* Rates in ₹/quintal · Source: Agmarknet India</div>
-    </div>
-
-    <!-- ── CROP SEASON CARD ── -->
-    <div class="card card-season animate-card" style="--delay:0.4s" id="calendar">
-      <div class="card-header">
-        <span class="card-icon">🌱</span>
-        <span class="card-label">Crop Season Guide</span>
-      </div>
-      <div class="season-tabs">
-        <button class="s-tab active" onclick="showSeason('kharif', this)">Kharif</button>
-        <button class="s-tab" onclick="showSeason('rabi', this)">Rabi</button>
-        <button class="s-tab" onclick="showSeason('zaid', this)">Zaid</button>
-      </div>
-      <div class="season-content" id="seasonContent">
-        <!-- Populated by script.js -->
-      </div>
-    </div>
-
-    <!-- ── AGRICULTURE NEWS ── -->
-    <div class="card card-news animate-card" style="--delay:0.5s" id="news">
-      <div class="card-header">
-        <span class="card-icon">📰</span>
-        <span class="card-label">Agriculture News — India</span>
-        <span class="refresh-btn" onclick="fetchNews()" title="Refresh">↻</span>
-      </div>
-      <div class="news-list" id="newsList">
-        <div class="news-loading">
-          <div class="news-skeleton"></div>
-          <div class="news-skeleton"></div>
-          <div class="news-skeleton"></div>
-        </div>
-      </div>
-    </div>
-
-    <!-- ── GOVERNMENT SCHEMES CARD ── -->
-    <div class="card card-schemes animate-card" style="--delay:0.6s">
-      <div class="card-header">
-        <span class="card-icon">🏛️</span>
-        <span class="card-label">Govt. Schemes for Farmers</span>
-      </div>
-      <div class="schemes-list">
-        <div class="scheme-item">
-          <div class="scheme-icon">💵</div>
-          <div class="scheme-info">
-            <div class="scheme-name">PM-KISAN</div>
-            <div class="scheme-desc">₹6,000/year direct income support</div>
-          </div>
-          <a href="https://pmkisan.gov.in" target="_blank" class="scheme-link">→</a>
-        </div>
-        <div class="scheme-item">
-          <div class="scheme-icon">🛡️</div>
-          <div class="scheme-info">
-            <div class="scheme-name">PM Fasal Bima</div>
-            <div class="scheme-desc">Crop insurance at low premium</div>
-          </div>
-          <a href="https://pmfby.gov.in" target="_blank" class="scheme-link">→</a>
-        </div>
-        <div class="scheme-item">
-          <div class="scheme-icon">💧</div>
-          <div class="scheme-info">
-            <div class="scheme-name">PM Krishi Sinchai</div>
-            <div class="scheme-desc">Water for every field — Har Khet</div>
-          </div>
-          <a href="https://pmksy.gov.in" target="_blank" class="scheme-link">→</a>
-        </div>
-        <div class="scheme-item">
-          <div class="scheme-icon">🌿</div>
-          <div class="scheme-info">
-            <div class="scheme-name">Soil Health Card</div>
-            <div class="scheme-desc">Free soil testing & crop advice</div>
-          </div>
-          <a href="https://soilhealth.dac.gov.in" target="_blank" class="scheme-link">→</a>
-        </div>
-        <div class="scheme-item">
-          <div class="scheme-icon">🚜</div>
-          <div class="scheme-info">
-            <div class="scheme-name">SMAM Yojana</div>
-            <div class="scheme-desc">Subsidy on farm machinery</div>
-          </div>
-          <a href="https://agrimachinery.nic.in" target="_blank" class="scheme-link">→</a>
-        </div>
-      </div>
-    </div>
-
-
-    <!-- ── FERTILIZER DOSE CALCULATOR ── -->
-    <div class="card card-fertilizer animate-card" style="--delay:0.7s">
-      <div class="card-header">
-        <span class="card-icon">🧪</span>
-        <span class="card-label">Fertilizer Dose Calculator</span>
-      </div>
-      <div class="fert-form">
-        <div class="fert-row">
-          <label class="fert-label">Crop</label>
-          <select class="fert-select" id="fertCrop" onchange="calcFertilizer()">
-            <option value="wheat">🌾 Wheat (Gehun)</option>
-            <option value="rice">🍚 Rice (Dhan)</option>
-            <option value="maize">🌽 Maize (Makka)</option>
-            <option value="cotton">🌿 Cotton (Kapas)</option>
-            <option value="soybean">🫘 Soybean</option>
-            <option value="mustard">🟡 Mustard (Sarson)</option>
-            <option value="sugarcane">🎋 Sugarcane (Ganna)</option>
-            <option value="potato">🥔 Potato (Aloo)</option>
-          </select>
-        </div>
-        <div class="fert-row">
-          <label class="fert-label">Land Area</label>
-          <div class="fert-input-group">
-            <input type="number" class="fert-input" id="fertArea" value="1" min="0.1" step="0.1" oninput="calcFertilizer()" />
-            <select class="fert-unit" id="fertUnit" onchange="calcFertilizer()">
-              <option value="acre">Acre</option>
-              <option value="bigha">Bigha</option>
-              <option value="hectare">Hectare</option>
-            </select>
-          </div>
-        </div>
-      </div>
-      <div class="fert-results" id="fertResults">
-        <!-- Populated by JS -->
-      </div>
-      <div class="fert-note">💡 Based on ICAR recommended doses · Always do soil test first</div>
-    </div>
-
-    <!-- ── PEST & DISEASE ALERT ── -->
-    <div class="card card-pest animate-card" style="--delay:0.8s">
-      <div class="card-header">
-        <span class="card-icon">🐛</span>
-        <span class="card-label">Seasonal Pest & Disease Alerts</span>
-        <span class="live-dot" style="background:#e8a820"></span><span class="live-text" style="color:#e8a820">SEASON</span>
-      </div>
-      <div class="pest-season-info" id="pestSeasonInfo">
-        <!-- Populated by JS -->
-      </div>
-      <div class="pest-list" id="pestList">
-        <!-- Populated by JS -->
-      </div>
-      <div class="pest-tip" id="pestTip">
-        <!-- Populated by JS -->
-      </div>
-    </div>
-
-    <!-- ── SUN & FIELD WORK PLANNER ── -->
-    <div class="card card-sun animate-card" style="--delay:0.9s">
-      <div class="card-header">
-        <span class="card-icon">☀️</span>
-        <span class="card-label">Sun & Field Work Planner</span>
-      </div>
-      <div class="sun-times" id="sunTimes">
-        <div class="sun-item">
-          <div class="sun-icon">🌅</div>
-          <div class="sun-info">
-            <div class="sun-val" id="sunriseTime">--:--</div>
-            <div class="sun-label">Sunrise</div>
-          </div>
-        </div>
-        <div class="sun-arc-container">
-          <svg class="sun-arc-svg" viewBox="0 0 160 90" xmlns="http://www.w3.org/2000/svg">
-            <path d="M10,85 A70,70 0 0,1 150,85" fill="none" stroke="rgba(232,168,32,0.2)" stroke-width="4" stroke-linecap="round"/>
-            <path class="sun-arc-progress" id="sunArcProgress" d="M10,85 A70,70 0 0,1 150,85" fill="none" stroke="#e8a820" stroke-width="4" stroke-linecap="round" stroke-dasharray="220" stroke-dashoffset="220"/>
-            <circle class="sun-dot" id="sunDot" cx="10" cy="85" r="8" fill="#e8a820"/>
-          </svg>
-        </div>
-        <div class="sun-item">
-          <div class="sun-icon">🌇</div>
-          <div class="sun-info">
-            <div class="sun-val" id="sunsetTime">--:--</div>
-            <div class="sun-label">Sunset</div>
-          </div>
-        </div>
-      </div>
-      <div class="fieldwork-slots" id="fieldworkSlots">
-        <!-- Populated by JS -->
-      </div>
-      <div class="uv-bar-block">
-        <div class="uv-bar-label">
-          <span>☀️ UV Index</span>
-          <span class="uv-badge" id="uvBadge">--</span>
-        </div>
-        <div class="uv-bar-track">
-          <div class="uv-bar-fill" id="uvBarFill" style="width:0%"></div>
-        </div>
-        <div class="uv-advice" id="uvAdvice">Loading UV data...</div>
-      </div>
-    </div>
-
-    <!-- ── CROP PRICE TREND ── -->
-    <div class="card card-trend animate-card" style="--delay:1.0s">
-      <div class="card-header">
-        <span class="card-icon">📈</span>
-        <span class="card-label">Crop Price Trend (7-Day)</span>
-      </div>
-      <div class="trend-tabs">
-        <button class="trend-tab active" onclick="showTrend('wheat', this)">Wheat</button>
-        <button class="trend-tab" onclick="showTrend('rice', this)">Rice</button>
-        <button class="trend-tab" onclick="showTrend('onion', this)">Onion</button>
-        <button class="trend-tab" onclick="showTrend('tomato', this)">Tomato</button>
-      </div>
-      <div class="trend-chart-wrap">
-        <canvas id="trendChart" height="130"></canvas>
-      </div>
-      <div class="trend-summary" id="trendSummary"></div>
-    </div>
-
-    <!-- ── CROP PROFIT CALCULATOR ── -->
-    <div class="card card-profit animate-card" style="--delay:1.1s">
-      <div class="card-header">
-        <span class="card-icon">🧮</span>
-        <span class="card-label">Crop Profit Calculator</span>
-      </div>
-      <div class="profit-form">
-        <div class="profit-row">
-          <label>Crop</label>
-          <select id="profitCrop" onchange="calcProfit()">
-            <option value="wheat">🌾 Wheat</option>
-            <option value="rice">🍚 Rice</option>
-            <option value="maize">🌽 Maize</option>
-            <option value="cotton">🌿 Cotton</option>
-            <option value="soybean">🫘 Soybean</option>
-            <option value="mustard">🟡 Mustard</option>
-            <option value="onion">🧅 Onion</option>
-            <option value="potato">🥔 Potato</option>
-          </select>
-        </div>
-        <div class="profit-row">
-          <label>Land Area</label>
-          <div class="profit-input-group">
-            <input type="number" id="profitArea" value="1" min="0.1" step="0.1" oninput="calcProfit()" placeholder="1"/>
-            <select id="profitAreaUnit" onchange="calcProfit()">
-              <option value="acre">Acre</option>
-              <option value="bigha">Bigha</option>
-              <option value="hectare">Hectare</option>
-            </select>
-          </div>
-        </div>
-        <div class="profit-row">
-          <label>Expected Yield (qtl)</label>
-          <input type="number" id="profitYield" value="20" min="1" oninput="calcProfit()" placeholder="20 qtl"/>
-        </div>
-        <div class="profit-row">
-          <label>Selling Price (₹/qtl)</label>
-          <input type="number" id="profitPrice" value="2150" min="1" oninput="calcProfit()" placeholder="₹2150"/>
-        </div>
-        <div class="profit-row">
-          <label>Total Input Cost (₹)</label>
-          <input type="number" id="profitCost" value="18000" min="0" oninput="calcProfit()" placeholder="₹18000"/>
-        </div>
-      </div>
-      <div class="profit-result" id="profitResult">
-        <!-- Populated by JS -->
-      </div>
-      <div class="profit-note">* Includes seeds, fertilizer, labor, irrigation estimates</div>
-    </div>
-
-    <!-- ── SOIL pH QUICK CHECKER ── -->
-    <div class="card card-soil animate-card" style="--delay:1.2s">
-      <div class="card-header">
-        <span class="card-icon">🧪</span>
-        <span class="card-label">Soil Health Quick Guide</span>
-      </div>
-      <div class="soil-ph-section">
-        <div class="soil-ph-label">Enter Your Soil pH</div>
-        <div class="soil-ph-input-row">
-          <input type="range" id="soilPhSlider" min="4" max="9" step="0.1" value="6.5" oninput="updateSoilPh(this.value)" class="ph-slider"/>
-          <span class="ph-display" id="phDisplay">6.5</span>
-        </div>
-        <div class="ph-bar-wrap">
-          <div class="ph-bar">
-            <div class="ph-zones">
-              <span style="left:0%">4</span>
-              <span style="left:20%">5</span>
-              <span style="left:40%">6</span>
-              <span style="left:60%">7</span>
-              <span style="left:80%">8</span>
-              <span style="left:100%">9</span>
+          <!-- ── WEATHER NOW ── -->
+          <article class="card col-5 reveal" aria-labelledby="wx-h">
+            <header class="card-head">
+              <div>
+                <p class="kicker">Right now</p>
+                <h3 class="card-title" id="wx-h">Weather</h3>
+              </div>
+              <button class="icon-btn" id="refreshWeather" type="button" aria-label="Refresh weather" title="Refresh">
+                <svg class="icon" aria-hidden="true"><use href="#i-refresh" /></svg>
+              </button>
+            </header>
+            <div class="wx-main">
+              <span class="wx-temp" id="wxTemp">--°</span>
+              <span class="wx-desc">
+                <span class="wx-cond" id="wxCond">Loading…</span>
+                <span class="wx-place" id="wxPlace">—</span>
+              </span>
             </div>
-          </div>
-          <div class="ph-marker" id="phMarker" style="left:50%"></div>
-        </div>
-        <div class="soil-ph-result" id="soilPhResult">
-          <!-- Populated by JS -->
-        </div>
-      </div>
-      <div class="soil-type-section">
-        <div class="soil-type-label">Soil Type Guide</div>
-        <div class="soil-type-tabs">
-          <button class="soil-tab active" onclick="showSoilType('loamy', this)">Loamy</button>
-          <button class="soil-tab" onclick="showSoilType('clay', this)">Clay</button>
-          <button class="soil-tab" onclick="showSoilType('sandy', this)">Sandy</button>
-          <button class="soil-tab" onclick="showSoilType('black', this)">Black</button>
-        </div>
-        <div class="soil-type-result" id="soilTypeResult">
-          <!-- Populated by JS -->
-        </div>
-      </div>
-    </div>
+            <dl class="stats">
+              <div class="stat"><dt>Feels like</dt><dd id="wxFeels">--</dd></div>
+              <div class="stat"><dt>Humidity</dt><dd id="wxHumidity">--</dd></div>
+              <div class="stat"><dt>Wind</dt><dd id="wxWind">--</dd></div>
+              <div class="stat"><dt>Rain chance · 6 h</dt><dd id="wxRain">--</dd></div>
+              <div class="stat"><dt>UV index · max</dt><dd id="wxUv">--</dd></div>
+              <div class="stat"><dt>Sunrise · Sunset</dt><dd id="wxSun">--</dd></div>
+            </dl>
+            <p class="advice" id="wxAdvice">Fetching today's farm advice…</p>
+            <p class="meta" id="wxUpdated"></p>
+          </article>
 
-    <!-- ── IRRIGATION TRACKER ── -->
-    <div class="card card-irrigation animate-card" style="--delay:1.3s">
-      <div class="card-header">
-        <span class="card-icon">💧</span>
-        <span class="card-label">Irrigation Planner</span>
-        <span class="refresh-btn" onclick="resetIrrigation()" title="Reset">↺</span>
-      </div>
-      <div class="irr-weather-strip" id="irrWeatherStrip">
-        <span id="irrWeatherIcon">🌤️</span>
-        <span id="irrWeatherMsg">Loading weather context...</span>
-      </div>
-      <div class="irr-crops-section">
-        <div class="irr-section-title">Today's Irrigation Checklist</div>
-        <div class="irr-crop-list" id="irrCropList">
-          <!-- Populated by JS -->
-        </div>
-        <button class="irr-add-btn" onclick="addIrrCrop()">+ Add Crop</button>
-      </div>
-      <div class="irr-tips" id="irrTips">
-        <!-- Populated by JS -->
-      </div>
-    </div>
+          <!-- ── 7-DAY FORECAST ── -->
+          <article class="card col-7 reveal" aria-labelledby="fc-h">
+            <header class="card-head">
+              <div>
+                <p class="kicker">Week ahead</p>
+                <h3 class="card-title" id="fc-h">7-day forecast</h3>
+              </div>
+            </header>
+            <ol class="forecast" id="forecastList">
+              <li class="placeholder">Loading forecast…</li>
+            </ol>
+          </article>
 
-    <!-- ── GOVERNMENT SCHEME QUICK CHECK ── -->
-    <div class="card card-scheme-check animate-card" style="--delay:1.4s">
-      <div class="card-header">
-        <span class="card-icon">🏛️</span>
-        <span class="card-label">Scheme Eligibility Check</span>
-      </div>
-      <div class="scheme-form">
-        <div class="scheme-row">
-          <label>Land Holding</label>
-          <select id="schemeLand">
-            <option value="small">Small (< 2 Hectare)</option>
-            <option value="marginal">Marginal (< 1 Hectare)</option>
-            <option value="medium">Medium (2–10 Ha)</option>
-            <option value="large">Large (> 10 Ha)</option>
-          </select>
+          <!-- ── SPRAY & FIELD-WORK WINDOW ── -->
+          <article class="card col-7 reveal" aria-labelledby="sp-h">
+            <header class="card-head">
+              <div>
+                <p class="kicker">Next two days</p>
+                <h3 class="card-title" id="sp-h">Spray &amp; field-work window</h3>
+              </div>
+            </header>
+            <p class="verdict" id="sprayBest">Working out the best hours…</p>
+            <p class="meta" id="sprayWhy"></p>
+            <div class="spray" id="sprayBars"></div>
+            <ul class="legend" aria-label="Legend">
+              <li><span class="swatch good"></span>Good</li>
+              <li><span class="swatch fair"></span>Fair</li>
+              <li><span class="swatch avoid"></span>Avoid</li>
+              <li><span class="swatch night"></span>Night</li>
+            </ul>
+            <p class="meta">Worked out from forecast wind, rain, heat and humidity. Always follow the product label.</p>
+          </article>
+
+          <!-- ── SOIL & IRRIGATION ── -->
+          <article class="card col-5 reveal" aria-labelledby="so-h">
+            <header class="card-head">
+              <div>
+                <p class="kicker">Below ground</p>
+                <h3 class="card-title" id="so-h">Soil &amp; irrigation</h3>
+              </div>
+              <span class="pill" id="soilTag" hidden></span>
+            </header>
+            <dl class="stats stats-2">
+              <div class="stat"><dt>Soil temperature · 6 cm</dt><dd id="soilTemp">--</dd></div>
+              <div class="stat"><dt>Soil moisture · 3–9 cm</dt><dd id="soilMoisture">--</dd></div>
+              <div class="stat"><dt>Crop water use today</dt><dd id="soilEt0">--</dd></div>
+              <div class="stat"><dt>Rain expected · 3 days</dt><dd id="soilRain">--</dd></div>
+            </dl>
+            <p class="advice" id="soilVerdict">Working out the irrigation outlook…</p>
+            <p class="meta">Modelled for your area by Open-Meteo, not measured in your field — check the soil by hand before deciding.</p>
+          </article>
+
         </div>
-        <div class="scheme-row">
-          <label>State</label>
-          <select id="schemeState">
-            <option value="all">All India</option>
-            <option value="punjab">Punjab</option>
-            <option value="haryana">Haryana</option>
-            <option value="up">Uttar Pradesh</option>
-            <option value="mp">Madhya Pradesh</option>
-            <option value="rajasthan">Rajasthan</option>
-            <option value="maharashtra">Maharashtra</option>
-            <option value="other">Other State</option>
-          </select>
-        </div>
-        <div class="scheme-row">
-          <label>Do you have Aadhar-linked bank account?</label>
-          <div class="scheme-toggle-row">
-            <button class="scheme-toggle active" id="schemeAadharYes" onclick="setSchemeToggle('aadhar','yes')">✓ Yes</button>
-            <button class="scheme-toggle" id="schemeAadharNo" onclick="setSchemeToggle('aadhar','no')">✗ No</button>
-          </div>
-        </div>
-        <button class="scheme-check-btn" onclick="checkSchemes()">🔍 Check Eligible Schemes</button>
       </div>
-      <div class="scheme-results" id="schemeResults">
-        <!-- Populated by JS -->
+    </section>
+
+    <!-- ═══════════════════════════════════════
+         SEASON — crop calendar, pest watch, MSP
+    ═══════════════════════════════════════ -->
+    <section class="section section-tint" id="season" aria-labelledby="season-h">
+      <div class="container">
+        <header class="section-head reveal">
+          <p class="eyebrow">Season</p>
+          <h2 id="season-h">Plan the season</h2>
+          <p class="section-desc">What to sow, what to watch for, and the price the government assures.</p>
+        </header>
+
+        <div class="grid">
+
+          <!-- ── CROP CALENDAR ── -->
+          <article class="card col-7 reveal" aria-labelledby="cc-h">
+            <header class="card-head">
+              <div>
+                <p class="kicker">Sowing &amp; harvest</p>
+                <h3 class="card-title" id="cc-h">Crop calendar</h3>
+              </div>
+              <div class="tabs" id="cropTabs" role="tablist" aria-label="Crop season">
+                <button class="tab" type="button" role="tab" data-season="kharif">Kharif</button>
+                <button class="tab" type="button" role="tab" data-season="rabi">Rabi</button>
+                <button class="tab" type="button" role="tab" data-season="zaid">Zaid</button>
+              </div>
+            </header>
+            <p class="verdict" id="sowSummary"></p>
+            <ul class="rows" id="cropList"></ul>
+            <p class="meta">Typical windows for North and Central India. Local dates vary — confirm with your Krishi Vigyan Kendra.</p>
+          </article>
+
+          <!-- ── PEST & DISEASE WATCH ── -->
+          <article class="card col-5 reveal" aria-labelledby="pw-h">
+            <header class="card-head">
+              <div>
+                <p class="kicker" id="pestSeason">This season</p>
+                <h3 class="card-title" id="pw-h">Pest &amp; disease watch</h3>
+              </div>
+            </header>
+            <ul class="rows" id="pestList"></ul>
+            <p class="advice" id="pestTip"></p>
+            <p class="meta">For the right product and dose, call the Kisan Call Centre on 1800-180-1551 or ask your KVK.</p>
+          </article>
+
+          <!-- ── MINIMUM SUPPORT PRICES ── -->
+          <article class="card col-12 reveal" aria-labelledby="msp-h">
+            <header class="card-head">
+              <div>
+                <p class="kicker">Government assured price</p>
+                <h3 class="card-title" id="msp-h">Minimum Support Price</h3>
+              </div>
+              <div class="tabs" id="mspTabs" role="tablist" aria-label="MSP season">
+                <button class="tab" type="button" role="tab" data-msp="kharif">Kharif 2026-27</button>
+                <button class="tab" type="button" role="tab" data-msp="rabi">Rabi 2027-28</button>
+              </div>
+            </header>
+            <dl class="msp" id="mspGrid"></dl>
+            <p class="meta" id="mspNote"></p>
+          </article>
+
+        </div>
       </div>
-    </div>
+    </section>
+
+    <!-- ═══════════════════════════════════════
+         TOOLS — fertilizer, profit, land units, soil pH
+    ═══════════════════════════════════════ -->
+    <section class="section" id="tools" aria-labelledby="tools-h">
+      <div class="container">
+        <header class="section-head reveal">
+          <p class="eyebrow">Calculators</p>
+          <h2 id="tools-h">Work out the numbers</h2>
+          <p class="section-desc">Quick estimates to plan with. Adjust them to your soil test and your local prices.</p>
+        </header>
+
+        <div class="grid">
+
+          <!-- ── FERTILIZER DOSE ── -->
+          <article class="card col-4 reveal" aria-labelledby="fe-h">
+            <header class="card-head">
+              <div>
+                <p class="kicker">Urea · DAP · MOP</p>
+                <h3 class="card-title" id="fe-h">Fertilizer dose</h3>
+              </div>
+            </header>
+            <form class="form" id="fertForm" novalidate>
+              <label class="field">
+                <span>Crop</span>
+                <select id="fertCrop"></select>
+              </label>
+              <div class="field-row">
+                <label class="field">
+                  <span>Land area</span>
+                  <input type="number" id="fertArea" value="1" min="0" step="0.1" inputmode="decimal" />
+                </label>
+                <label class="field">
+                  <span>Unit</span>
+                  <select id="fertUnit"></select>
+                </label>
+              </div>
+            </form>
+            <div id="fertResult" aria-live="polite"></div>
+            <p class="meta" id="fertBasis"></p>
+          </article>
+
+          <!-- ── PROFIT ESTIMATE ── -->
+          <article class="card col-4 reveal" aria-labelledby="pr-h">
+            <header class="card-head">
+              <div>
+                <p class="kicker">Income − cost</p>
+                <h3 class="card-title" id="pr-h">Profit estimate</h3>
+              </div>
+            </header>
+            <form class="form" id="profitForm" novalidate>
+              <label class="field">
+                <span>Crop</span>
+                <select id="profitCrop"></select>
+              </label>
+              <div class="field-row">
+                <label class="field">
+                  <span>Land area</span>
+                  <input type="number" id="profitArea" value="1" min="0" step="0.1" inputmode="decimal" />
+                </label>
+                <label class="field">
+                  <span>Unit</span>
+                  <select id="profitUnit"></select>
+                </label>
+              </div>
+              <div class="field-row">
+                <label class="field">
+                  <span>Yield per acre (qtl)</span>
+                  <input type="number" id="profitYield" min="0" step="0.5" inputmode="decimal" />
+                </label>
+                <label class="field">
+                  <span>Price (₹ per qtl)</span>
+                  <input type="number" id="profitPrice" min="0" step="10" inputmode="decimal" />
+                </label>
+              </div>
+              <label class="field">
+                <span>Cost per acre (₹) — seed, fertilizer, labour, water</span>
+                <input type="number" id="profitCost" min="0" step="500" inputmode="decimal" />
+              </label>
+            </form>
+            <div class="profit" id="profitResult" aria-live="polite"></div>
+            <p class="meta">The starting figures are examples only — replace them with your own.</p>
+          </article>
+
+          <!-- ── LAND UNIT CONVERTER ── -->
+          <article class="card col-4 md-12 reveal" aria-labelledby="lc-h">
+            <header class="card-head">
+              <div>
+                <p class="kicker">Acre · hectare · guntha · kanal</p>
+                <h3 class="card-title" id="lc-h">Land converter</h3>
+              </div>
+            </header>
+            <form class="form" id="landForm" novalidate>
+              <div class="field-row">
+                <label class="field">
+                  <span>Area</span>
+                  <input type="number" id="landValue" value="1" min="0" step="0.1" inputmode="decimal" />
+                </label>
+                <label class="field">
+                  <span>Unit</span>
+                  <select id="landUnit"></select>
+                </label>
+              </div>
+            </form>
+            <dl class="kv" id="landResult" aria-live="polite"></dl>
+            <p class="meta">A bigha is not a fixed size — it changes from state to state. Ask your patwari for the local measure.</p>
+          </article>
+
+          <!-- ── SOIL pH GUIDE ── -->
+          <article class="card col-12 reveal" aria-labelledby="ph-h">
+            <header class="card-head">
+              <div>
+                <p class="kicker">Read your Soil Health Card</p>
+                <h3 class="card-title" id="ph-h">Soil pH guide</h3>
+              </div>
+            </header>
+            <div class="ph">
+              <div class="ph-control">
+                <label class="field" for="phSlider">
+                  <span>Your soil pH: <strong id="phValue">6.5</strong></span>
+                </label>
+                <input class="ph-slider" type="range" id="phSlider" min="4" max="9.5" step="0.1" value="6.5" />
+                <div class="ph-scale" aria-hidden="true"><span>4 · acidic</span><span>7 · neutral</span><span>9.5 · alkaline</span></div>
+              </div>
+              <div class="ph-result" id="phResult" aria-live="polite"></div>
+            </div>
+          </article>
+
+        </div>
+      </div>
+    </section>
+
+    <!-- ═══════════════════════════════════════
+         SUPPORT — schemes & helplines
+    ═══════════════════════════════════════ -->
+    <section class="section section-tint" id="support" aria-labelledby="support-h">
+      <div class="container">
+        <header class="section-head reveal">
+          <p class="eyebrow">Support</p>
+          <h2 id="support-h">Schemes &amp; helplines</h2>
+          <p class="section-desc">Government programmes worth knowing, with links to the official sites.</p>
+        </header>
+
+        <div class="grid">
+
+          <!-- ── SCHEMES ── -->
+          <article class="card col-8 reveal" aria-labelledby="sc-h">
+            <header class="card-head">
+              <div>
+                <p class="kicker">Central schemes</p>
+                <h3 class="card-title" id="sc-h">Schemes for farmers</h3>
+              </div>
+            </header>
+            <ul class="rows schemes">
+              <li class="row">
+                <div class="row-main">
+                  <span class="row-title">PM-KISAN</span>
+                  <span class="row-sub">₹6,000 a year in three instalments of ₹2,000, paid straight to the bank account of eligible landholding farmer families. e-KYC is required.</span>
+                </div>
+                <a class="link" href="https://pmkisan.gov.in" target="_blank" rel="noopener noreferrer">pmkisan.gov.in <svg class="icon" aria-hidden="true"><use href="#i-external" /></svg></a>
+              </li>
+              <li class="row">
+                <div class="row-main">
+                  <span class="row-title">PM Fasal Bima Yojana</span>
+                  <span class="row-sub">Crop insurance against weather, pest and disease loss. The farmer pays 2% of the sum insured for Kharif crops, 1.5% for Rabi and 5% for commercial and horticultural crops.</span>
+                </div>
+                <a class="link" href="https://pmfby.gov.in" target="_blank" rel="noopener noreferrer">pmfby.gov.in <svg class="icon" aria-hidden="true"><use href="#i-external" /></svg></a>
+              </li>
+              <li class="row">
+                <div class="row-main">
+                  <span class="row-title">Kisan Credit Card</span>
+                  <span class="row-sub">Short-term crop loans at 7% interest. Repay on time and the effective rate comes down to 4%. Apply at your bank or cooperative society.</span>
+                </div>
+                <a class="link" href="https://www.myscheme.gov.in/schemes/kcc" target="_blank" rel="noopener noreferrer">myscheme.gov.in <svg class="icon" aria-hidden="true"><use href="#i-external" /></svg></a>
+              </li>
+              <li class="row">
+                <div class="row-main">
+                  <span class="row-title">Soil Health Card</span>
+                  <span class="row-sub">Free soil testing, with fertilizer recommendations for the crops you grow on that field.</span>
+                </div>
+                <a class="link" href="https://soilhealth.dac.gov.in" target="_blank" rel="noopener noreferrer">soilhealth.dac.gov.in <svg class="icon" aria-hidden="true"><use href="#i-external" /></svg></a>
+              </li>
+              <li class="row">
+                <div class="row-main">
+                  <span class="row-title">Per Drop More Crop (PMKSY)</span>
+                  <span class="row-sub">Subsidy on drip and sprinkler systems — usually 55% for small and marginal farmers and 45% for others.</span>
+                </div>
+                <a class="link" href="https://pmksy.gov.in" target="_blank" rel="noopener noreferrer">pmksy.gov.in <svg class="icon" aria-hidden="true"><use href="#i-external" /></svg></a>
+              </li>
+              <li class="row">
+                <div class="row-main">
+                  <span class="row-title">Farm machinery subsidy (SMAM)</span>
+                  <span class="row-sub">Help with the cost of tractors, implements and harvest machinery — usually 40–50% depending on the farmer category.</span>
+                </div>
+                <a class="link" href="https://agrimachinery.nic.in" target="_blank" rel="noopener noreferrer">agrimachinery.nic.in <svg class="icon" aria-hidden="true"><use href="#i-external" /></svg></a>
+              </li>
+              <li class="row">
+                <div class="row-main">
+                  <span class="row-title">e-NAM</span>
+                  <span class="row-sub">Sell produce online to buyers across mandis, and compare prices before you sell.</span>
+                </div>
+                <a class="link" href="https://enam.gov.in" target="_blank" rel="noopener noreferrer">enam.gov.in <svg class="icon" aria-hidden="true"><use href="#i-external" /></svg></a>
+              </li>
+            </ul>
+            <p class="meta">Amounts and rules change, and states add their own conditions. The official site has the final word.</p>
+          </article>
+
+          <!-- ── HELPLINES ── -->
+          <article class="card col-4 md-12 reveal" aria-labelledby="hl-h">
+            <header class="card-head">
+              <div>
+                <p class="kicker">Tap to call</p>
+                <h3 class="card-title" id="hl-h">Helplines</h3>
+              </div>
+            </header>
+            <ul class="helplines">
+              <li>
+                <a class="helpline" href="tel:18001801551">
+                  <svg class="icon" aria-hidden="true"><use href="#i-phone" /></svg>
+                  <span><span class="helpline-num">1800-180-1551</span><span class="helpline-name">Kisan Call Centre · free, 6 am–10 pm, in your language</span></span>
+                </a>
+              </li>
+              <li>
+                <a class="helpline" href="tel:155261">
+                  <svg class="icon" aria-hidden="true"><use href="#i-phone" /></svg>
+                  <span><span class="helpline-num">155261</span><span class="helpline-name">PM-KISAN helpline</span></span>
+                </a>
+              </li>
+              <li>
+                <a class="helpline" href="tel:14447">
+                  <svg class="icon" aria-hidden="true"><use href="#i-phone" /></svg>
+                  <span><span class="helpline-num">14447</span><span class="helpline-name">Crop insurance (PMFBY)</span></span>
+                </a>
+              </li>
+              <li>
+                <a class="helpline" href="tel:18002700224">
+                  <svg class="icon" aria-hidden="true"><use href="#i-phone" /></svg>
+                  <span><span class="helpline-num">1800-270-0224</span><span class="helpline-name">e-NAM helpdesk</span></span>
+                </a>
+              </li>
+            </ul>
+          </article>
+
+        </div>
+      </div>
+    </section>
+
+    <!-- ═══════════════════════════════════════
+         ASK MITRA — call to action
+    ═══════════════════════════════════════ -->
+    <section class="ask" aria-labelledby="ask-h">
+      <div class="container ask-inner reveal">
+        <div>
+          <p class="eyebrow eyebrow-light">AI assistant</p>
+          <h2 id="ask-h">Kuch poochna hai? <em>Ask Mitra.</em></h2>
+          <p class="lead">Crops, pests, irrigation, schemes — ask in Hindi, Hinglish or English. Mitra already knows your weather and the season.</p>
+        </div>
+        <div class="ask-chips">
+          <button class="chip" type="button" data-ask="Is mausam mein kaunsi fasal lagana sabse accha rahega?">Is mausam mein kaunsi fasal lagayein?</button>
+          <button class="chip" type="button" data-ask="Gehun mein pehli sinchai kab karni chahiye?">Gehun mein pehli sinchai kab?</button>
+          <button class="chip" type="button" data-ask="My tomato leaves are turning yellow with brown spots. What should I do?">Tomato leaves turning yellow</button>
+          <button class="chip" type="button" data-ask="How do I apply for PM-KISAN and what documents do I need?">How to apply for PM-KISAN?</button>
+        </div>
+      </div>
+    </section>
 
   </main>
-
-  <!-- ═══════════════════════════════════════
-       CHATBOT WIDGET
-  ═══════════════════════════════════════ -->
-
-  <!-- Toggle Button -->
-  <button class="chat-toggle" id="chatToggle" onclick="toggleChat()" aria-label="Open KrishiMitra Assistant">
-    <span class="chat-toggle-icon" id="chatToggleIcon">
-      <svg width="22" height="22" viewBox="0 0 42 42" fill="none" xmlns="http://www.w3.org/2000/svg">
-        <polygon points="21,2 38,11.5 38,30.5 21,40 4,30.5 4,11.5" fill="rgba(255,255,255,0.12)" stroke="rgba(255,255,255,0.35)" stroke-width="1.2"/>
-        <line x1="21" y1="34" x2="21" y2="13" stroke="#f4c842" stroke-width="2.2" stroke-linecap="round"/>
-        <ellipse cx="17.5" cy="20" rx="3.2" ry="1.8" fill="#f4c842" transform="rotate(-30 17.5 20)"/>
-        <ellipse cx="16.5" cy="24.5" rx="3.2" ry="1.8" fill="#f4c842" transform="rotate(-25 16.5 24.5)"/>
-        <ellipse cx="24.5" cy="20" rx="3.2" ry="1.8" fill="#f4c842" transform="rotate(30 24.5 20)"/>
-        <ellipse cx="25.5" cy="24.5" rx="3.2" ry="1.8" fill="#f4c842" transform="rotate(25 25.5 24.5)"/>
-        <ellipse cx="21" cy="13.5" rx="2.2" ry="3.2" fill="#f4c842"/>
-      </svg>
-    </span>
-    <span class="chat-toggle-label">Ask Mitra</span>
-    <span class="chat-notif" id="chatNotif">1</span>
-  </button>
-
-  <!-- Chat Panel -->
-  <div class="chat-panel" id="chatPanel">
-    <div class="chat-header">
-      <div class="chat-header-left">
-        <div class="chat-avatar">
-          <svg width="24" height="24" viewBox="0 0 42 42" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <polygon points="21,2 38,11.5 38,30.5 21,40 4,30.5 4,11.5" fill="rgba(255,255,255,0.10)" stroke="rgba(255,255,255,0.30)" stroke-width="1.2"/>
-            <line x1="21" y1="34" x2="21" y2="13" stroke="#f4c842" stroke-width="2.2" stroke-linecap="round"/>
-            <ellipse cx="17.5" cy="20" rx="3.2" ry="1.8" fill="#f4c842" transform="rotate(-30 17.5 20)"/>
-            <ellipse cx="16.5" cy="24.5" rx="3.2" ry="1.8" fill="#f4c842" transform="rotate(-25 16.5 24.5)"/>
-            <ellipse cx="24.5" cy="20" rx="3.2" ry="1.8" fill="#f4c842" transform="rotate(30 24.5 20)"/>
-            <ellipse cx="25.5" cy="24.5" rx="3.2" ry="1.8" fill="#f4c842" transform="rotate(25 25.5 24.5)"/>
-            <ellipse cx="21" cy="13.5" rx="2.2" ry="3.2" fill="#f4c842"/>
-          </svg>
-        </div>
-        <div>
-          <div class="chat-name">KrishiMitra</div>
-          <div class="chat-status"><span class="status-dot"></span> Online — Ready to help</div>
-        </div>
-      </div>
-      <div class="chat-header-right">
-        <button class="chat-clear" onclick="clearChat()" title="Clear chat">🗑️</button>
-        <button class="chat-close" onclick="toggleChat()" title="Close">✕</button>
-      </div>
-    </div>
-
-    <div class="chat-messages" id="chatMessages">
-      <!-- Welcome message -->
-      <div class="msg msg-bot">
-        <div class="msg-avatar">
-          <svg width="16" height="16" viewBox="0 0 42 42" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <polygon points="21,2 38,11.5 38,30.5 21,40 4,30.5 4,11.5" fill="var(--green-pale)" stroke="var(--green-light)" stroke-width="1.5"/>
-            <line x1="21" y1="33" x2="21" y2="14" stroke="#c8960a" stroke-width="2" stroke-linecap="round"/>
-            <ellipse cx="17.5" cy="20" rx="3" ry="1.7" fill="#d4a012" transform="rotate(-30 17.5 20)"/>
-            <ellipse cx="16.5" cy="24.5" rx="3" ry="1.7" fill="#d4a012" transform="rotate(-25 16.5 24.5)"/>
-            <ellipse cx="24.5" cy="20" rx="3" ry="1.7" fill="#d4a012" transform="rotate(30 24.5 20)"/>
-            <ellipse cx="25.5" cy="24.5" rx="3" ry="1.7" fill="#d4a012" transform="rotate(25 25.5 24.5)"/>
-            <ellipse cx="21" cy="14" rx="2" ry="3" fill="#d4a012"/>
-          </svg>
-        </div>
-        <div class="msg-bubble">
-          <strong>Jai Kisan! 🙏</strong><br/>
-          Main <b>KrishiMitra</b> hoon — aapka digital kisan saathi.<br/><br/>
-          Main aapki help kar sakta hoon:
-          <ul>
-            <li>🌱 Crop selection & care</li>
-            <li>🌦️ Weather-based farm advice</li>
-            <li>🐛 Pest & disease solutions</li>
-            <li>💰 Mandi prices & selling tips</li>
-            <li>🏛️ Government schemes guidance</li>
-            <li>💧 Irrigation & soil health</li>
-          </ul>
-          <br/>Kya poochna hai aapko? (Hindi or English — dono chalega!)
-        </div>
-      </div>
-    </div>
-
-    <div class="chat-suggestions" id="chatSuggestions">
-      <button class="suggestion-chip" onclick="sendSuggestion(this)">🌾 Best crop for this season?</button>
-      <button class="suggestion-chip" onclick="sendSuggestion(this)">🐛 Pest control tips</button>
-      <button class="suggestion-chip" onclick="sendSuggestion(this)">💧 Irrigation advice</button>
-      <button class="suggestion-chip" onclick="sendSuggestion(this)">💰 PM-KISAN eligibility</button>
-      <button class="suggestion-chip" onclick="sendSuggestion(this)">🌿 Organic farming kaise karein?</button>
-      <button class="suggestion-chip" onclick="sendSuggestion(this)">🧪 Urea vs DAP difference?</button>
-      <button class="suggestion-chip" onclick="sendSuggestion(this)">🌱 Seedling kab lagayein?</button>
-      <button class="suggestion-chip" onclick="sendSuggestion(this)">🚜 SMAM yojana kya hai?</button>
-      <button class="suggestion-chip" onclick="sendSuggestion(this)">🍅 Tomato mein yellowing kyu?</button>
-      <button class="suggestion-chip" onclick="sendSuggestion(this)">💧 Drip irrigation setup</button>
-      <button class="suggestion-chip" onclick="sendSuggestion(this)">🌾 Wheat variety selection</button>
-      <button class="suggestion-chip" onclick="sendSuggestion(this)">🏦 Kisan Credit Card kaise milega?</button>
-      <button class="suggestion-chip" onclick="sendSuggestion(this)">☀️ Heat stress se crop bachayein?</button>
-      <button class="suggestion-chip" onclick="sendSuggestion(this)">🌧️ Waterlogging solution</button>
-      <button class="suggestion-chip" onclick="sendSuggestion(this)">🐄 Dairy farming tips</button>
-      <button class="suggestion-chip" onclick="sendSuggestion(this)">📱 eNAM portal kaise use karein?</button>
-    </div>
-
-    <div class="chat-input-area">
-      <textarea
-        class="chat-input"
-        id="chatInput"
-        placeholder="Apna sawal likhein... (Hindi/English)"
-        rows="1"
-        onkeydown="handleKey(event)"
-        oninput="autoResize(this)"
-      ></textarea>
-      <button class="chat-send" id="chatSend" onclick="sendMessage()">
-        <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
-          <path d="M22 2L11 13" stroke="white" stroke-width="2.5" stroke-linecap="round"/>
-          <path d="M22 2L15 22L11 13L2 9L22 2Z" stroke="white" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
-        </svg>
-      </button>
-    </div>
-    <div class="chat-footer">Powered by AI · KrishiMitra v2.0 · India 🇮🇳</div>
-  </div>
-
-  <!-- Overlay for mobile -->
-  <div class="chat-overlay" id="chatOverlay" onclick="toggleChat()"></div>
 
   <!-- ═══════════════════════════════════════
        FOOTER
   ═══════════════════════════════════════ -->
   <footer class="site-footer">
-    <div class="footer-inner">
+    <div class="container footer-inner">
       <div class="footer-brand">
-        <div class="footer-logo-wrap">
-          <svg width="28" height="28" viewBox="0 0 42 42" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <polygon points="21,2 38,11.5 38,30.5 21,40 4,30.5 4,11.5" fill="rgba(255,255,255,0.07)" stroke="rgba(255,255,255,0.22)" stroke-width="1.2"/>
-            <line x1="21" y1="34" x2="21" y2="13" stroke="#f4c842" stroke-width="2" stroke-linecap="round"/>
-            <ellipse cx="17.5" cy="20" rx="3.2" ry="1.8" fill="#f4c842" transform="rotate(-30 17.5 20)"/>
-            <ellipse cx="16.5" cy="24.5" rx="3.2" ry="1.8" fill="#f4c842" transform="rotate(-25 16.5 24.5)"/>
-            <ellipse cx="24.5" cy="20" rx="3.2" ry="1.8" fill="#f4c842" transform="rotate(30 24.5 20)"/>
-            <ellipse cx="25.5" cy="24.5" rx="3.2" ry="1.8" fill="#f4c842" transform="rotate(25 25.5 24.5)"/>
-            <ellipse cx="21" cy="13.5" rx="2.2" ry="3.2" fill="#f4c842"/>
-          </svg>
-          <span>KrishiMitra</span>
+        <svg class="brand-mark" aria-hidden="true"><use href="#mark" /></svg>
+        <div>
+          <p class="footer-name">KrishiMitra</p>
+          <p>Kisan ka Sachcha Mitra — a free, open-source project for Indian farmers.</p>
         </div>
-        <small>Kisan ka Sachcha Mitra · Made for Indian Farmers</small>
       </div>
-      <div class="footer-links">
-        <a href="https://pmkisan.gov.in" target="_blank">PM-KISAN</a>
-        <a href="https://mkisan.gov.in" target="_blank">mKisan Portal</a>
-        <a href="https://agmarknet.gov.in" target="_blank">Agmarknet</a>
-        <a href="https://imd.gov.in" target="_blank">IMD Weather</a>
+      <nav class="footer-links" aria-label="Official portals">
+        <p class="footer-title">Official portals</p>
+        <a href="https://agmarknet.gov.in" target="_blank" rel="noopener noreferrer">Agmarknet — mandi prices</a>
+        <a href="https://mausam.imd.gov.in" target="_blank" rel="noopener noreferrer">IMD — weather warnings</a>
+        <a href="https://cacp.da.gov.in" target="_blank" rel="noopener noreferrer">CACP — support prices</a>
+        <a href="https://enam.gov.in" target="_blank" rel="noopener noreferrer">e-NAM — online mandi</a>
+      </nav>
+      <div class="footer-note">
+        <p class="footer-title">About the data</p>
+        <p>Weather and soil estimates by <a href="https://open-meteo.com" target="_blank" rel="noopener noreferrer">Open-Meteo</a>. Support prices as announced by the Government of India. The assistant runs on Google Gemini and can be wrong.</p>
+        <p>Everything here is advisory. Confirm with your local Krishi Vigyan Kendra or agriculture office before you act.</p>
+        <p><a href="https://github.com/Deepak17kb/KrishiMitra" target="_blank" rel="noopener noreferrer">Source code on GitHub</a></p>
       </div>
-      <div class="footer-note">Data: Open-Meteo · NewsData.io · Agmarknet</div>
     </div>
   </footer>
 
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
-  <script src="script.js"></script>
+  <!-- ═══════════════════════════════════════
+       CHATBOT
+  ═══════════════════════════════════════ -->
+  <button class="chat-fab" id="chatFab" type="button" data-open-chat aria-controls="chatPanel" aria-expanded="false">
+    <svg class="icon" aria-hidden="true"><use href="#i-chat" /></svg>
+    <span>Ask Mitra</span>
+  </button>
+
+  <section class="chat" id="chatPanel" role="dialog" aria-labelledby="chatTitle" inert>
+    <header class="chat-head">
+      <svg class="brand-mark" aria-hidden="true"><use href="#mark" /></svg>
+      <div class="chat-head-text">
+        <h2 id="chatTitle">Mitra</h2>
+        <p id="chatStatus">Farm assistant · Hindi &amp; English</p>
+      </div>
+      <button class="icon-btn icon-btn-light" id="chatClear" type="button" aria-label="Clear conversation" title="Clear conversation">
+        <svg class="icon" aria-hidden="true"><use href="#i-trash" /></svg>
+      </button>
+      <button class="icon-btn icon-btn-light" id="chatClose" type="button" aria-label="Close chat" title="Close">
+        <svg class="icon" aria-hidden="true"><use href="#i-close" /></svg>
+      </button>
+    </header>
+
+    <div class="chat-log" id="chatLog" role="log" aria-live="polite"></div>
+
+    <div class="chat-chips" id="chatChips">
+      <button class="chip chip-sm" type="button" data-ask="Is mausam mein kaunsi fasal lagana sabse accha rahega?">Best crop this season?</button>
+      <button class="chip chip-sm" type="button" data-ask="Aaj ke mausam ke hisaab se mujhe khet mein kya karna chahiye?">Aaj khet mein kya karein?</button>
+      <button class="chip chip-sm" type="button" data-ask="What are safe ways to control pests without heavy chemicals?">Pest control tips</button>
+      <button class="chip chip-sm" type="button" data-ask="Am I eligible for PM-KISAN and how do I apply?">PM-KISAN eligibility</button>
+    </div>
+
+    <form class="chat-form" id="chatForm">
+      <label class="sr-only" for="chatInput">Your question</label>
+      <textarea id="chatInput" rows="1" maxlength="2000" placeholder="Apna sawal likhein… (Hindi / English)"></textarea>
+      <button class="chat-send" id="chatSend" type="submit" aria-label="Send">
+        <svg class="icon" aria-hidden="true"><use href="#i-send" /></svg>
+      </button>
+    </form>
+    <p class="chat-foot">AI answers can be wrong. Check important decisions with your KVK.</p>
+  </section>
+
+  <!-- ═══════════════════════════════════════
+       LOCATION PICKER
+  ═══════════════════════════════════════ -->
+  <dialog class="dialog" id="locationDialog" aria-labelledby="locTitle">
+    <header class="dialog-head">
+      <h2 id="locTitle">Choose your location</h2>
+      <button class="icon-btn" id="locationClose" type="button" aria-label="Close">
+        <svg class="icon" aria-hidden="true"><use href="#i-close" /></svg>
+      </button>
+    </header>
+    <form class="dialog-search" id="locationForm">
+      <label class="sr-only" for="locationQuery">Village, town or city</label>
+      <input type="search" id="locationQuery" placeholder="Village, town or city" autocomplete="off" required minlength="2" />
+      <button class="btn btn-primary" type="submit">
+        <svg class="icon" aria-hidden="true"><use href="#i-search" /></svg>
+        Search
+      </button>
+    </form>
+    <p class="meta" id="locationStatus" aria-live="polite"></p>
+    <ul class="dialog-results" id="locationResults"></ul>
+    <button class="btn btn-outline" id="useMyLocation" type="button">
+      <svg class="icon" aria-hidden="true"><use href="#i-locate" /></svg>
+      Use my current location
+    </button>
+  </dialog>
+
 </body>
 </html>
