@@ -648,6 +648,79 @@ html[lang="hi"] .profit-main-label {
   line-height: 1.3;
   font-variant-numeric: tabular-nums;
 }
+/* A short line under the number that says what it means */
+.stat dd.stat-note {
+  margin-top: 0.2rem;
+  font-size: 0.76rem;
+  font-weight: 400;
+  line-height: 1.35;
+  color: var(--ink-muted);
+}
+.stat-note:empty { display: none; }
+
+.wx-feels {
+  margin: -0.5rem 0 1rem;
+  font-size: 0.95rem;
+  color: var(--ink-soft);
+}
+
+.mini-title {
+  margin: 1.2rem 0 0.4rem;
+  font-family: var(--font-body);
+  font-size: 0.78rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--ink-muted);
+}
+html[lang="hi"] .mini-title { letter-spacing: 0; font-size: 0.9rem; }
+
+/* ══════════════════════════════
+   NEXT 24 HOURS
+   A temperature curve, with a column under it for every three hours
+══════════════════════════════ */
+.hourly-curve {
+  display: block;
+  width: 100%;
+  height: 64px;
+}
+.hourly-line {
+  fill: none;
+  stroke: #c9962f;
+  stroke-width: 3;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  stroke-dasharray: 1;
+  stroke-dashoffset: 1;
+  animation: draw 1.5s var(--ease) 0.2s forwards;
+}
+.hourly-area {
+  opacity: 0;
+  animation: fade-in 1s ease 0.7s forwards;
+}
+
+.hourly-slots {
+  display: grid;
+  grid-template-columns: repeat(8, minmax(0, 1fr));
+  border-top: 1px solid var(--line);
+  list-style: none;
+}
+.hourly-slot {
+  display: flex;
+  flex-direction: column;
+  gap: 0.1rem;
+  min-width: 0;
+  padding: 0.45rem 0 0.2rem 0.4rem;
+  border-left: 1px dashed var(--line-strong);
+  animation: rise 0.45s var(--ease) backwards;
+  animation-delay: calc(var(--i, 0) * 55ms);
+}
+.hourly-slot:first-child { padding-left: 0; border-left-color: transparent; }
+.hourly-time { font-size: 0.72rem; line-height: 1.25; color: var(--ink-muted); }
+.hourly-icon { font-size: 1.15rem; line-height: 1.25; }
+.hourly-temp { font-weight: 650; font-variant-numeric: tabular-nums; }
+.hourly-rain { min-height: 1rem; font-size: 0.7rem; font-weight: 600; color: var(--sky); white-space: nowrap; }
+.hourly .meta { margin-top: 0.45rem; }
 
 /* ══════════════════════════════
    NEXT 7 DAYS
@@ -660,11 +733,11 @@ html[lang="hi"] .profit-main-label {
 
 .fc-row {
   display: grid;
-  grid-template-columns: 3.6rem 2rem minmax(0, 1fr) auto;
+  grid-template-columns: 4.4rem 2rem minmax(0, 1fr) auto;
   align-items: center;
   gap: 0.75rem;
   margin-inline: -0.6rem;
-  padding: 0.58rem 0.6rem;
+  padding: 0.5rem 0.6rem;
   border-bottom: 1px solid var(--line);
   border-radius: 10px;
   font-variant-numeric: tabular-nums;
@@ -675,7 +748,9 @@ html[lang="hi"] .profit-main-label {
 .fc-day  { font-weight: 600; }
 .fc-row.is-today .fc-day { color: var(--green); }
 .fc-icon { font-size: 1.3rem; text-align: center; }
-.fc-rain { color: var(--ink-muted); font-size: 0.92rem; }
+.fc-text   { display: flex; flex-direction: column; min-width: 0; line-height: 1.35; }
+.fc-label  { font-size: 0.95rem; font-weight: 600; }
+.fc-detail { font-size: 0.82rem; color: var(--ink-muted); }
 .fc-rain.is-wet { color: var(--sky); font-weight: 600; }
 .fc-temps { white-space: nowrap; }
 .fc-max { font-weight: 650; }
@@ -1794,6 +1869,12 @@ textarea:focus {
   0%, 100% { transform: translateY(0); }
   50%      { transform: translateY(-4px); }
 }
+@keyframes draw {
+  to { stroke-dashoffset: 0; }
+}
+@keyframes fade-in {
+  to { opacity: 1; }
+}
 @keyframes ripple {
   to { opacity: 0; transform: scale(1); }
 }
@@ -1870,7 +1951,14 @@ textarea:focus {
   .stats { gap: 0.45rem; }
   .stat { padding: 0.6rem 0.6rem; }
   .stat dd { font-size: 1rem; }
-  .fc-row { grid-template-columns: 3rem 1.8rem minmax(0, 1fr) auto; gap: 0.5rem; }
+  .fc-row { grid-template-columns: 3.7rem 1.8rem minmax(0, 1fr) auto; gap: 0.5rem; }
+  .stats-detail { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .hourly-slot { padding-left: 0.25rem; }
+  .hourly-time { font-size: 0.66rem; }
+  html[lang="hi"] .hourly-time { min-height: 2.5em; }    /* Hindi times can take two lines */
+  .hourly-icon { font-size: 1.05rem; }
+  .hourly-temp { font-size: 0.92rem; }
+  .hourly-rain { font-size: 0.62rem; }
   .spray-day { grid-template-columns: minmax(0, 1fr); gap: 0.3rem; }
   .spray-label { padding-top: 0; }
   .hour { height: 34px; }
