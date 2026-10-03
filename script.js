@@ -156,6 +156,25 @@ function clock(iso) {
 
 const dayName = isoDate => WEEKDAYS_SHORT[lang][new Date(isoDate + "T12:00").getDay()];
 
+// Minutes since midnight of a time like "2026-10-03T06:21"
+const minutesOf = iso => Number(iso.slice(11, 13)) * 60 + Number(iso.slice(14, 16));
+
+// 130 minutes becomes "2 h 10 min", 18 minutes becomes "18 min"
+function timeSpan(mins) {
+  const h = Math.floor(mins / 60);
+  const m = mins % 60;
+  const hours = h ? tr(`${h} h`, `${h} घंटे`) : "";
+  const minutes = m || !h ? tr(`${m} min`, `${m} मिनट`) : "";
+  return [hours, minutes].filter(Boolean).join(" ");
+}
+
+function greeting() {
+  const hour = new Date().getHours();
+  if (hour < 12) return tr("Good morning", "सुप्रभात");
+  if (hour < 17) return tr("Good afternoon", "नमस्कार");
+  return tr("Good evening", "शुभ संध्या");
+}
+
 function monthRange([first, last]) {
   const names = MONTHS_SHORT[lang];
   return names[first - 1] + (last !== first ? tr(" to ", " से ") + names[last - 1] : "");
@@ -166,6 +185,7 @@ function renderDate() {
   const season = pick(SEASONS[getSeason(now.getMonth())]);
   setText("heroDate", `${WEEKDAYS[lang][now.getDay()]}, ${now.getDate()} ${MONTHS[lang][now.getMonth()]}`);
   setText("heroSeason", tr(`${season} season`, `${season} का मौसम`));
+  setText("heroGreeting", `${greeting()} · ${place.name}`);
 }
 
 /* ══════════════════════════════
@@ -181,6 +201,7 @@ function setPlace(next) {
   place = next;
   writeStore("local", "km_place", place);
   setText("locationLabel", place.name);
+  renderDate();                    // the greeting names the place
   loadWeather({ force: true });
 }
 
@@ -236,6 +257,7 @@ function initLocation() {
   const saved = readStore("local", "km_place");
   if (saved && Number.isFinite(saved.lat) && Number.isFinite(saved.lon)) place = saved;
   setText("locationLabel", place.name);
+  renderDate();                    // the greeting names the place
 
   const dialog = $("locationDialog");
   const status = $("locationStatus");
@@ -447,12 +469,65 @@ function rainChanceAhead(hours) {
 
 function renderWeather() {
   renderNow();
+  renderSky();
   renderHourly();
   renderForecast();
   renderSpray();
   renderWater();
   renderAlerts();
   renderDryDays();
+  updateShareLink();
+}
+
+/* ══════════════════════════════
+   HERO SKY AND SUN PATH
+   The hero shows the real time of day and weather at the farmer's place
+══════════════════════════════ */
+function renderSky() {
+  const hero = $("hero");
+  const c = weather.current;
+  const d = weather.daily;
+  const now = minutesOf(c.time);
+  const rise = minutesOf(d.sunrise[0]);
+  const set = minutesOf(d.sunset[0]);
+  const day = now >= rise && now < set;
+
+  // Dawn and dusk last about 40 minutes either side of sunrise and sunset
+  hero.dataset.sky = Math.abs(now - rise) <= 40 ? "dawn" : Math.abs(now - set) <= 40 ? "dusk" : day ? "day" : "night";
+
+  const code = c.weather_code;
+  hero.dataset.weather = code >= 95 ? "storm"
+    : (code >= 51 && code <= 67) || (code >= 80 && code <= 82) ? "rain"
+    : code === 45 || code === 48 ? "fog"
+    : code >= 2 ? "cloudy" : "clear";
+
+  // How far along its path the sun is by day, or the moon by night (0 to 1)
+  let progress, left, right, note;
+  if (day) {
+    progress = (now - rise) / (set - rise);
+    left = clock(d.sunrise[0]);
+    right = clock(d.sunset[0]);
+    note = tr(`${timeSpan(set - now)} of light left`, `${timeSpan(set - now)} की रोशनी बाकी`);
+  } else {
+    const nextRise = now < rise ? rise : minutesOf(d.sunrise[1] ?? d.sunrise[0]) + 1440;
+    const lastSet = now < rise ? set - 1440 : set;
+    progress = (now - lastSet) / (nextRise - lastSet);
+    left = clock(d.sunset[0]);
+    right = clock(d.sunrise[now < rise ? 0 : 1] ?? d.sunrise[0]);
+    note = tr(`Sun rises in ${timeSpan(nextRise - now)}`, `${timeSpan(nextRise - now)} में सूरज उगेगा`);
+  }
+  progress = Math.min(1, Math.max(0, progress));
+
+  // The path is half an oval: 88 wide each side of x = 100, 52 high above y = 62
+  const angle = Math.PI * progress;
+  const x = 100 - 88 * Math.cos(angle);
+  const y = 62 - 52 * Math.sin(angle);
+  $("sunMark").style.transform = `translate(${x.toFixed(1)}px, ${y.toFixed(1)}px)`;
+  $("sunDone").style.setProperty("--sun-p", progress.toFixed(3));
+  $("sunPath").classList.toggle("is-night", !day);
+  setText("sunLeft", left);
+  setText("sunRight", right);
+  setText("sunNote", note);
 }
 
 function showWeatherError() {
@@ -542,17 +617,15 @@ function renderNow() {
   setText("wxUvNote", sun.note);
 
   // Sun: rise, set, length of the day and how long until sunset
-  const minutes = iso => Number(iso.slice(11, 13)) * 60 + Number(iso.slice(14, 16));
-  const span = mins => tr(`${Math.floor(mins / 60)} h ${mins % 60} min`, `${Math.floor(mins / 60)} घंटे ${mins % 60} मिनट`);
-  const rise = minutes(d.sunrise[0]);
-  const set = minutes(d.sunset[0]);
-  const nowMin = minutes(c.time);
+  const rise = minutesOf(d.sunrise[0]);
+  const set = minutesOf(d.sunset[0]);
+  const nowMin = minutesOf(c.time);
   setText("wxSunrise", clock(d.sunrise[0]));
   setText("wxSunset", clock(d.sunset[0]));
-  setText("wxDayLength", tr(`${span(set - rise)} of daylight`, `${span(set - rise)} का दिन`));
+  setText("wxDayLength", tr(`${timeSpan(set - rise)} of daylight`, `${timeSpan(set - rise)} का दिन`));
   setText("wxNightNote",
-    nowMin < rise ? tr(`Sun rises in ${span(rise - nowMin)}`, `${span(rise - nowMin)} में सूरज उगेगा`)
-    : nowMin < set ? tr(`${span(set - nowMin)} of light left`, `${span(set - nowMin)} की रोशनी बाकी`)
+    nowMin < rise ? tr(`Sun rises in ${timeSpan(rise - nowMin)}`, `${timeSpan(rise - nowMin)} में सूरज उगेगा`)
+    : nowMin < set ? tr(`${timeSpan(set - nowMin)} of light left`, `${timeSpan(set - nowMin)} की रोशनी बाकी`)
     : tr("The sun has set", "सूरज डूब चुका है"));
 
   setText("wxAdvice", advice);
@@ -840,6 +913,10 @@ function renderSpray() {
   }
   $("sprayBest").className = "answer " + tone;
   setText("sprayBest", answer);
+  setText("quickSpray",
+    today ? tr(`Today, ${range(today)}`, `आज, ${range(today)}`)
+    : tomorrow ? tr(`Tomorrow, ${range(tomorrow)}`, `कल, ${range(tomorrow)}`)
+    : tr("No good time in 2 days", "2 दिन अच्छा समय नहीं"));
 
   const limits = sprayLimits(sprayRatings, now);
   setText("sprayWhy", limits.length ? tr(
@@ -926,6 +1003,7 @@ function renderWater() {
   $("waterAnswer").className = "answer " + tone;
   setText("waterAnswer", answer);
   setText("waterWhy", why);
+  setText("quickWater", answer.replace(/[.।]$/, ""));
 }
 
 /* ══════════════════════════════
@@ -989,6 +1067,8 @@ function renderAlerts() {
       ? tr("1 thing to watch this week", "इस हफ़्ते 1 बात का ध्यान रखें")
       : tr(`${alerts.length} things to watch this week`, `इस हफ़्ते ${alerts.length} बातों का ध्यान रखें`);
   }
+
+  setText("quickAlert", alerts.length ? answer.textContent : tr("No danger", "कोई ख़तरा नहीं"));
 
   $("alertList").innerHTML = alerts.slice(0, 5).map((a, i) => `
     <li class="alert alert-${a.level}" style="--i:${i}"><span class="alert-icon" aria-hidden="true">${a.icon}</span><span>${a.text}</span></li>
@@ -1155,6 +1235,13 @@ function renderSowSummary() {
   if (now.length)  parts.push(tr(`Sow now: ${now.join(", ")}.`, `अभी बोएँ: ${now.join(", ")}।`));
   if (soon.length) parts.push(tr(`Coming soon: ${soon.join(", ")}.`, `जल्द: ${soon.join(", ")}।`));
   setText("sowSummary", parts.join(" ") || tr("No main sowing this month.", "इस महीने कोई मुख्य बुवाई नहीं।"));
+
+  // The short version shown under the hero
+  const few = list => list.slice(0, 3).join(", ") + (list.length > 3 ? tr(` and ${list.length - 3} more`, ` और ${list.length - 3}`) : "");
+  setText("quickSow",
+    now.length ? few(now)
+    : soon.length ? tr(`Soon: ${few(soon)}`, `जल्द: ${few(soon)}`)
+    : tr("Nothing this month", "इस महीने कुछ नहीं"));
 }
 
 /* ══════════════════════════════
@@ -1934,6 +2021,82 @@ function initPapers() {
 }
 
 /* ══════════════════════════════
+   LISTEN AND SHARE
+   Today's farm report, read aloud or sent on WhatsApp
+══════════════════════════════ */
+const shown = id => $(id).textContent.trim();
+
+// Short lines that sum up today, in the language on screen
+function reportLines() {
+  const lines = [];
+  if (weather) {
+    const c = weather.current;
+    const sky = describeWeather(c.weather_code, c.is_day === 1).label;
+    lines.push(tr(
+      `${place.name}: ${Math.round(c.temperature_2m)} degrees, ${sky}.`,
+      `${place.name}: ${Math.round(c.temperature_2m)} डिग्री, ${sky}।`));
+    lines.push(shown("wxAdvice"));
+    lines.push(tr(`Spray: ${shown("sprayBest")}.`, `छिड़काव: ${shown("sprayBest")}।`));
+    lines.push(tr(`Water: ${shown("waterAnswer")}`, `सिंचाई: ${shown("waterAnswer")}`));
+    lines.push(tr(`This week: ${shown("alertAnswer")}.`, `इस हफ़्ते: ${shown("alertAnswer")}।`));
+  }
+  lines.push(shown("sowSummary"));
+  return lines;
+}
+
+// The share button opens WhatsApp with today's report already typed
+function updateShareLink() {
+  const now = new Date();
+  const title = `🌾 KrishiMitra · ${now.getDate()} ${MONTHS[lang][now.getMonth()]}`;
+  const text = [title, ...reportLines(), location.origin + location.pathname].join("\n");
+  $("shareBtn").href = "https://wa.me/?text=" + encodeURIComponent(text);
+}
+
+let speaking = null;      // the report being read aloud, if any
+
+function stopListening() {
+  speaking = null;
+  if ("speechSynthesis" in window) speechSynthesis.cancel();
+  $("listenBtn").classList.remove("is-on");
+  setText("listenLabel", tr("Listen", "सुनें"));
+}
+
+function initListen() {
+  const btn = $("listenBtn");
+  if (!("speechSynthesis" in window) || !("SpeechSynthesisUtterance" in window)) {
+    btn.hidden = true;      // this browser cannot speak
+    return;
+  }
+  setText("listenLabel", tr("Listen", "सुनें"));
+
+  btn.addEventListener("click", () => {
+    if (speaking) { stopListening(); return; }
+
+    // Pick a voice for the language on screen, Indian if there is one
+    const want = lang === "hi" ? "hi" : "en";
+    const voices = speechSynthesis.getVoices();
+    const tag = voice => voice.lang.toLowerCase().replace("_", "-");
+    const voice = voices.find(v => tag(v).startsWith(want + "-in")) || voices.find(v => tag(v).startsWith(want));
+    if (lang === "hi" && voices.length && !voice) {
+      setText("listenStatus", "इस फ़ोन या कंप्यूटर में हिंदी आवाज़ नहीं है। सुनने के लिए ऊपर English चुनें।");
+      return;
+    }
+
+    const speech = new SpeechSynthesisUtterance(`${greeting()}. ${reportLines().join(" ")}`);
+    speech.lang = lang === "hi" ? "hi-IN" : "en-IN";
+    if (voice) speech.voice = voice;
+    speech.rate = 0.95;
+    speech.onend = speech.onerror = () => { if (speaking === speech) stopListening(); };
+
+    speaking = speech;
+    speechSynthesis.speak(speech);
+    btn.classList.add("is-on");
+    setText("listenLabel", tr("Stop", "रोकें"));
+    setText("listenStatus", "");
+  });
+}
+
+/* ══════════════════════════════
    CHAT WIDGET
 ══════════════════════════════ */
 const chat = {
@@ -2264,7 +2427,7 @@ function initReveal() {
 // A soft circle spreads from where a button is pressed
 function initRipple() {
   if (calmMotion) return;
-  const targets = ".btn, .chip, .tab, .filter, .lang-btn, .location-btn, .chat-fab, .helpline, .scheme-more";
+  const targets = ".btn, .chip, .tab, .filter, .lang-btn, .location-btn, .chat-fab, .helpline, .scheme-more, .mini-btn, .quick-item";
   document.addEventListener("pointerdown", e => {
     const el = e.target.closest(targets);
     if (!el) return;
@@ -2311,6 +2474,16 @@ function initHeader() {
   window.addEventListener("resize", refreshTabPills);
   onScroll();
 
+  // The hero has its own "Ask Mitra" button, so the floating one waits until the hero is scrolled away.
+  // No part of the menu is marked while the hero is on screen.
+  if ("IntersectionObserver" in window) {
+    new IntersectionObserver(([entry]) => {
+      const atHero = entry.intersectionRatio > 0.3;
+      document.body.classList.toggle("at-hero", atHero);
+      if (atHero) document.querySelectorAll(".site-nav a").forEach(link => link.classList.remove("is-active"));
+    }, { threshold: [0, 0.3, 0.6] }).observe($("hero"));
+  }
+
   if (!("IntersectionObserver" in window)) return;
   const links = [...document.querySelectorAll(".site-nav a")];
   const observer = new IntersectionObserver(entries => {
@@ -2343,7 +2516,9 @@ function renderAllText() {
   renderSchemes();
   renderPaperCount();
   renderChatLog();
+  stopListening();                 // also puts the button label in the new language
   if (weather) renderWeather();
+  else updateShareLink();
   refreshTabPills();
 }
 
@@ -2383,20 +2558,26 @@ function init() {
   // 5. Chat
   initChat();
 
-  // 6. Place, then weather for it
+  // 6. Hero: listen and share, and a first guess at day or night until the weather arrives
+  initListen();
+  updateShareLink();
+  const hour = new Date().getHours();
+  $("hero").dataset.sky = hour >= 6 && hour < 18 ? "day" : "night";
+
+  // 7. Place, then weather for it
   initLocation();
   initSprayDetail();
   loadWeather();
   $("refreshWeather").addEventListener("click", () => loadWeather({ force: true }));
 
-  // 7. Keep the weather fresh while the page is being looked at
+  // 8. Keep the weather fresh while the page is being looked at
   setInterval(() => { if (!document.hidden) loadWeather({ force: true }); }, CONFIG.WEATHER_REFRESH_MS);
   document.addEventListener("visibilitychange", () => {
     const stale = weather && Date.now() - weather.fetchedAt > CONFIG.WEATHER_REFRESH_MS;
     if (!document.hidden && stale) loadWeather({ force: true });
   });
 
-  // 8. Page motion
+  // 9. Page motion
   initHeader();
   initReveal();
   initRipple();

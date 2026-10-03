@@ -47,6 +47,8 @@
     <symbol id="i-phone" viewBox="0 0 24 24"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z" /></symbol>
     <symbol id="i-external" viewBox="0 0 24 24"><path d="M7 17 17 7" /><path d="M7 7h10v10" /></symbol>
     <symbol id="i-search" viewBox="0 0 24 24"><circle cx="11" cy="11" r="8" /><path d="m21 21-4.35-4.35" /></symbol>
+    <symbol id="i-speaker" viewBox="0 0 24 24"><path d="M11 5 6 9H2v6h4l5 4V5z" /><path d="M19.07 4.93a10 10 0 0 1 0 14.14M15.54 8.46a5 5 0 0 1 0 7.07" /></symbol>
+    <symbol id="i-share" viewBox="0 0 24 24"><circle cx="18" cy="5" r="3" /><circle cx="6" cy="12" r="3" /><circle cx="18" cy="19" r="3" /><path d="m8.59 13.51 6.83 3.98M15.41 6.51l-6.82 3.98" /></symbol>
     <symbol id="i-locate" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9" /><path d="M22 12h-4M6 12H2M12 6V2M12 22v-4" /></symbol>
   </svg>
 
@@ -85,12 +87,46 @@
 
   <!-- ═══════════════════════════════════════
        HERO
+       The sky follows the real time of day and weather at the farmer's place
+       (data-sky and data-weather are set by script.js)
   ═══════════════════════════════════════ -->
-  <section class="hero">
+  <section class="hero" id="hero" data-sky="day" data-weather="clear">
     <div class="hero-glow" aria-hidden="true"></div>
+
+    <div class="sky" aria-hidden="true">
+      <span class="sky-stars"></span>
+      <span class="sky-cloud sky-cloud-1"></span>
+      <span class="sky-cloud sky-cloud-2"></span>
+      <span class="sky-cloud sky-cloud-3"></span>
+      <span class="sky-rain"></span>
+      <svg class="sky-birds" viewBox="0 0 120 40">
+        <path d="M4 20q8-10 14 0 6-10 14 0" /><path d="M52 10q6-8 11 0 5-8 11 0" /><path d="M86 26q5-7 9 0 4-7 9 0" />
+      </svg>
+    </div>
+
+    <!-- Rolling fields along the bottom of the hero -->
+    <svg class="land" viewBox="0 0 1440 240" preserveAspectRatio="xMidYMax slice" aria-hidden="true">
+      <path class="land-far" d="M0 150C180 100 320 110 480 135S800 90 980 120s320 30 460-15V240H0Z" />
+      <g class="land-trees">
+        <g transform="translate(352 120)"><rect x="-2" y="0" width="4" height="18" rx="2" /><ellipse cx="0" cy="-8" rx="13" ry="17" /></g>
+        <g transform="translate(386 127) scale(.78)"><rect x="-2" y="0" width="4" height="18" rx="2" /><ellipse cx="0" cy="-8" rx="13" ry="17" /></g>
+        <g transform="translate(1002 110)"><rect x="-2" y="0" width="4" height="18" rx="2" /><ellipse cx="0" cy="-8" rx="13" ry="17" /></g>
+        <g transform="translate(1040 116) scale(.72)"><rect x="-2" y="0" width="4" height="18" rx="2" /><ellipse cx="0" cy="-8" rx="13" ry="17" /></g>
+        <g transform="translate(1190 130) scale(.9)"><rect x="-2" y="0" width="4" height="18" rx="2" /><ellipse cx="0" cy="-8" rx="13" ry="17" /></g>
+        <g transform="translate(120 140) scale(.85)"><rect x="-2" y="0" width="4" height="18" rx="2" /><ellipse cx="0" cy="-8" rx="13" ry="17" /></g>
+      </g>
+      <path class="land-mid" d="M0 185C240 140 420 175 700 160s450-30 740 10V240H0Z" />
+      <path class="land-near" d="M0 215C300 180 620 205 900 195s350-10 540 10V240H0Z" />
+      <g class="land-rows">
+        <path d="M0 226C300 191 620 216 900 206s350-10 540 10" />
+        <path d="M0 236C300 203 620 227 900 217s350-9 540 11" />
+        <path d="M0 197C240 153 420 187 700 172s450-29 740 11" />
+      </g>
+    </svg>
+
     <div class="container hero-inner">
       <div class="hero-copy">
-        <p class="eyebrow eyebrow-light" data-hi="मुफ़्त · भारतीय किसानों के लिए">Free · For Indian farmers</p>
+        <p class="eyebrow eyebrow-light" id="heroGreeting">Namaste</p>
         <h1 data-hi="अपनी ज़मीन, <em>अपनी जानकारी</em>">Apni zameen, <em>apna data.</em></h1>
         <p class="lead" data-hi="आज का मौसम, छिड़काव का सही समय, सिंचाई कब करें, क्या बोएँ, और एक साथी जिससे आप हिंदी या अंग्रेज़ी में कुछ भी पूछ सकते हैं।">Today's weather, when to spray, when to water, what to sow, and a helper you can ask anything in Hindi or English.</p>
         <div class="hero-actions">
@@ -100,6 +136,11 @@
           </button>
           <a class="btn btn-ghost" href="#today" data-hi="आज का मौसम देखें">See today's weather</a>
         </div>
+        <ul class="hero-points">
+          <li data-hi="बिल्कुल मुफ़्त">Completely free</li>
+          <li data-hi="लॉगिन की ज़रूरत नहीं">No login needed</li>
+          <li data-hi="हिंदी और अंग्रेज़ी">Hindi and English</li>
+        </ul>
       </div>
 
       <aside class="hero-card" aria-label="Today">
@@ -114,10 +155,66 @@
             <span class="hero-place" id="heroPlace">…</span>
           </span>
         </div>
+
+        <!-- Where the sun (or the moon) is on its path right now -->
+        <div class="sunpath" id="sunPath">
+          <svg viewBox="0 0 200 74" aria-hidden="true">
+            <path class="sunpath-track" d="M12 62A88 52 0 0 1 188 62" />
+            <path class="sunpath-done" id="sunDone" d="M12 62A88 52 0 0 1 188 62" pathLength="1" />
+            <line class="sunpath-ground" x1="2" y1="62" x2="198" y2="62" />
+            <g class="sunpath-mark" id="sunMark">
+              <circle class="sunpath-glow" r="13" />
+              <circle class="sunpath-dot" id="sunDot" r="6.5" />
+            </g>
+          </svg>
+          <div class="sunpath-times">
+            <span id="sunLeft">…</span>
+            <span class="sunpath-note" id="sunNote">…</span>
+            <span id="sunRight">…</span>
+          </div>
+        </div>
+
         <p class="hero-advice" id="heroAdvice">…</p>
+
+        <div class="hero-card-actions">
+          <button class="mini-btn" id="listenBtn" type="button">
+            <svg class="icon" aria-hidden="true"><use href="#i-speaker" /></svg>
+            <span id="listenLabel">Listen</span>
+          </button>
+          <a class="mini-btn" id="shareBtn" href="https://wa.me/" target="_blank" rel="noopener noreferrer">
+            <svg class="icon" aria-hidden="true"><use href="#i-share" /></svg>
+            <span data-hi="व्हाट्सऐप पर भेजें">Share on WhatsApp</span>
+          </a>
+        </div>
+        <p class="hero-status" id="listenStatus" aria-live="polite"></p>
       </aside>
     </div>
   </section>
+
+  <!-- ═══════════════════════════════════════
+       TODAY IN FOUR ANSWERS
+       Sits across the bottom edge of the hero. Each one jumps to its card.
+  ═══════════════════════════════════════ -->
+  <div class="container quick-wrap">
+    <nav class="quick" aria-label="Today in four answers">
+      <a class="quick-item" href="#sp-h">
+        <span class="card-icon" aria-hidden="true">💦</span>
+        <span class="quick-text"><span class="quick-label" data-hi="छिड़काव">Spray</span><strong class="quick-answer" id="quickSpray">…</strong></span>
+      </a>
+      <a class="quick-item" href="#wa-h">
+        <span class="card-icon" aria-hidden="true">💧</span>
+        <span class="quick-text"><span class="quick-label" data-hi="सिंचाई">Water</span><strong class="quick-answer" id="quickWater">…</strong></span>
+      </a>
+      <a class="quick-item" href="#al-h">
+        <span class="card-icon" aria-hidden="true">⚠️</span>
+        <span class="quick-text"><span class="quick-label" data-hi="इस हफ़्ते">This week</span><strong class="quick-answer" id="quickAlert">…</strong></span>
+      </a>
+      <a class="quick-item" href="#cc-h">
+        <span class="card-icon" aria-hidden="true">🌱</span>
+        <span class="quick-text"><span class="quick-label" data-hi="अभी बोएँ">Sow now</span><strong class="quick-answer" id="quickSow">…</strong></span>
+      </a>
+    </nav>
+  </div>
 
   <main id="main">
 

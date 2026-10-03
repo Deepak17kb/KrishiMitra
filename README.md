@@ -55,6 +55,10 @@ No login. No app to install. No cost.
 <td width="50%" valign="top">
 
 ### 🌤️ Today on the farm
+- **A living sky** on top: it follows the real time of day and weather at the farmer's place, with a sun path that shows the light left
+- **Four instant answers**: spray, water, this week's danger and what to sow now
+- **Listen**: one button reads today's farm report aloud, in Hindi or English
+- **Share on WhatsApp**: sends today's report to family or the village group
 - **Weather now**: feels-like, when rain is likely, wind direction, sun strength, sunrise and sunset, with one line of advice for field work
 - **Next 24 hours** as a temperature curve
 - **Next 7 days** of rain, wind and temperature, summed up in one line
